@@ -1,165 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<title>Text Cylinder — Volumetric</title>
-<script src="https://cdn.jsdelivr.net/npm/p5@1.9.3/lib/p5.min.js"></script>
-<style>
-  html, body { margin:0; padding:0; background:#fff; overflow:hidden; }
-  canvas { display:block; }
-</style>
+  <title>Studio Vault - Breathing Cubes</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; background: #222; } /* Dark background helps see if it's loading */
+  </style>
 </head>
 <body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/*
-  Single-file p5.js WEBGL
-  - No preload / no external font
-  - No hint()
-  - Real 3D glyph-planes arranged in rings
-  - Inner mirrored pass for reversed faint letters
-  - Depth test disabled via WebGL context so overlap accumulates (ghosting)
-*/
-
-const PHRASE = "I WILL NOT NARRATE THEIR NARRATIVE ";
-const RINGS = 16;
-
-const OUTER_R = 360;
-const INNER_R = 312;
-
-const RING_Y_SPACING = 60;
-
-const FONT_SIZE = 56;
-const GLYPH_PAD = 26;
-
-const PLANE_W = 44;
-const PLANE_H = 64;
-
-const ROT_SPEED = 0.0032;
-const TILT_X = -0.18;
-
-const OUTER_ALPHA = 170; // 0..255
-const INNER_ALPHA = 55;  // 0..255
-
-let rot = 0;
-let glyphTex = new Map();
-let usedChars = [];
-
-function setup() {
-  createCanvas(window.innerWidth, window.innerHeight, WEBGL);
-  pixelDensity(2);
-  setAttributes('alpha', true);
-  setAttributes('antialias', true);
-
-  usedChars = Array.from(new Set(PHRASE.split("")));
-  buildGlyphTextures();
-}
-
-function draw() {
-  // Hard-disable depth test so planes accumulate visually (matches the reference ghosting)
-  disableDepthTest();
-
-  clear();
-  background(245);
-
-  perspective(PI / 3, width / height, 1, 8000);
-
-  rotateX(TILT_X);
-  rotateY(rot);
-  rot += ROT_SPEED;
-
-  noStroke();
-  blendMode(BLEND);
-
-  // inner mirrored (faint, reversed)
-  drawCylinder(INNER_R, INNER_ALPHA, true);
-
-  // outer (darker, readable)
-  drawCylinder(OUTER_R, OUTER_ALPHA, false);
-}
-
-function drawCylinder(radius, baseAlpha, mirrored) {
-  const half = (RINGS - 1) * 0.5;
-
-  for (let ry = 0; ry < RINGS; ry++) {
-    const y = (ry - half) * RING_Y_SPACING;
-    drawRing(radius, y, baseAlpha, mirrored);
-  }
-}
-
-function drawRing(radius, y, baseAlpha, mirrored) {
-  const chars = PHRASE.length;
-  const step = TWO_PI / chars;
-
-  for (let i = 0; i < chars; i++) {
-    const ch = PHRASE[i];
-    if (ch === " ") continue;
-
-    const a = i * step;
-
-    const x = Math.cos(a) * radius;
-    const z = Math.sin(a) * radius;
-
-    // fade by local facing angle (front darkest, back faint)
-    const face01 = (Math.cos(a) + 1) * 0.5;   // 0..1
-    const fade = Math.pow(face01, 1.7);
-    let alpha = baseAlpha * (0.18 + 0.82 * fade);
-
-    if (mirrored) alpha *= 0.75;
-
-    const tex = glyphTex.get(ch);
-    if (!tex) continue;
-
-    push();
-    translate(x, y, z);
-
-    if (!mirrored) {
-      // outward
-      rotateY(-a + HALF_PI);
-    } else {
-      // inward + mirrored glyph
-      rotateY(-a - HALF_PI);
-      scale(-1, 1, 1);
+  // 1. SEEDED RANDOM GENERATOR (The Vault Brain)
+  const urlParams = new URLSearchParams(window.location.search);
+  const seedValue = urlParams.get('seed') ? parseInt(urlParams.get('seed')) : Math.floor(Math.random() * 1000000);
+  
+  function sfc32(a, b, c, d) {
+    return function() {
+      a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0; 
+      var t = (a + b | 0) + d | 0;
+      d = d + 1 | 0; a = b ^ b >>> 9; b = c + (c << 3) | 0;
+      c = (c << 21 | c >>> 11); c = c + t | 0;
+      return (t >>> 0) / 4294967296;
     }
-
-    // tiny separation so inner/outer don’t perfectly coincide
-    translate(0, 0, mirrored ? -0.6 : 0.6);
-
-    tint(0, constrain(alpha, 0, 255));
-    texture(tex);
-    plane(PLANE_W, PLANE_H);
-    pop();
   }
-}
+  const myRandom = sfc32(seedValue, 0xadbdef, 0x123456, 0x789abc);
 
-function buildGlyphTextures() {
-  glyphTex.clear();
+  // 2. THE ART LOGIC
+  const palette = [310, 45, 30, 210, 270]; // Fixed Palette
 
-  for (const ch of usedChars) {
-    const g = createGraphics(FONT_SIZE + GLYPH_PAD * 2, FONT_SIZE + GLYPH_PAD * 2);
-    g.pixelDensity(1);
-    g.clear();
-    g.background(0, 0, 0, 0);
-    g.noStroke();
-    g.fill(0);
-    g.textFont('monospace');
-    g.textSize(FONT_SIZE);
-    g.textAlign(CENTER, CENTER);
-    g.text(ch, g.width * 0.5, g.height * 0.54);
-    glyphTex.set(ch, g);
+  function hsbToHex(h, s, b) {
+    s /= 100; b /= 100;
+    const k = n => (n + h / 60) % 6;
+    const f = n => b - b * s * Math.max(0, Math.min(k(n), 4 - k(n), 1));
+    const r = Math.round(f(5) * 255), g = Math.round(f(3) * 255), bl = Math.round(f(1) * 255);
+    return (r << 16) | (g << 8) | bl;
   }
-}
 
-function disableDepthTest() {
-  // In p5 WEBGL, drawingContext is the WebGL context.
-  const gl = drawingContext;
-  if (gl && gl.disable && gl.DEPTH_TEST !== undefined) {
-    gl.disable(gl.DEPTH_TEST);
+  function makeGradientTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64; canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    const h1 = palette[Math.floor(myRandom() * palette.length)];
+    const h2 = palette[Math.floor(myRandom() * palette.length)];
+    for (let y = 0; y < 256; y++) {
+      const hex = hsbToHex(h1 + (h2 - h1) * (y / 256), 100, 100);
+      ctx.fillStyle = `rgb(${(hex >> 16) & 255},${(hex >> 8) & 255},${hex & 255})`;
+      ctx.fillRect(0, y, 64, 1);
+    }
+    return new THREE.CanvasTexture(canvas);
   }
-}
 
-function windowResized() {
-  resizeCanvas(window.innerWidth, window.innerHeight);
-}
+  // 3. SCENE SETUP
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xffffff);
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 15);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  document.body.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const light = new THREE.PointLight(0xffffff, 1);
+  light.position.set(10, 10, 10);
+  scene.add(light);
+
+  const cubes = [];
+  for (let i = 0; i < 5; i++) {
+    const geo = new THREE.BoxGeometry(2 + myRandom() * 2, 2 + myRandom() * 2, 2 + myRandom() * 2);
+    const mat = new THREE.MeshPhongMaterial({ map: makeGradientTexture(), transparent: true, opacity: 0.3, side: THREE.DoubleSide });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.z = -i * 5;
+    scene.add(mesh);
+    cubes.push({ mesh, phase: myRandom() * Math.PI * 2 });
+  }
+
+  // 4. INTERFACE
+  const label = document.createElement('div');
+  label.style.cssText = "position:fixed;bottom:20px;width:100%;text-align:center;font-family:monospace;color:#888;";
+  label.innerHTML = `SEED: ${seedValue} | PRESS 'S' TO ARCHIVE`;
+  document.body.appendChild(label);
+
+  // 5. ANIMATION
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = Date.now() * 0.001;
+    camera.position.z = 15 + Math.sin(t * 0.1) * 20;
+    camera.lookAt(0, 0, 0);
+    cubes.forEach(c => {
+      c.mesh.material.opacity = 0.1 + Math.abs(Math.sin(t + c.phase)) * 0.4;
+    });
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // 6. ARCHIVE TRIGGER
+  window.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 's') {
+      const data = { number: "1001", series: "Cubes", seed: seedValue.toString(), params: {} };
+      fetch('save.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+        .then(res => res.json())
+        .then(data => { label.style.color = "green"; label.innerText = data.status; })
+        .catch(() => alert("MAMP Error: Is the server running?"));
+    }
+  });
 </script>
 </body>
 </html>
