@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mark Walhimer — Installations</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap');
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --black:    #0a0a0a;
@@ -12,6 +13,8 @@
       --dim:      #666660;
       --rule:     #1e1e1e;
       --accent:   #c8a882;
+      --border:   #2a2a2a;
+      --bright:   #f0f0f0;
     }
     html { scroll-behavior: smooth; }
     body {
@@ -22,37 +25,39 @@
       min-height: 100vh;
     }
 
-    /* NAV */
+    /* NAV — matches Projects, Bio, Exhibitions, Contact */
     nav {
       display: flex;
-      align-items: center;
-      padding: 28px 48px;
-      border-bottom: 1px solid var(--rule);
+      align-items: stretch;
+      padding: 0 40px;
+      border-bottom: 1px solid var(--border);
     }
     .nav-logo {
-      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.18em;
+      font-weight: 500;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--accent);
       text-decoration: none;
-      padding-right: 32px;
+      padding: 22px 32px 22px 0;
       margin-right: 8px;
-      border-right: 1px solid var(--rule);
+      border-right: 1px solid var(--border);
     }
-    .nav-links { display: flex; gap: 32px; }
+    .nav-links { display: flex; align-items: stretch; gap: 0; }
     .nav-links a {
-      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
-      font-weight: 300;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--dim);
       text-decoration: none;
-      transition: color 0.2s;
+      padding: 22px 20px;
+      transition: color 0.15s;
+      display: flex;
+      align-items: center;
     }
-    .nav-links a:hover { color: var(--offwhite); }
+    .nav-links a:hover { color: var(--bright); }
     .nav-links a.active { color: var(--accent); border-bottom: 1px solid var(--accent); margin-bottom: -1px; }
 
     /* HEADER */
