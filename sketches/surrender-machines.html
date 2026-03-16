@@ -6,29 +6,37 @@
   <title>Surrender Machines — Mark Walhimer</title>
 
   <!-- p5.js via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js"></script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black:   #0a0a0a;
-      --offwhite: #f0ede6;
-      --dim:      #888880;
-      --rule:     #2a2a2a;
-      --accent:   #c8a882;
+      --serif:  'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --sans:   'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --mono:   'DM Mono', 'Courier New', Courier, monospace;
+      --paper:      #efe9df;
+      --deep:       #18160f;
+      --deep-mid:   #22201a;
+      --ink:        #18160f;
+      --mid:        #9a9088;
+      --accent:     #a8864e;
+      --warm:       #c8b99a;
+      --rule-dark:  rgba(255,255,255,0.07);
+      --rule-accent: rgba(168,134,78,0.35);
+      --audio-btn-bg-dark: rgba(24,22,15,0.88);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--black);
-      color: var(--offwhite);
+      background: var(--deep);
+      color: var(--paper);
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-weight: 300;
       line-height: 1.6;
@@ -40,11 +48,11 @@
       max-width: 900px;
       margin: 0 auto;
       padding: 72px 40px 48px;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule-dark);
     }
 
     .kicker {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 11px;
       font-weight: 300;
       letter-spacing: 0.18em;
@@ -70,7 +78,7 @@
       font-size: clamp(18px, 2.2vw, 22px);
       font-weight: 300;
       line-height: 1.65;
-      color: var(--offwhite);
+      color: var(--paper);
       max-width: 660px;
       margin-bottom: 24px;
     }
@@ -81,11 +89,11 @@
     }
 
     .thesis {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 12px;
       font-weight: 300;
       color: var(--dim);
-      border-left: 1px solid var(--rule);
+      border-left: 1px solid var(--rule-dark);
       padding-left: 20px;
       line-height: 1.8;
       max-width: 600px;
@@ -100,7 +108,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule-dark);
     }
 
     .instruction-bar .dot {
@@ -118,7 +126,7 @@
     }
 
     .instruction-bar p {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 11.5px;
       font-weight: 300;
       color: var(--dim);
@@ -126,7 +134,7 @@
     }
 
     .instruction-bar p span {
-      color: var(--offwhite);
+      color: var(--paper);
     }
 
     /* ── MACHINE STAGE ───────────────────────────────────────── */
@@ -134,7 +142,7 @@
       width: 100%;
       background: #111;
       position: relative;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule-dark);
     }
 
     /* p5 canvas fills width, sliders overlaid */
@@ -169,7 +177,7 @@
     }
 
     .ctrl-label {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 10px;
       font-weight: 400;
       letter-spacing: 0.14em;
@@ -182,7 +190,7 @@
     }
 
     .ctrl-label span.val {
-      color: var(--offwhite);
+      color: var(--paper);
       font-size: 11px;
     }
 
@@ -214,107 +222,29 @@
     }
 
     .ctrl-desc {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 9.5px;
       color: #555;
       margin-top: 6px;
       letter-spacing: 0.06em;
     }
 
-    /* Fullscreen button — lives inside #controls grid */
-    #fs-btn {
-      pointer-events: all;
-      background: rgba(10,10,10,0.82);
-      border: 1px solid var(--rule);
-      color: var(--dim);
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 12px 14px;
-      cursor: pointer;
-      backdrop-filter: blur(6px);
-      transition: color 0.15s, border-color 0.15s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      white-space: nowrap;
-    }
-
-    #fs-btn:hover { color: var(--offwhite); border-color: var(--accent); }
-
-    #fs-btn svg {
-      width: 14px;
-      height: 14px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.5;
-    }
-
-    /* Close button visible only in fullscreen — top right corner */
-    #fs-close, #fs-refresh {
-      display: none;
-      position: fixed;
-      top: 20px;
-      z-index: 1010;
-      background: rgba(10,10,10,0.85);
-      border: 1px solid var(--rule);
-      color: var(--offwhite);
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 10px 18px;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: color 0.15s, border-color 0.15s;
-      align-items: center;
-      gap: 8px;
-    }
-
-    #fs-close  { right: 20px; }
-    #fs-refresh { right: 110px; }
-
-    #fs-close:hover, #fs-refresh:hover { border-color: var(--accent); color: var(--accent); }
-
-    #machine-stage.is-fullscreen #fs-close,
-    #machine-stage.is-fullscreen #fs-refresh {
-      display: flex;
-    }
-    /* Hide fullscreen button when already fullscreen */
-    #machine-stage.is-fullscreen #fs-btn {
-      display: none;
-    }
-
-    #fs-btn svg {
-      width: 12px;
-      height: 12px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.5;
-    }
-
-    /* Fullscreen overlay mode */
-    #machine-stage.is-fullscreen {
+    /* ── EXPAND / COLLAPSE — canonical ── */
+    .art-stage.is-fullscreen {
       position: fixed !important;
       inset: 0 !important;
       width: 100vw !important;
       height: 100vh !important;
-      z-index: 1000;
-      background: #111;
+      z-index: 800;
+      background: var(--deep);
     }
-
-    #machine-stage.is-fullscreen canvas {
+    .art-stage.is-fullscreen canvas {
       width: 100vw !important;
       height: 100vh !important;
       max-width: none !important;
     }
-
-    #machine-stage.is-fullscreen #controls {
-      top: 20px;
-    }
+    /* Show controls in fullscreen */
+    .art-stage.is-fullscreen #controls { top: 20px; }
 
     /* zero-state hint inside canvas area */
     #surrender-btn {
@@ -322,7 +252,7 @@
       background: rgba(200,168,130,0.12);
       border: 1px solid var(--accent);
       color: var(--accent);
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -375,10 +305,10 @@
       max-width: 900px;
       margin: 0 auto;
       padding: 14px 40px;
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 10.5px;
       color: var(--dim);
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule-dark);
       letter-spacing: 0.06em;
     }
 
@@ -390,7 +320,7 @@
     }
 
     .section-label {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 10px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -417,12 +347,12 @@
     }
 
     .process-step {
-      background: var(--black);
+      background: var(--deep);
       padding: 28px 22px;
     }
 
     .step-num {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 10px;
       color: var(--dim);
       letter-spacing: 0.14em;
@@ -437,7 +367,7 @@
     }
 
     .step-desc {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 10px;
       color: var(--dim);
       line-height: 1.7;
@@ -454,7 +384,7 @@
     @media (max-width: 620px) {
       .concept-body { grid-template-columns: 1fr; }
       #controls { grid-template-columns: 1fr 1fr; }
-      #controls #fs-btn { grid-column: 1 / 2; flex-direction: row; justify-content: center; }
+      #controls #expand-btn { grid-column: 1 / 2; flex-direction: row; justify-content: center; }
       #controls #surrender-btn { grid-column: 2 / 3; }
     }
 
@@ -472,7 +402,7 @@
       font-style: italic;
       font-weight: 300;
       line-height: 1.35;
-      color: var(--offwhite);
+      color: var(--paper);
       border-left: 2px solid var(--accent);
       padding-left: 28px;
     }
@@ -506,7 +436,7 @@
       display: block;
       font-size: 20px;
       font-weight: 400;
-      color: var(--offwhite);
+      color: var(--paper);
       margin-bottom: 6px;
     }
 
@@ -518,7 +448,7 @@
     }
 
     .footer-links a {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: 10.5px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -536,18 +466,19 @@
       #controls { gap: 8px; top: 12px; }
     }
 
-  /* ── SOUND TOGGLE ── */
+  /* ── SOUND TOGGLE — canonical .sound-btn ── */
   #sound-btn {
     position: fixed;
     bottom: 28px;
     right: 28px;
-    z-index: 999;
+    z-index: 1000;
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.15);
-    background: rgba(255,255,255,0.88);
+    border: 1px solid var(--rule-dark);
+    background: var(--audio-btn-bg-dark);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -555,9 +486,10 @@
     opacity: 0.4;
     transition: opacity 0.2s, border-color 0.2s;
     padding: 0;
+    color: var(--paper);
   }
-  #sound-btn:hover { opacity: 1; border-color: rgba(0,0,0,0.4); }
-  #sound-btn.on    { opacity: 1; border-color: #000; }
+  #sound-btn:hover { opacity: 1; border-color: var(--accent); }
+  #sound-btn.on    { opacity: 1; border-color: var(--accent); }
   #sound-btn svg   { width: 16px; height: 16px; display: block; }
   </style>
 </head>
@@ -565,11 +497,11 @@
 <body>
 
 <button id="sound-btn" title="Toggle sound" aria-label="Toggle sound">
-  <svg id="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <svg id="sound-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
     <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
   </svg>
-  <svg id="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+  <svg id="sound-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
     <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
     <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
     <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
@@ -598,7 +530,7 @@
 </div>
 
 <!-- ── MACHINE STAGE ───────────────────────────────────────────────── -->
-<div id="machine-stage">
+<div id="machine-stage" class="art-stage">
 
   <!-- Custom controls overlay -->
   <div id="controls">
@@ -619,35 +551,14 @@
     </div>
 
     <!-- Fullscreen button — hidden when already in fullscreen -->
-    <button id="fs-btn" title="Fullscreen" aria-label="Enter fullscreen">
-      <svg viewBox="0 0 24 24">
-        <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
-        <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-      </svg>
-      Fullscreen
-    </button>
+    <button id="expand-btn" class="expand-btn dark" title="Expand artwork" aria-label="Toggle fullscreen"><svg id="expand-icon-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg><svg id="expand-icon-collapse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg></button>
 
     <!-- Surrender button — always visible, in grid -->
     <button id="surrender-btn">Surrender</button>
   </div>
 
-  <!-- Collapse button — only visible in fullscreen, top-right corner -->
-  <button id="fs-close" aria-label="Exit fullscreen">
-    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.5">
-      <polyline points="4 14 4 20 10 20"/><polyline points="20 10 20 4 14 4"/>
-      <line x1="20" y1="4" x2="13" y2="11"/><line x1="4" y1="20" x2="11" y2="13"/>
-    </svg>
-    Collapse
-  </button>
 
   <!-- New Machine — only visible in fullscreen -->
-  <button id="fs-refresh" aria-label="New machine">
-    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="1.5">
-      <polyline points="23 4 23 10 17 10"/>
-      <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-    </svg>
-    New Machine
-  </button>
 
   <div id="zero-hint">
     <p>The circuit is open.</p>
@@ -728,13 +639,17 @@
     <p><strong>Mark Walhimer</strong>
       Museum planner, industrial designer, generative artist.<br />
       Author of <em>Museums 101</em> and <em>Designing Museum Experiences</em>.<br />
-      Generative works on Objkt.com. Prix Ars Electronica submission 2026.
+      Prix Ars Electronica submission 2026.
     </p>
   </div>
   <div class="footer-links">
+    <a href="https://www.mark-walhimer.com" target="_blank" rel="noopener">mark-walhimer.com</a>
+    <a href="https://www.instagram.com/markwalhimer" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://x.com/WalhimerArt" target="_blank" rel="noopener">X</a>
+    <a href="https://objkt.com/@markwalhimer" target="_blank" rel="noopener">Objkt</a>
+    <a href="https://www.fxhash.xyz/u/MarkWalhimer" target="_blank" rel="noopener">fxhash</a>
     <a href="https://medium.com/@markwalhimer" target="_blank" rel="noopener">Medium</a>
-    <a href="https://objkt.com" target="_blank" rel="noopener">Objkt</a>
-    <a href="https://markwalhimer.com" target="_blank" rel="noopener">markwalhimer.com</a>
+    <a href="https://museumplanning.com" target="_blank" rel="noopener">Museum Planning</a>
   </div>
 </footer>
 
@@ -744,9 +659,8 @@
      ══════════════════════════════════════════════════════════════════ -->
 <script>
 // ── Fullscreen toggle ──────────────────────────────────────────────
-const stage    = document.getElementById('machine-stage');
-const fsBtn    = document.getElementById('fs-btn');
-const fsClose      = document.getElementById('fs-close');
+const stage    = document.getElementById('machine-stage'); // also used as art-stage
+
 const fsRefresh    = document.getElementById('fs-refresh');
 const surrenderBtn = document.getElementById('surrender-btn');
 
@@ -771,28 +685,29 @@ fsRefresh.addEventListener('click', () => {
   window._newSeedRequested = true;
 });
 
-function enterFullscreen() {
-  stage.classList.add('is-fullscreen');
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => window.dispatchEvent(new Event('resize')), 30);
-  // Try native fullscreen API
-  if (stage.requestFullscreen) stage.requestFullscreen().catch(() => {});
-}
-
-function exitFullscreen() {
-  stage.classList.remove('is-fullscreen');
-  document.body.style.overflow = '';
-  setTimeout(() => window.dispatchEvent(new Event('resize')), 30);
-  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-}
-
-fsBtn.addEventListener('click', enterFullscreen);
-fsClose.addEventListener('click', exitFullscreen);
-
-// ESC key also works
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && stage.classList.contains('is-fullscreen')) exitFullscreen();
-});
+(function() {
+  var stage        = document.getElementById('machine-stage');
+  var btn          = document.getElementById('expand-btn');
+  var iconExpand   = document.getElementById('expand-icon-expand');
+  var iconCollapse = document.getElementById('expand-icon-collapse');
+  if (!stage || !btn) return;
+  function enter() {
+    stage.classList.add('is-fullscreen');
+    document.body.style.overflow = 'hidden';
+    btn.title = 'Collapse artwork';
+    iconExpand.style.display = 'none'; iconCollapse.style.display = '';
+    setTimeout(function() { window.dispatchEvent(new Event('resize')); }, 30);
+  }
+  function exit() {
+    stage.classList.remove('is-fullscreen');
+    document.body.style.overflow = '';
+    btn.title = 'Expand artwork';
+    iconExpand.style.display = ''; iconCollapse.style.display = 'none';
+    setTimeout(function() { window.dispatchEvent(new Event('resize')); }, 30);
+  }
+  btn.addEventListener('click', function() { stage.classList.contains('is-fullscreen') ? exit() : enter(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && stage.classList.contains('is-fullscreen')) exit(); });
+})();
 
 // Sync if native fullscreen exits via browser chrome
 document.addEventListener('fullscreenchange', () => {
@@ -1502,8 +1417,8 @@ function _runUpdateLoop() {
 
 // ── TOGGLE ───────────────────────────────────────────────────────────────────
 const _sBtn   = document.getElementById('sound-btn');
-const _iMute  = document.getElementById('icon-mute');
-const _iOn    = document.getElementById('icon-on');
+const _iconOff  = document.getElementById('sound-icon-off');
+const _iconOn    = document.getElementById('sound-icon-on');
 
 _sBtn.addEventListener('click', () => {
   _initAudio();
@@ -1514,13 +1429,13 @@ _sBtn.addEventListener('click', () => {
     _masterGain.gain.setValueAtTime(_masterGain.gain.value, _ctx.currentTime);
     _masterGain.gain.linearRampToValueAtTime(1, _ctx.currentTime + 1.8);
     _sBtn.classList.add('on');
-    _iMute.style.display = 'none'; _iOn.style.display = '';
+    _iconOff.style.display = 'none'; _iconOn.style.display = '';
   } else {
     _masterGain.gain.cancelScheduledValues(_ctx.currentTime);
     _masterGain.gain.setValueAtTime(_masterGain.gain.value, _ctx.currentTime);
     _masterGain.gain.linearRampToValueAtTime(0, _ctx.currentTime + 1.2);
     _sBtn.classList.remove('on');
-    _iMute.style.display = ''; _iOn.style.display = 'none';
+    _iconOff.style.display = ''; _iconOn.style.display = 'none';
   }
 });
 </script>
