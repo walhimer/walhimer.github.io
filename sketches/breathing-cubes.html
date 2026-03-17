@@ -49,11 +49,21 @@
   camera.position.set(0, 0, 12);
   camera.lookAt(0, 0, 7);
 
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    powerPreference: 'default',
-    failIfMajorPerformanceCaveat: false
-  });
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'default',
+      failIfMajorPerformanceCaveat: false
+    });
+  } catch (e) {
+    document.body.innerHTML = '<div style="padding:40px;font-family:monospace;font-size:14px;color:#333;max-width:480px;line-height:1.6">' +
+      '<strong>WebGL could not start.</strong><br><br>' +
+      'Crypto wallet extensions (MetaMask, etc.) often block WebGL. Try:<br>' +
+      '• Open in an <strong>Incognito/Private window</strong>, or<br>' +
+      '• Disable wallet extensions for this site</div>';
+    return;
+  }
   renderer.setSize(w, h);
   renderer.setClearColor(0xffffff, 1);
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
