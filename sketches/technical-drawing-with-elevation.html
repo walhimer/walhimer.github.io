@@ -128,9 +128,14 @@
     height: 16px;
     cursor: pointer;
   }
+
+  /* Embed mode: hide sidebar, show only artwork (Projects/series/piece pages) */
+  html.embed-mode #sidebar { display: none !important; }
+  html.embed-mode #canvas-container { padding: 0; }
 </style>
 </head>
 <body>
+<script>if(new URLSearchParams(location.search).get('embed')==='1')document.documentElement.classList.add('embed-mode');</script>
 
 <div id="sidebar">
   <div>
