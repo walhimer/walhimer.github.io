@@ -18,12 +18,14 @@ def process_surrender_machines(p5_js):
         content = f.read()
     # Remove p5 CDN (cdn.jsdelivr.net or cdnjs)
     content = re.sub(r'  <!-- p5\.js via CDN -->\s*\n  <script src="[^"]+"></script>\s*\n', '', content)
+    # Remove existing inline p5 (from prior run — wrong version)
+    content = re.sub(r'\s*<script>\s*\n/\*! p5\.js[\s\S]*?</script>\s*\n', '', content)
     # Remove Google Fonts
     content = re.sub(r'  <!-- Fonts -->\s*\n  <link rel="preconnect"[^>]+>\s*\n  <link rel="preconnect"[^>]+>\s*\n  <link href="[^"]+"[^>]+>\s*\n', '', content)
     # Replace font families
     content = content.replace("font-family: 'Cormorant Garamond', Georgia, serif;", "font-family: Georgia, 'Times New Roman', serif;")
     content = content.replace("font-family: 'IBM Plex Mono', monospace;", "font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;")
-    # Add inline p5 before </head>
+    # Add inline p5 1.11.11 before </head>
     content = content.replace('</head>', '<script>\n' + p5_js + '\n</script>\n</head>')
     with open(path, 'w') as f:
         f.write(content)
@@ -70,12 +72,32 @@ def process_bloom_release(tone_js):
     print('Updated bloom-release.html')
 
 def main():
+    import urllib.request
+
     print('Extracting p5.js from technical-drawing.html...')
     p5_js = extract_p5()
-    print(f'  p5.js: {len(p5_js):,} chars')
+    print(f'  p5.js (v1.7.0): {len(p5_js):,} chars')
+
+    # Surrender Machines requires p5.js 1.11.11 — v1.7.0 breaks the sketch
+    print('Loading p5.js 1.11.11 for surrender-machines...')
+    p5_1111_url = 'https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js'
+    p5_1111_path = '/tmp/p5-1.11.11.min.js'
+    p5_1111_js = None
+    if os.path.exists(p5_1111_path):
+        with open(p5_1111_path, 'r') as f:
+            p5_1111_js = f.read()
+    if not p5_1111_js:
+        try:
+            with urllib.request.urlopen(p5_1111_url) as r:
+                p5_1111_js = r.read().decode()
+        except Exception:
+            import subprocess
+            subprocess.run(['curl', '-sL', p5_1111_url, '-o', p5_1111_path], check=True)
+            with open(p5_1111_path, 'r') as f:
+                p5_1111_js = f.read()
+    print(f'  p5.js (v1.11.11): {len(p5_1111_js):,} chars')
 
     print('Loading Three.js...')
-    import urllib.request
     three_paths = [
         os.path.expanduser('~/.cursor/projects/var-folders-t9-xdfmvz4x5b54dysx97vw8-lw0000gn-T-5bed3e4d-352e-4fc9-8980-d4da51b65470/agent-tools/3801840e-895b-4a56-923c-1aed64255252.txt'),
     ]
@@ -107,7 +129,7 @@ def main():
             tone_js = r.read().decode()
     print(f'  Tone.js: {len(tone_js):,} chars')
 
-    process_surrender_machines(p5_js)
+    process_surrender_machines(p5_1111_js)
     process_traveling_landscape(p5_js)
     process_bloom_four_walls(three_js)
     process_bloom_release(tone_js)
