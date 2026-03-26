@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "pieces": [
+    {
+      "slug": "living-commons",
+      "title": "Living Commons",
+      "tier": "installation",
+      "path": "installations/living-commons.html",
+      "homepage": true,
+      "date": "2026-01-01",
+      "requiresNetwork": false,
+      "tech": ["p5.js", "inlined"]
+    },
+    {
+      "slug": "surrender-machines",
+      "title": "Surrender Machines",
+      "tier": "installation",
+      "path": "installations/surrender-machines.html",
+      "homepage": true,
+      "date": "2026-01-01",
+      "requiresNetwork": false,
+      "tech": ["p5.js", "Web Audio", "inlined"]
+    },
+    {
+      "slug": "bloom-four-walls",
+      "title": "Bloom / Four Walls",
+      "tier": "installation",
+      "path": "installations/bloom-four-walls.html",
+      "homepage": true,
+      "date": "2026-01-01",
+      "requiresNetwork": false,
+      "tech": ["Three.js", "WebGL", "inlined"]
+    },
+    {
+      "slug": "traveling-landscape",
+      "title": "Traveling Landscape",
+      "tier": "installation",
+      "path": "installations/traveling-landscape.html",
+      "homepage": true,
+      "date": "2026-01-01",
+      "requiresNetwork": false,
+      "tech": ["p5.js", "WEBGL", "inlined"]
+    },
+    {
+      "slug": "shared-ground",
+      "title": "Shared Ground",
+      "tier": "installation",
+      "path": "installations/shared-ground.html",
+      "homepage": true,
+      "date": "2026-01-01",
+      "requiresNetwork": false,
+      "tech": ["Canvas 2D", "Web Audio", "inlined"]
+    },
+    {
+      "slug": "technical-drawing",
+      "title": "Technical Drawing",
+      "tier": "installation",
+      "path": "installations/technical-drawing.html",
+      "homepage": true,
+      "date": "2026-01-01",
+      "requiresNetwork": false,
+      "tech": ["p5.js", "inlined"]
+    },
+    {
+      "slug": "bloom-release",
+      "title": "Bloom / Release",
+      "tier": "installation",
+      "path": "installations/bloom-release.html",
+      "homepage": false,
+      "date": "2026-01-01",
+      "requiresNetwork": false,
+      "tech": ["Web Audio", "inlined"]
+    }
+  ]
+}
