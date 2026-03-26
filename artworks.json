@@ -70,6 +70,18 @@
       "date": "2026-01-01",
       "requiresNetwork": false,
       "tech": ["Web Audio", "inlined"]
+    },
+    {
+      "slug": "spatial-orchestrator",
+      "title": "8-Pillar Spatial Orchestrator",
+      "tier": "project",
+      "series": "orchestrator",
+      "path": "sketches/orchestrator.html",
+      "piecePage": "piece/orchestrator-1/index.html",
+      "date": "2026-03-26",
+      "requiresNetwork": false,
+      "tech": ["Three.js", "WebGL", "inlined"],
+      "note": "PoC — promote to installations/ when complete"
     }
   ]
 }

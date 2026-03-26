@@ -86,7 +86,8 @@ Use one file at the **repository root**. Example (adjust fields as you like; kee
 
 - **`tier`:** `"project"` = current / projects area; `"installation"` = promoted, linked from homepage as appropriate.  
 - **`homepage`:** `true` if there is a card on `index.html` for this installation.  
-- **`requiresNetwork`:** `true` only for intentional API-backed pieces (e.g. Supabase).
+- **`requiresNetwork`:** `true` only for intentional API-backed pieces (e.g. Supabase).  
+- **`piecePage`:** (optional, project tier) path to the full-view wrapper under `piece/`, e.g. `piece/orchestrator-1/index.html`.
 
 The **Projects** page may be hand-maintained in HTML at first; the goal is for **`artworks.json`** to drive or mirror what is public so automation (and future generators) stay aligned.
 
