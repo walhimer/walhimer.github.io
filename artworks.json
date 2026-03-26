@@ -82,6 +82,18 @@
       "requiresNetwork": false,
       "tech": ["Three.js", "WebGL", "inlined"],
       "note": "PoC — promote to installations/ when complete"
+    },
+    {
+      "slug": "moon-dish",
+      "title": "Moon Dish",
+      "tier": "project",
+      "series": "moon-dish",
+      "path": "sketches/moon-dish.html",
+      "piecePage": "piece/moon-dish-1/index.html",
+      "date": "2026-03-26",
+      "requiresNetwork": false,
+      "tech": ["Three.js", "r128", "WebGL", "inlined"],
+      "note": "From moon_dish_v5 — self-contained (Three inlined); source had cdnjs loader removed"
     }
   ]
 }
