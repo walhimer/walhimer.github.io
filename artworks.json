@@ -7,7 +7,7 @@
       "tier": "installation",
       "path": "installations/living-commons.html",
       "homepage": true,
-      "date": "2026-01-15",
+      "date": "2026-03-16",
       "requiresNetwork": false,
       "tech": [
         "p5.js",
@@ -20,7 +20,7 @@
       "tier": "installation",
       "path": "installations/surrender-machines.html",
       "homepage": true,
-      "date": "2025-11-01",
+      "date": "2026-03-15",
       "requiresNetwork": false,
       "tech": [
         "p5.js",
@@ -34,7 +34,7 @@
       "tier": "installation",
       "path": "installations/bloom-four-walls.html",
       "homepage": true,
-      "date": "2026-02-01",
+      "date": "2026-03-15",
       "requiresNetwork": false,
       "tech": [
         "Three.js",
@@ -48,7 +48,7 @@
       "tier": "installation",
       "path": "installations/traveling-landscape.html",
       "homepage": true,
-      "date": "2026-01-01",
+      "date": "2026-03-15",
       "requiresNetwork": false,
       "tech": [
         "p5.js",
@@ -62,7 +62,7 @@
       "tier": "installation",
       "path": "installations/shared-ground.html",
       "homepage": true,
-      "date": "2026-03-01",
+      "date": "2026-03-15",
       "requiresNetwork": false,
       "tech": [
         "Canvas 2D",
@@ -76,7 +76,7 @@
       "tier": "installation",
       "path": "installations/technical-drawing.html",
       "homepage": true,
-      "date": "2025-12-01",
+      "date": "2026-03-16",
       "requiresNetwork": false,
       "tech": [
         "p5.js",
@@ -89,7 +89,7 @@
       "tier": "installation",
       "path": "installations/bloom-release.html",
       "homepage": false,
-      "date": "2026-02-15",
+      "date": "2026-03-15",
       "requiresNetwork": false,
       "tech": [
         "Web Audio",
@@ -103,7 +103,7 @@
       "series": "orchestrator",
       "path": "sketches/orchestrator.html",
       "piecePage": "piece/orchestrator-1/index.html",
-      "date": "2026-03-26",
+      "date": "2026-03-15",
       "requiresNetwork": false,
       "tech": [
         "Three.js",
@@ -119,7 +119,7 @@
       "series": "moon-dish",
       "path": "sketches/moon-dish.html",
       "piecePage": "piece/moon-dish-1/index.html",
-      "date": "2026-03-26",
+      "date": "2026-03-15",
       "requiresNetwork": false,
       "tech": [
         "Three.js",
