@@ -90,6 +90,39 @@
     nav .nav-links a:hover { opacity: 1; color: var(--ink); }
     nav .nav-links a.active { color: var(--accent); opacity: 1; }
 
+    .nav-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      padding: 8px 10px;
+      background: transparent;
+      border: 1px solid var(--rule-light);
+      color: var(--mid);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-toggle svg { width: 20px; height: 14px; display: block; }
+    .nav-toggle .line { stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; fill: none; }
+    @media (max-width: 800px) {
+      nav { flex-wrap: wrap; align-items: center; }
+      .nav-toggle { display: flex; }
+      nav .nav-logo { flex: 1; min-width: 0; }
+      nav .nav-links {
+        display: none;
+        flex-basis: 100%;
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding: 12px 0 0;
+        border-top: 1px solid var(--rule-light);
+      }
+      nav.nav-open .nav-links { display: flex; }
+      nav .nav-links li { border-bottom: 1px solid rgba(0,0,0,0.08); }
+      nav .nav-links li:last-child { border-bottom: none; }
+      nav .nav-links a { display: block; padding: 12px 0; }
+    }
+
     /* ── HERO ── */
     .hero {
       padding: 140px 52px 80px;
@@ -584,7 +617,10 @@
 
   <nav>
     <a class="nav-logo" href="https://www.mark-walhimer.com">Mark Walhimer</a>
-    <ul class="nav-links">
+    <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav-links">
+      <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path class="line" d="M1 1h18M1 7h18M1 13h18"/></svg>
+    </button>
+    <ul class="nav-links" id="site-nav-links">
       <li><a href="https://www.mark-walhimer.com">Works</a></li>
       <li><a href="https://objkt.com/@markwalhimer" target="_blank" rel="noopener">Objkt</a></li>
       <li><a href="https://www.fxhash.xyz/u/MarkWalhimer" target="_blank" rel="noopener">fxhash</a></li>
@@ -1083,6 +1119,27 @@ requestAnimationFrame(loop);
   }
   btn.addEventListener('click', function() { stage.classList.contains('is-fullscreen') ? exit() : enter(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && stage.classList.contains('is-fullscreen')) exit(); });
+})();
+</script>
+<script>
+(function () {
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var btn = nav.querySelector('.nav-toggle');
+  var panel = document.getElementById('site-nav-links');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', function () {
+    var open = nav.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  panel.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      nav.classList.remove('nav-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open menu');
+    });
+  });
 })();
 </script>
 

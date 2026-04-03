@@ -26,11 +26,28 @@ nav{border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-item
 .cv-item-sub{font-size:11px;color:var(--dim)}
 a.underline{text-decoration:underline}
 footer{padding:20px 40px;border-top:1px solid var(--border);font-size:10px;color:var(--border);letter-spacing:.08em;background:var(--bg)}</style>
+<style>
+.nav-toggle{display:none;align-items:center;justify-content:center;margin-left:auto;padding:10px 12px;background:transparent;border:1px solid var(--border);color:var(--accent);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.nav-toggle svg{width:20px;height:14px;display:block}
+.nav-toggle .line{stroke:currentColor;stroke-width:1.5;stroke-linecap:round;fill:none}
+@media (max-width:800px){
+nav{flex-wrap:wrap;align-items:center;padding:0 16px}
+.nav-toggle{display:flex}
+.nav-name{padding:18px 16px 18px 0;border-right:none;margin-right:0;flex:1;min-width:0}
+.nav-links{display:none;flex-basis:100%;flex-direction:column;align-items:stretch;border-top:1px solid var(--border)}
+nav.nav-open .nav-links{display:flex}
+.nav-link{padding:16px 0;border-bottom:1px solid var(--border);border-left:3px solid transparent;white-space:normal}
+.nav-link.active{border-bottom:1px solid var(--border);border-left-color:var(--accent);margin-bottom:0}
+}
+</style>
 </head>
 <body>
 <nav>
   <a class="nav-name" href="../index.html" title="Home">Mark Walhimer</a>
-  <div class="nav-links">
+  <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav-links">
+    <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path class="line" d="M1 1h18M1 7h18M1 13h18"/></svg>
+  </button>
+  <div class="nav-links" id="site-nav-links">
     <a class="nav-link" href="../index.html">Installations</a>
     <a class="nav-link" href="../sketches/index.html">Sketches</a>
     <a class="nav-link" href="/audio/">Soundscapes</a>
@@ -128,5 +145,26 @@ footer{padding:20px 40px;border-top:1px solid var(--border);font-size:10px;color
 
 </div>
 <footer>Mark Walhimer — mark@walhimer.com</footer>
+<script>
+(function () {
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var btn = nav.querySelector('.nav-toggle');
+  var panel = document.getElementById('site-nav-links');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', function () {
+    var open = nav.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  panel.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      nav.classList.remove('nav-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open menu');
+    });
+  });
+})();
+</script>
 </body>
 </html>
