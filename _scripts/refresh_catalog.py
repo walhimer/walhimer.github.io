@@ -51,7 +51,7 @@ def load_or_bootstrap_catalog(from_artworks: bool) -> dict:
         return {
             "version": 2,
             "updated": date.today().isoformat(),
-            "profile": "Walhimer Studio unified catalog. Single manifest: installations, sketches, soundscapes metadata, recovery artifacts.",
+            "profile": "Walhimer Studio unified catalog. Canonical rows are works[].",
             "canonical_base": CANONICAL,
             "installations": installations,
             "sketches_emit_order": sketch_series,
@@ -69,6 +69,7 @@ def load_or_bootstrap_catalog(from_artworks: bool) -> dict:
 
 def refresh_catalog(from_artworks: bool = False) -> None:
     catalog = load_or_bootstrap_catalog(from_artworks)
+    catalog.pop("soundscapes", None)
 
     if not from_artworks and INDEX.exists():
         sketch_series = parse_series_from_index(INDEX.read_text(encoding="utf-8"))
@@ -99,15 +100,15 @@ def refresh_catalog(from_artworks: bool = False) -> None:
     assign_catalog_numbers(catalog["works"])
 
     attach_artifacts_to_works(ROOT, catalog["works"])
-    catalog["soundscapes"] = soundscapes_summary(
-        catalog["works"], catalog.get("canonical_base", CANONICAL)
-    )
+
+    # Soundscape rows are not persisted; derive from works (site.surfaces / site.soundscape).
+    ss = soundscapes_summary(catalog["works"], catalog.get("canonical_base", CANONICAL))
 
     catalog["updated"] = date.today().isoformat()
     catalog["version"] = max(int(catalog.get("version") or 1), 2)
     catalog["profile"] = (
-        "Walhimer Studio unified catalog. Single manifest: installations, sketches, "
-        "soundscapes summary, per-work recovery artifacts (repo paths + external URLs)."
+        "Walhimer Studio unified catalog. Canonical rows are works[]. "
+        "installations and sketches_emit_order are editing views; soundscape list is derived from works, not stored."
     )
 
     # Stable key order for humans (works[] is large - keep it last).
@@ -118,7 +119,6 @@ def refresh_catalog(from_artworks: bool = False) -> None:
         "canonical_base": catalog.get("canonical_base", CANONICAL),
         "installations": catalog["installations"],
         "sketches_emit_order": catalog["sketches_emit_order"],
-        "soundscapes": catalog["soundscapes"],
         "works": catalog["works"],
     }
 
@@ -131,8 +131,8 @@ def refresh_catalog(from_artworks: bool = False) -> None:
         f"Wrote {CATALOG.relative_to(ROOT)}: "
         f"{len(catalog['installations'])} installations, "
         f"{len(sketch_series)} sketch series, "
-        f"{len(catalog['works'])} works, "
-        f"{len(catalog['soundscapes']['entries'])} soundscape entries"
+        f"{len(catalog['works'])} works "
+        f"(derived soundscape rows: {len(ss['entries'])}, not stored in JSON)"
     )
 
 

@@ -16,7 +16,7 @@ There are **three** related ideas:
 
 ### 2. `data/catalog.json` (single manifest)
 
-- **Role:** The **only** JSON manifest: installations (homepage tier), sketch series order (from the index), one **`works`** list with Dublin Core + Linked Art, a **soundscapes** summary, and per-work **`artifacts`** (repo paths to HTML and local JS/images for recovery).
+- **Role:** The **only** JSON manifest: canonical **`works[]`** (Dublin Core + Linked Art + **`artifacts`**). **`installations`** and sketch series order are **views** kept in sync by refresh; soundscape pieces are rows in **`works`** (not a duplicate list).
 - **Sketches list:** Refreshed from `sketches/index.html` by the same script; do **not** hand-edit long file lists in JSONùedit **`SERIES`** in the index instead.
 - **Details:** See **[unified-catalog.md](./unified-catalog.md)**.
 

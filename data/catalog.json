@@ -1,7 +1,7 @@
 {
   "version": 2,
   "updated": "2026-04-06",
-  "profile": "Walhimer Studio unified catalog. Single manifest: installations, sketches, soundscapes summary, per-work recovery artifacts (repo paths + external URLs).",
+  "profile": "Walhimer Studio unified catalog. Canonical rows are works[]. installations and sketches_emit_order are editing views; soundscape list is derived from works, not stored.",
   "canonical_base": "https://mark-walhimer.com",
   "installations": [
     {
@@ -388,32 +388,6 @@
       ]
     }
   ],
-  "soundscapes": {
-    "note": "Sketches tagged as soundscapes (Audioscape series). Add site.soundscape.public_url when mirrored on /audio/.",
-    "entries": [
-      {
-        "work_id": "urn:walhimer:sketch:Audioscape:audioscape001",
-        "catalog_number": "WS-000121",
-        "title": "audioscape001",
-        "sketch_file": "audioscape001.html",
-        "url": "https://mark-walhimer.com/sketches/audioscape001.html"
-      },
-      {
-        "work_id": "urn:walhimer:sketch:Audioscape:pentatonic-piano",
-        "catalog_number": "WS-000122",
-        "title": "pentatonic-piano",
-        "sketch_file": "pentatonic-piano.html",
-        "url": "https://mark-walhimer.com/sketches/pentatonic-piano.html"
-      },
-      {
-        "work_id": "urn:walhimer:sketch:Audioscape:one_tube",
-        "catalog_number": "WS-000123",
-        "title": "one tube",
-        "sketch_file": "one_tube.html",
-        "url": "https://mark-walhimer.com/sketches/one_tube.html"
-      }
-    ]
-  },
   "works": [
     {
       "id": "urn:walhimer:work:living-commons",

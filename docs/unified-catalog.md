@@ -1,11 +1,13 @@
 # Unified catalog (`data/catalog.json`)
 
-There is **one** machine-readable manifest for the studio archive. It holds:
+There is **one** persisted dataset: **`works[]`** ó each row is a work with **Dublin Core**, **Linked Art**, **`site`** (surfaces such as installation / sketch / soundscape), and **`artifacts`** for recovery.
 
-- **`installations`** ù homepage tier (edit this list when promoting work).
-- **`sketches_emit_order`** ù series + file order matching **`SERIES`** in `sketches/index.html`.
-- **`works`** ù one record per logical work: **Dublin Core**, minimal **Linked Art** JSON-LD, **`site`** (installation / sketch / soundscape surfaces), and **`artifacts`** for recovery.
-- **`soundscapes`** ù derived index of works in the **Audioscape** series (and installation rows that share those sketches). Optional **`site.soundscape.public_url`** can point at a separate `/audio/` deploy later.
+**Editing views** (same data, easier to maintain than scanning every row):
+
+- **`installations`** ó homepage tier; mirrors installation rows in **`works`**; refresh keeps them aligned.
+- **`sketches_emit_order`** ó series + file order matching **`SERIES`** in `sketches/index.html`; keeps the manifest aligned with the sketch index.
+
+**Soundscapes** are **not** a separate block in JSON. Filter **`works`** where **`soundscape`** appears in **`site.surfaces`** (or **`site.soundscape`** is set). The refresh script logs how many such rows exist; optional **`site.soundscape.public_url`** can point at **`/audio/`** when you mirror pieces there.
 
 **`artworks.json` has been removed**; do not reintroduce a second manifest.
 
@@ -55,8 +57,8 @@ Then delete **`artworks.json`** and commit.
 | `creator` | Creator string |
 | `date` | Date or range |
 | `description` | Short description |
-| `identifier` | Stable **URN** (same as work `id`) ó does not encode series |
-| `catalog_number` | Accession-style code **`WS-000001`** Ö **`WS-NNNNNN`** ó series-independent; stable across refresh once assigned; new works get the next free number |
+| `identifier` | Stable **URN** (same as work `id`) ù does not encode series |
+| `catalog_number` | Accession-style code **`WS-000001`** ù **`WS-NNNNNN`** ù series-independent; stable across refresh once assigned; new works get the next free number |
 | `type` | e.g. `InteractiveResource` |
 | `format` | e.g. `text/html` |
 | `language` | e.g. `en` |
