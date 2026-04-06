@@ -87,6 +87,7 @@
       transition: color var(--dur-fast);
     }
     .nav-links a:hover { color: rgba(239,233,223,0.8); }
+    .nav-links a.active { color: var(--commons-cyan); }
 
     .nav-toggle {
       display: none;
@@ -299,14 +300,15 @@
 <body>
 
   <nav>
-    <a class="nav-logo" href="https://www.mark-walhimer.com">Mark Walhimer</a>
+    <a class="nav-logo" href="../index.html" title="Home">Mark Walhimer</a>
     <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav-links">
       <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path class="line" d="M1 1h18M1 7h18M1 13h18"/></svg>
     </button>
     <ul class="nav-links" id="site-nav-links">
-      <li><a href="https://www.mark-walhimer.com" target="_blank" rel="noopener">Works</a></li>
-      <li><a href="https://objkt.com/@markwalhimer" target="_blank" rel="noopener">Objkt</a></li>
-      <li><a href="https://museumplanning.com" target="_blank" rel="noopener">Museum Planning</a></li>
+      <li><a href="../index.html">Recent</a></li>
+      <li><a class="active" href="index.html">Catalog</a></li>
+      <li><a href="../bio/index.html">Bio / CV</a></li>
+      <li><a href="../contact/index.html">Contact</a></li>
     </ul>
   </nav>
 

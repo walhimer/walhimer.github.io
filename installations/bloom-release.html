@@ -63,6 +63,7 @@
     }
 
     nav .nav-links a:hover { color: var(--black); }
+    nav .nav-links a.active { color: var(--black); }
 
     .nav-toggle {
       display: none;
@@ -464,14 +465,15 @@
 <body>
 
   <nav>
-    <a class="logo" href="https://walhimer.github.io/art/">Mark Walhimer</a>
+    <a class="logo" href="../index.html" title="Home">Mark Walhimer</a>
     <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav-links">
       <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path class="line" d="M1 1h18M1 7h18M1 13h18"/></svg>
     </button>
     <ul class="nav-links" id="site-nav-links">
-      <li><a href="https://walhimer.github.io/art/">Works</a></li>
-      <li><a href="#">Live Work</a></li>
-      <li><a href="https://www.mark-walhimer.com/">Studio</a></li>
+      <li><a class="active" href="../index.html">Recent</a></li>
+      <li><a href="../sketches/index.html">Catalog</a></li>
+      <li><a href="../bio/index.html">Bio / CV</a></li>
+      <li><a href="../contact/index.html">Contact</a></li>
     </ul>
   </nav>
 

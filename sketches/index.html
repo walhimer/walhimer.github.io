@@ -81,6 +81,8 @@
     .ctrl-btn { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; background: transparent; border: 1px solid var(--border); color: var(--dim); padding: 5px 13px; cursor: pointer; transition: all .15s; }
     .ctrl-btn:hover { border-color: var(--dim); color: var(--off); }
     .ctrl-btn.active { border-color: var(--accent); color: var(--accent); }
+    .ctrl-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .ctrl-group + .ctrl-group { padding-left: 16px; margin-left: 8px; border-left: 1px solid var(--rule); }
     #search { font-family: 'IBM Plex Mono', monospace; font-size: 11px; background: transparent; border: 1px solid var(--border); color: var(--off); padding: 5px 12px; outline: none; width: 200px; transition: border-color .15s; margin-left: auto; }
     #search::placeholder { color: var(--dim); }
     #search:focus { border-color: var(--accent); }
@@ -153,12 +155,19 @@
 </header>
 
 <div class="controls">
-  <span class="ctrl-label">Show</span>
-  <button class="ctrl-btn active" onclick="setFilter('all',this)">All</button>
-  <button class="ctrl-btn" onclick="setFilter('works',this)">Works only</button>
-  <button class="ctrl-btn" onclick="setFilter('versions',this)">Versions</button>
-  <button class="ctrl-btn" onclick="expandAll()">Expand all</button>
-  <button class="ctrl-btn" onclick="collapseAll()">Collapse all</button>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Show</span>
+    <button type="button" class="ctrl-btn active" onclick="setFilter('all',this)">All</button>
+    <button type="button" class="ctrl-btn" onclick="setFilter('works',this)">Works only</button>
+    <button type="button" class="ctrl-btn" onclick="setFilter('versions',this)">Versions</button>
+    <button type="button" class="ctrl-btn" onclick="expandAll()">Expand all</button>
+    <button type="button" class="ctrl-btn" onclick="collapseAll()">Collapse all</button>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Order</span>
+    <button type="button" class="ctrl-btn sort-btn" onclick="setSortOrder('asc',this)">Oldest first</button>
+    <button type="button" class="ctrl-btn sort-btn active" onclick="setSortOrder('desc',this)">Newest first</button>
+  </div>
   <input id="search" type="text" placeholder="Search…" oninput="doSearch(this.value)">
 </div>
 
@@ -503,6 +512,7 @@ const SERIES = [
 
 let currentFilter = 'all';
 let currentSearch = '';
+let sortOrder = 'desc';
 
 function build() {
   const container = document.getElementById('series-list');
@@ -512,7 +522,11 @@ function build() {
   let visibleFiles = 0;
   let visibleSeries = 0;
 
-  SERIES.forEach((s, si) => {
+  const orderedPairs = sortOrder === 'desc'
+    ? [...SERIES.entries()].map(([si, s]) => ({ si, s })).reverse()
+    : [...SERIES.entries()].map(([si, s]) => ({ si, s }));
+
+  orderedPairs.forEach(({ s, si }) => {
     const block = document.createElement('div');
     block.className = 'series-block';
     block.id = 'series-' + si;
@@ -583,6 +597,13 @@ function setFilter(f, btn) {
   document.querySelectorAll('.ctrl-btn').forEach(b => {
     if (['All','Works only','Versions'].some(t => b.textContent === t)) b.classList.remove('active');
   });
+  btn.classList.add('active');
+  build();
+}
+
+function setSortOrder(order, btn) {
+  sortOrder = order;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   build();
 }
