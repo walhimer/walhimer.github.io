@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mark Walhimer — Selected Works</title>
-  <meta name="description" content="Selected works by Mark Walhimer, generative artist and museum designer. Interactive browser-based artworks exploring collective memory, ecological systems, and architectural notation." />
+  <meta name="description" content="Selected works by Mark Walhimer. Code-based generative artworks exploring machine relationships, collective systems, and emotional landscapes." />
   <link rel="canonical" href="https://mark-walhimer.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Mark Walhimer — Selected Works" />
-  <meta property="og:description" content="Selected works by Mark Walhimer, generative artist and museum designer. Interactive browser-based artworks exploring collective memory, ecological systems, and architectural notation." />
+  <meta property="og:description" content="Selected works by Mark Walhimer. Code-based generative artworks exploring machine relationships, collective systems, and emotional landscapes." />
   <meta property="og:url" content="https://mark-walhimer.com/" />
   <meta property="og:image" content="https://mark-walhimer.com/installations/technical-drawing-preview.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mark Walhimer — Selected Works" />
-  <meta name="twitter:description" content="Selected works by Mark Walhimer, generative artist and museum designer. Interactive browser-based artworks exploring collective memory, ecological systems, and architectural notation." />
+  <meta name="twitter:description" content="Selected works by Mark Walhimer. Code-based generative artworks exploring machine relationships, collective systems, and emotional landscapes." />
   <meta name="twitter:image" content="https://mark-walhimer.com/installations/technical-drawing-preview.png" />
   <script type="application/ld+json">
   {
@@ -419,7 +419,7 @@
 <header>
   <h1>Selected <em>Works</em></h1>
   <div class="header-body">
-    <p class="lede">Generative works exploring <strong>collective memory, ecological systems, and architectural notation</strong> — each produced live in the browser, each unique at the moment of its generation.</p>
+    <p class="lede">Code-based generative artworks exploring <strong>machine relationships, collective systems, and emotional landscapes</strong>.</p>
   </div>
 </header>
 
@@ -541,7 +541,7 @@
 
 <footer>
   <span>Mark Walhimer &nbsp;·&nbsp; 2026</span>
-  <span style="opacity:0.5;font-size:10px;">Archive updated 2026-03-27 · All works self-contained</span>
+  <span id="archive-updated" style="opacity:0.5;font-size:10px;">Archive updated · All works self-contained</span>
 </footer>
 
 <script>
@@ -563,6 +563,21 @@
       btn.setAttribute('aria-label', 'Open menu');
     });
   });
+})();
+</script>
+<script>
+(function () {
+  var el = document.getElementById('archive-updated');
+  if (!el) return;
+  fetch('data/catalog.json')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data || !data.updated) return;
+      el.textContent = 'Archive updated ' + data.updated + ' · All works self-contained';
+    })
+    .catch(function () {
+      /* Keep fallback text if catalog fetch fails. */
+    });
 })();
 </script>
 </body>
