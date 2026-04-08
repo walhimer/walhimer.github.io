@@ -2614,49 +2614,6 @@
       }
     },
     {
-      "id": "urn:walhimer:sketch:Walking Figure:bvh_viewer_07_01",
-      "dublin_core": {
-        "title": "bvh viewer 07 01",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Walking Figure:bvh_viewer_07_01",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000061"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Walking Figure-bvh_viewer_07_01",
-        "type": "HumanMadeObject",
-        "_label": "bvh viewer 07 01",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Walking Figure",
-          "file": "bvh_viewer_07_01.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/bvh_viewer_07_01.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
       "id": "urn:walhimer:sketch:Walking Figure:infinite-walk",
       "dublin_core": {
         "title": "infinite-walk",
@@ -8268,51 +8225,6 @@
       "artifacts": {
         "repo_paths": [
           "sketches/technical-drawing-generator-english.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Technical:technical-drawing-with-cubes",
-      "dublin_core": {
-        "title": "technical-drawing-with-cubes",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Technical Drawing:technical-drawing-with-cubes",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000023"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Technical Drawing-technical-drawing-with-cubes",
-        "type": "HumanMadeObject",
-        "_label": "technical-drawing-with-cubes",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Technical",
-          "file": "technical-drawing-with-cubes.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/technical-drawing-with-cubes.html"
         ],
         "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
