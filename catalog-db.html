@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalog DB Viewer ù Mark Walhimer</title>
+  <meta name="description" content="Lightweight database-style viewer for Mark Walhimer catalog.json with search, filters, and sorting.">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --panel: #121212;
+      --line: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #9a9a9a;
+      --accent: #c8a882;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    .sub {
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    input, select {
+      width: 100%;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      font-size: 0.93rem;
+    }
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      user-select: none;
+    }
+    tr:last-child td { border-bottom: none; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .pill {
+      border: 1px solid var(--line);
+      padding: 2px 7px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      display: inline-block;
+      margin-right: 4px;
+    }
+    @media (max-width: 980px) {
+      .controls { grid-template-columns: 1fr 1fr; }
+      th:nth-child(5), td:nth-child(5) { display: none; }
+    }
+    @media (max-width: 700px) {
+      .controls { grid-template-columns: 1fr; }
+      th:nth-child(4), td:nth-child(4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Catalog DB Viewer</h1>
+    <div class="sub">Reads <code>data/catalog.json</code> and gives basic database-style browsing.</div>
+
+    <div class="controls">
+      <input id="q" type="search" placeholder="Search title, id, description, or filename">
+      <select id="seriesFilter"><option value="">All series</option></select>
+      <select id="typeFilter"><option value="">All DC types</option></select>
+      <select id="sortBy">
+        <option value="date_desc">Date: newest first</option>
+        <option value="date_asc">Date: oldest first</option>
+        <option value="title_asc">Title: A-Z</option>
+        <option value="title_desc">Title: Z-A</option>
+      </select>
+    </div>
+
+    <div class="meta" id="meta">Loading catalogù</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="title">Title</th>
+          <th data-sort="date">Date</th>
+          <th>Series</th>
+          <th>Links</th>
+          <th>ID</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const qEl = document.getElementById("q");
+    const seriesEl = document.getElementById("seriesFilter");
+    const typeEl = document.getElementById("typeFilter");
+    const sortEl = document.getElementById("sortBy");
+    const rowsEl = document.getElementById("rows");
+    const metaEl = document.getElementById("meta");
+
+    let allWorks = [];
+    let filtered = [];
+
+    function safe(v) { return (v || "").toString(); }
+    function lower(v) { return safe(v).toLowerCase(); }
+
+    function workSeries(w) {
+      return safe(w.site && w.site.sketch && w.site.sketch.series);
+    }
+
+    function workType(w) {
+      return safe(w.dublin_core && w.dublin_core.type);
+    }
+
+    function workTitle(w) {
+      return safe(w.dublin_core && w.dublin_core.title) || safe(w.id);
+    }
+
+    function workDate(w) {
+      return safe(w.dublin_core && w.dublin_core.date);
+    }
+
+    function installationPath(w) {
+      return safe(w.site && w.site.installation && w.site.installation.path);
+    }
+
+    function linkedArtPath(w) {
+      return safe(w.linked_art && w.linked_art.id);
+    }
+
+    function sketchPath(w) {
+      const file = safe(w.site && w.site.sketch && w.site.sketch.file);
+      return file ? "sketches/" + file : "";
+    }
+
+    function fillSelect(select, values, label) {
+      const unique = [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      select.innerHTML = `<option value="">All ${label}</option>`;
+      for (const v of unique) {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        select.appendChild(opt);
+      }
+    }
+
+    function applyFilters() {
+      const q = lower(qEl.value.trim());
+      const s = seriesEl.value;
+      const t = typeEl.value;
+
+      filtered = allWorks.filter((w) => {
+        const haystack = [
+          workTitle(w),
+          w.id,
+          w.dublin_core && w.dublin_core.description,
+          installationPath(w),
+          sketchPath(w)
+        ].map(lower).join(" ");
+
+        if (q && !haystack.includes(q)) return false;
+        if (s && workSeries(w) !== s) return false;
+        if (t && workType(w) !== t) return false;
+        return true;
+      });
+
+      const mode = sortEl.value;
+      filtered.sort((a, b) => {
+        if (mode.startsWith("date")) {
+          const ad = workDate(a);
+          const bd = workDate(b);
+          if (mode === "date_asc") return ad.localeCompare(bd);
+          return bd.localeCompare(ad);
+        }
+        const at = workTitle(a);
+        const bt = workTitle(b);
+        if (mode === "title_desc") return bt.localeCompare(at);
+        return at.localeCompare(bt);
+      });
+
+      render();
+    }
+
+    function render() {
+      rowsEl.innerHTML = "";
+      for (const w of filtered) {
+        const tr = document.createElement("tr");
+        const title = workTitle(w);
+        const date = workDate(w) || "ù";
+        const series = workSeries(w) || "ù";
+        const id = safe(w.id);
+
+        const install = installationPath(w);
+        const sketch = sketchPath(w);
+        const linkedArt = linkedArtPath(w);
+        const links = [];
+        if (install) links.push(`<a href="${install}" target="_blank" rel="noopener">Installation</a>`);
+        if (sketch) links.push(`<a href="${sketch}" target="_blank" rel="noopener">Sketch</a>`);
+        if (linkedArt) links.push(`<a href="${linkedArt}" target="_blank" rel="noopener">Linked Art</a>`);
+
+        tr.innerHTML = `
+          <td>
+            <div>${title}</div>
+            <div style="margin-top:4px;">
+              <span class="pill">${workType(w) || "Artwork"}</span>
+            </div>
+          </td>
+          <td>${date}</td>
+          <td>${series}</td>
+          <td>${links.join(" ù ") || "ù"}</td>
+          <td><code>${id}</code></td>
+        `;
+        rowsEl.appendChild(tr);
+      }
+
+      metaEl.textContent = `Showing ${filtered.length} of ${allWorks.length} works`;
+    }
+
+    async function init() {
+      try {
+        const res = await fetch("data/catalog.json");
+        if (!res.ok) throw new Error("Failed to load data/catalog.json");
+        const data = await res.json();
+        allWorks = Array.isArray(data.works) ? data.works : [];
+
+        fillSelect(seriesEl, allWorks.map(workSeries), "series");
+        fillSelect(typeEl, allWorks.map(workType), "types");
+
+        qEl.addEventListener("input", applyFilters);
+        seriesEl.addEventListener("change", applyFilters);
+        typeEl.addEventListener("change", applyFilters);
+        sortEl.addEventListener("change", applyFilters);
+
+        applyFilters();
+      } catch (err) {
+        metaEl.textContent = "Error loading catalog: " + err.message;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
