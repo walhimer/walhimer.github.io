@@ -405,7 +405,7 @@
       "site": {
         "installation": {
           "path": "installations/technical-drawing-with-elevation.html",
-          "homepage": false
+          "homepage": true
         },
         "tech": [],
         "sketch": {
@@ -428,10 +428,15 @@
         },
         "installation_entry": {
           "repo_paths": [
+            "installations/technical-drawing-with-elevation-sketch.html",
             "installations/technical-drawing-with-elevation.html"
           ],
           "external_urls": [
-            "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+            "https://mark-walhimer.com",
+            "https://mark-walhimer.com/installations/technical-drawing-with-elevation.html",
+            "https://medium.com/@markwalhimer",
+            "https://objkt.com",
+            "https://objkt.com/tokens/KT19bhwyDP27eWDCNpFcUETPeZdJ7gTU4Dnh/7"
           ]
         }
       }

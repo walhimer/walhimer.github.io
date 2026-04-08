@@ -123,6 +123,9 @@ def _skip_installation_html(rel_posix: str) -> bool:
     base = Path(rel_posix).name
     if base.endswith("-artwork.html"):
         return True
+    # Companion sketch HTML when a project landing page is the canonical installation URL.
+    if base.endswith("-sketch.html"):
+        return True
     return False
 
 
@@ -320,6 +323,11 @@ def merge_work_metadata(prior: dict | None, new: dict) -> dict:
         ns["tech"] = list(ps["tech"])
     if ps.get("soundscape"):
         ns["soundscape"] = {**ns.get("soundscape", {}), **ps["soundscape"]}
+    # Preserve installation homepage flag across refreshes (build_works defaults false).
+    pi = ps.get("installation")
+    if isinstance(pi, dict) and pi.get("homepage"):
+        ni = ns.setdefault("installation", {})
+        ni["homepage"] = True
     out["site"] = ns
     return out
 
