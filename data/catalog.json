@@ -2013,135 +2013,6 @@
       }
     },
     {
-      "id": "urn:walhimer:sketch:Spatial Orchestrator:orchestrator",
-      "dublin_core": {
-        "title": "orchestrator",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:orchestrator",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000051"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-orchestrator",
-        "type": "HumanMadeObject",
-        "_label": "orchestrator",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Spatial Orchestrator",
-          "file": "orchestrator.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/orchestrator.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Spatial Orchestrator:spatial_orchestrator_mixer",
-      "dublin_core": {
-        "title": "spatial orchestrator mixer",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:spatial_orchestrator_mixer",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000053"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-spatial_orchestrator_mixer",
-        "type": "HumanMadeObject",
-        "_label": "spatial orchestrator mixer",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Spatial Orchestrator",
-          "file": "spatial_orchestrator_mixer.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/spatial_orchestrator_mixer.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Spatial Orchestrator:spatial-orchestrator-board",
-      "dublin_core": {
-        "title": "spatial-orchestrator-board",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:spatial-orchestrator-board",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000054"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-spatial-orchestrator-board",
-        "type": "HumanMadeObject",
-        "_label": "spatial-orchestrator-board",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Spatial Orchestrator",
-          "file": "spatial-orchestrator-board.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/spatial-orchestrator-board.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
       "id": "urn:walhimer:sketch:Convergence Era:convergence-era-v3-copy",
       "dublin_core": {
         "title": "convergence-era-v3 copy",
@@ -7613,6 +7484,135 @@
       "artifacts": {
         "repo_paths": [
           "sketches/test4.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Spatial Orchestrator:orchestrator",
+      "dublin_core": {
+        "title": "orchestrator",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:orchestrator",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000051"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-orchestrator",
+        "type": "HumanMadeObject",
+        "_label": "orchestrator",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Spatial Orchestrator",
+          "file": "orchestrator.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/orchestrator.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Spatial Orchestrator:spatial_orchestrator_mixer",
+      "dublin_core": {
+        "title": "spatial orchestrator mixer",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:spatial_orchestrator_mixer",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000053"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-spatial_orchestrator_mixer",
+        "type": "HumanMadeObject",
+        "_label": "spatial orchestrator mixer",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Spatial Orchestrator",
+          "file": "spatial_orchestrator_mixer.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/spatial_orchestrator_mixer.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Spatial Orchestrator:spatial-orchestrator-board",
+      "dublin_core": {
+        "title": "spatial-orchestrator-board",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:spatial-orchestrator-board",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000054"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-spatial-orchestrator-board",
+        "type": "HumanMadeObject",
+        "_label": "spatial-orchestrator-board",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Spatial Orchestrator",
+          "file": "spatial-orchestrator-board.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/spatial-orchestrator-board.html"
         ],
         "external_urls": []
       }
