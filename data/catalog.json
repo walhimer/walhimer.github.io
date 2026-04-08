@@ -43,7 +43,7 @@
         ],
         "sketch": {
           "series": "Bloom",
-          "file": "bloom-four-walls.html"
+          "file": "bloom/bloom-four-walls.html"
         },
         "surfaces": [
           "installation",
@@ -53,7 +53,7 @@
       "artifacts": {
         "sketch_entry": {
           "repo_paths": [
-            "sketches/bloom-four-walls.html"
+            "sketches/bloom/bloom-four-walls.html"
           ],
           "external_urls": [
             "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
@@ -105,7 +105,7 @@
         ],
         "sketch": {
           "series": "Bloom",
-          "file": "bloom-release.html"
+          "file": "bloom/bloom-release.html"
         },
         "surfaces": [
           "installation",
@@ -118,7 +118,7 @@
             "bio/index.html",
             "contact/index.html",
             "index.html",
-            "sketches/bloom-release.html",
+            "sketches/bloom/bloom-release.html",
             "sketches/index.html"
           ],
           "external_urls": [
@@ -639,184 +639,6 @@
           "sketches/tezos-early-works/assets/artifact.jpg",
           "sketches/tezos-early-works/assets/artifact.png",
           "sketches/tezos-early-works/index.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Bloom:bloom-garden",
-      "dublin_core": {
-        "title": "bloom-garden",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Bloom:bloom-garden",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000009"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Bloom-bloom-garden",
-        "type": "HumanMadeObject",
-        "_label": "bloom-garden",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Bloom",
-          "file": "bloom-garden.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/bloom-garden.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Bloom:bloom",
-      "dublin_core": {
-        "title": "bloom",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Bloom:bloom",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000010"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Bloom-bloom",
-        "type": "HumanMadeObject",
-        "_label": "bloom",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Bloom",
-          "file": "bloom.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/bloom.html"
-        ],
-        "external_urls": [
-          "https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Bloom:radial-gradient",
-      "dublin_core": {
-        "title": "radial-gradient",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Bloom:radial-gradient",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000011"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Bloom-radial-gradient",
-        "type": "HumanMadeObject",
-        "_label": "radial-gradient",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Bloom",
-          "file": "radial-gradient.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/radial-gradient.html"
-        ],
-        "external_urls": [
-          "https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Bloom:installation-builder-bloom",
-      "dublin_core": {
-        "title": "installation-builder-bloom",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Bloom:installation-builder-bloom",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000012"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Bloom-installation-builder-bloom",
-        "type": "HumanMadeObject",
-        "_label": "installation-builder-bloom",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Bloom",
-          "file": "installation-builder-bloom.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/installation-builder-bloom.html"
         ],
         "external_urls": []
       }
@@ -2228,51 +2050,6 @@
       }
     },
     {
-      "id": "urn:walhimer:sketch:Spatial Orchestrator:orchestrator-bloom",
-      "dublin_core": {
-        "title": "orchestrator-bloom",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:orchestrator-bloom",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000052"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-orchestrator-bloom",
-        "type": "HumanMadeObject",
-        "_label": "orchestrator-bloom",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Spatial Orchestrator",
-          "file": "orchestrator-bloom.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/orchestrator-bloom.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-        ]
-      }
-    },
-    {
       "id": "urn:walhimer:sketch:Spatial Orchestrator:spatial_orchestrator_mixer",
       "dublin_core": {
         "title": "spatial orchestrator mixer",
@@ -2356,51 +2133,6 @@
           "sketches/spatial-orchestrator-board.html"
         ],
         "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Spatial Orchestrator:bloom-surrender",
-      "dublin_core": {
-        "title": "bloom-surrender",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:bloom-surrender",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000055"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-bloom-surrender",
-        "type": "HumanMadeObject",
-        "_label": "bloom-surrender",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Spatial Orchestrator",
-          "file": "bloom-surrender.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/bloom-surrender.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-        ]
       }
     },
     {
@@ -7877,6 +7609,274 @@
           "sketches/test4.html"
         ],
         "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Bloom:bloom-garden",
+      "dublin_core": {
+        "title": "bloom-garden",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Bloom:bloom-garden",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000009"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Bloom-bloom-garden",
+        "type": "HumanMadeObject",
+        "_label": "bloom-garden",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/bloom-garden.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/bloom-garden.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Bloom:bloom",
+      "dublin_core": {
+        "title": "bloom",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Bloom:bloom",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000010"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Bloom-bloom",
+        "type": "HumanMadeObject",
+        "_label": "bloom",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/bloom.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/bloom.html"
+        ],
+        "external_urls": [
+          "https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Bloom:radial-gradient",
+      "dublin_core": {
+        "title": "radial-gradient",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Bloom:radial-gradient",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000011"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Bloom-radial-gradient",
+        "type": "HumanMadeObject",
+        "_label": "radial-gradient",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/radial-gradient.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/radial-gradient.html"
+        ],
+        "external_urls": [
+          "https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Bloom:installation-builder-bloom",
+      "dublin_core": {
+        "title": "installation-builder-bloom",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Bloom:installation-builder-bloom",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000012"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Bloom-installation-builder-bloom",
+        "type": "HumanMadeObject",
+        "_label": "installation-builder-bloom",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/installation-builder-bloom.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/installation-builder-bloom.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Bloom:orchestrator-bloom",
+      "dublin_core": {
+        "title": "orchestrator-bloom",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:orchestrator-bloom",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000052"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-orchestrator-bloom",
+        "type": "HumanMadeObject",
+        "_label": "orchestrator-bloom",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/orchestrator-bloom.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/orchestrator-bloom.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Bloom:bloom-surrender",
+      "dublin_core": {
+        "title": "bloom-surrender",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Spatial Orchestrator:bloom-surrender",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000055"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Spatial Orchestrator-bloom-surrender",
+        "type": "HumanMadeObject",
+        "_label": "bloom-surrender",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/bloom-surrender.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/bloom-surrender.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        ]
       }
     },
     {

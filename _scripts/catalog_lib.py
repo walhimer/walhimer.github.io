@@ -237,7 +237,6 @@ def build_works(
         title = inst["title"]
         wid = f"urn:walhimer:work:{slug}"
         base_file = Path(path).name
-        sketch_name = base_file
         site: dict = {
             "installation": {
                 "path": path,
@@ -245,8 +244,17 @@ def build_works(
             },
             "tech": list(inst.get("tech") or []),
         }
-        if sketch_name in sketch_by_file:
-            series, fn = sketch_by_file[sketch_name]
+        # Match installation basename to sketch list entry (supports sketches/bloom/foo.html ↔ foo.html).
+        match_key = None
+        if base_file in sketch_by_file:
+            match_key = base_file
+        else:
+            for fn in sketch_by_file:
+                if Path(fn).name == base_file:
+                    match_key = fn
+                    break
+        if match_key:
+            series, fn = sketch_by_file[match_key]
             site["sketch"] = {"series": series, "file": fn}
             used_sketch_files.add(fn)
             if series.strip().lower() == "audioscape":
@@ -332,21 +340,26 @@ def merge_work_metadata(prior: dict | None, new: dict) -> dict:
     return out
 
 
-def index_works_by_id_and_file(old_works: list[dict]) -> tuple[dict[str, dict], dict[str, dict]]:
+def index_works_by_id_and_file(
+    old_works: list[dict],
+) -> tuple[dict[str, dict], dict[str, dict], dict[str, dict]]:
     by_id: dict[str, dict] = {}
     by_file: dict[str, dict] = {}
+    by_basename: dict[str, dict] = {}
     for w in old_works:
         wid = w.get("id")
         if wid:
             by_id[wid] = w
         sk = (w.get("site") or {}).get("sketch")
         if sk and sk.get("file"):
-            by_file[sk["file"]] = w
-    return by_id, by_file
+            fn = sk["file"]
+            by_file[fn] = w
+            by_basename[Path(fn).name] = w
+    return by_id, by_file, by_basename
 
 
 def merge_catalog_works(old_works: list[dict], new_works: list[dict]) -> list[dict]:
-    by_id, by_file = index_works_by_id_and_file(old_works)
+    by_id, by_file, by_basename = index_works_by_id_and_file(old_works)
     merged: list[dict] = []
     for nw in new_works:
         key = nw.get("id")
@@ -354,7 +367,8 @@ def merge_catalog_works(old_works: list[dict], new_works: list[dict]) -> list[di
         if not prior:
             sk = (nw.get("site") or {}).get("sketch")
             if sk and sk.get("file"):
-                prior = by_file.get(sk["file"])
+                fn = sk["file"]
+                prior = by_file.get(fn) or by_basename.get(Path(fn).name)
         merged.append(merge_work_metadata(prior, nw))
     return merged
 
