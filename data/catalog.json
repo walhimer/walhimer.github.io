@@ -55,15 +55,21 @@
           "repo_paths": [
             "sketches/bloom/bloom-four-walls.html"
           ],
-          "external_urls": [
-            "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-          ]
+          "external_urls": []
         },
         "installation_entry": {
           "repo_paths": [
-            "installations/bloom-four-walls.html"
+            "installations/bloom-four-walls-sketch.html",
+            "installations/bloom-four-walls.html",
+            "installations/bloom-release.html",
+            "sketches/bloom/bloom-four-walls.html"
           ],
-          "external_urls": []
+          "external_urls": [
+            "https://mark-walhimer.com",
+            "https://mark-walhimer.com/installations/bloom-four-walls.html",
+            "https://medium.com/@markwalhimer",
+            "https://objkt.com"
+          ]
         }
       }
     },
