@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Column tiles ? breathing (p5.js)</title>
-  <meta name="description" content="Generative gradient columns with a subtle breathing animation ? p5.js, seedable, export to WebM or PNG batch." />
+  <title>Column tiles — breathing (p5.js)</title>
+  <meta name="description" content="Generative gradient columns with a subtle breathing animation — p5.js, seedable, export to WebM or PNG batch." />
   <link rel="canonical" href="https://mark-walhimer.com/sketches/column-tiles-breathing.html" />
   <style>
     * { box-sizing: border-box; }
@@ -71,7 +71,7 @@
       <button type="button" id="btnApplySeed" title="Rebuild preview with the seed above">Apply seed</button>
       <label>Batch count <input type="number" id="batchCount" min="1" max="500" value="10" /></label>
       <button type="button" id="btnZipPng" title="ZIP of PNGs: baseSeed, baseSeed+1, ... at export pixel density">Download ZIP (PNGs)</button>
-      <button type="button" id="btnZipWebm" title="ZIP of short WebMs, one per seed � high resolution and capture FPS">Download ZIP (WebMs)</button>
+      <button type="button" id="btnZipWebm" title="ZIP of short WebMs, one per seed — high resolution and capture FPS">Download ZIP (WebMs)</button>
     </div>
     <label>Video capture FPS
       <select id="captureFps" title="Browser may cap this (often 60). 120 needs a high refresh display.">
@@ -84,8 +84,8 @@
     <span id="status"></span>
   </div>
   <p class="hint">
-    <strong>Seed</strong> controls the random tile gradients. <strong>ZIP (PNGs)</strong> uses <strong id="exportPdHint">2</strong>&times; pixel density.
-    <strong>WebM</strong> (single or ZIP batch) uses <strong id="videoPdHint">3</strong>&times; for sharper motion. Capture FPS is a hint to the browser; many systems top out near 60 unless you use 120 Hz and a supporting browser.
+    <strong>Seed</strong> controls the random tile gradients. <strong>ZIP (PNGs)</strong> uses <strong id="exportPdHint">4</strong>&times; (<span id="exportPxHint">3200</span>px). <strong>GIF</strong> uses <strong id="gifPdHint">2</strong>&times; so encoding stays responsive.
+    <strong>WebM</strong> (single or ZIP batch) uses <strong id="videoPdHint">4</strong>&times; for sharper motion. Capture FPS is a hint to the browser; many systems top out near 60 unless you use 120 Hz and a supporting browser.
     Batch WebM is limited to <strong id="batchVideoMaxHint">30</strong> clips per run (long runs = large files).
   </p>
   <main id="wrap"></main>
@@ -106,14 +106,13 @@ const COLUMN_START_X = 200;
 
 const TILE_WIDTH = 150;
 const TILE_HEIGHT = 233;
-const TILE_Y_START = 166;
-const TILE_Y_END = 863;
 
 // Visual constants
 const BORDER_STROKE_WEIGHT = 4;
 const BLUR_AMOUNT = 10;
-const ALPHA_MIN = 20;
-const ALPHA_MAX = 100;
+/** Vertical fade inside each tile (was 20 — too low; tops looked clipped on light backgrounds) */
+const ALPHA_MIN = 72;
+const ALPHA_MAX = 110;
 const BASE_ALPHA = 120;
 
 // Color constants
@@ -128,13 +127,14 @@ const BREATH_SPEED = 2;
 const BREATH_INTENSITY = 125;
 const BRIGHTEN_FACTOR = 0.18;
 
-// Display vs export pixel density (2 = 2x backing store per logical px)
 const DISPLAY_PIXEL_DENSITY = 1;
-/** Still images (PNG) and GIF */
-const EXPORT_PIXEL_DENSITY = 2;
-/** WebM � high-res motion (4 => 3200px backing for 800 logical). Use 2�3 if the tab slows or crashes. */
+/** Batch / still PNG — 4× => 3200×3200 from 800 logical canvas */
+const PNG_PIXEL_DENSITY = 4;
+/** GIF: separate from PNG (gif.js struggles with huge frames); 2× = 1600×1600 */
+const GIF_PIXEL_DENSITY = 2;
+/** WebM — high-res motion (4× => 3200px backing for 800 logical). Lower if the tab slows. */
 const VIDEO_PIXEL_DENSITY = 4;
-/** Bits per second � high for large frames (adjust if files are huge) */
+/** Bits per second — high for large frames (adjust if files are huge) */
 const VIDEO_BITS_PER_SECOND = 80_000_000;
 
 const RECORD_SECONDS = 5;
@@ -143,7 +143,7 @@ const GIF_SECONDS = 3;
 /** Max clips per WebM ZIP (avoid multi-hour runs / RAM issues) */
 const BATCH_WEBM_MAX = 30;
 
-/** Still frame time (seconds) for PNG exports ? breathing phase at this t */
+/** Still frame time (seconds) for PNG exports — breathing phase at this t */
 const PNG_STILL_T = 0;
 
 // State variables
@@ -164,7 +164,11 @@ function setup() {
   applyPixelDensityAndRebuild(DISPLAY_PIXEL_DENSITY);
 
   const pdHint = document.getElementById('exportPdHint');
-  if (pdHint) pdHint.textContent = String(EXPORT_PIXEL_DENSITY);
+  if (pdHint) pdHint.textContent = String(PNG_PIXEL_DENSITY);
+  const pxHint = document.getElementById('exportPxHint');
+  if (pxHint) pxHint.textContent = String(CANVAS_SIZE * PNG_PIXEL_DENSITY);
+  const gpd = document.getElementById('gifPdHint');
+  if (gpd) gpd.textContent = String(GIF_PIXEL_DENSITY);
   const vpd = document.getElementById('videoPdHint');
   if (vpd) vpd.textContent = String(VIDEO_PIXEL_DENSITY);
   const bmax = document.getElementById('batchVideoMaxHint');
@@ -447,7 +451,7 @@ async function exportBatchWebmZip() {
   }
 }
 
-function exportGif() {
+async function exportGif() {
   if (typeof GIF === 'undefined') {
     setStatus('gif.js failed to load.');
     return;
@@ -456,44 +460,54 @@ function exportGif() {
   setBusy(true);
   setStatus('Rendering GIF frames...');
 
-  applyPixelDensityAndRebuild(EXPORT_PIXEL_DENSITY);
+  try {
+    applyPixelDensityAndRebuild(GIF_PIXEL_DENSITY);
 
-  const w = width;
-  const h = height;
-  const frameDelay = Math.round(1000 / GIF_FPS);
-  const totalFrames = Math.ceil(GIF_SECONDS * GIF_FPS);
+    const canvasEl = document.querySelector('#wrap canvas');
+    const w = canvasEl.width;
+    const h = canvasEl.height;
+    const frameDelay = Math.round(1000 / GIF_FPS);
+    const totalFrames = Math.ceil(GIF_SECONDS * GIF_FPS);
 
-  const gif = new GIF({
-    workers: 2,
-    quality: 10,
-    width: w,
-    height: h,
-    workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js'
-  });
+    const gif = new GIF({
+      workers: 2,
+      quality: 12,
+      width: w,
+      height: h,
+      workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js'
+    });
 
-  gif.on('finished', function (blob) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download =
-      'column-tiles_seed-' + artSeed + '-' + CANVAS_SIZE + 'px-' + EXPORT_PIXEL_DENSITY + 'x.gif';
-    a.click();
-    URL.revokeObjectURL(url);
+    gif.on('finished', function (blob) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download =
+        'column-tiles_seed-' + artSeed + '-' + CANVAS_SIZE + 'px-' + GIF_PIXEL_DENSITY + 'x.gif';
+      a.click();
+      URL.revokeObjectURL(url);
+      applyPixelDensityAndRebuild(DISPLAY_PIXEL_DENSITY);
+      setBusy(false);
+      setStatus('Saved GIF.');
+    });
+
+    for (let i = 0; i < totalFrames; i++) {
+      drawBreathingFrame(i / GIF_FPS);
+      await new Promise((r) => requestAnimationFrame(r));
+      gif.addFrame(canvasEl, { copy: true, delay: frameDelay });
+      if (i % 3 === 0 || i === totalFrames - 1) {
+        setStatus('GIF frame ' + (i + 1) + ' / ' + totalFrames + '...');
+      }
+    }
+
+    setStatus('Encoding GIF (may take a moment)...');
+    await new Promise((r) => setTimeout(r, 0));
+    gif.render();
+  } catch (err) {
+    console.error(err);
     applyPixelDensityAndRebuild(DISPLAY_PIXEL_DENSITY);
     setBusy(false);
-    setStatus('Saved GIF.');
-  });
-
-  const canvasEl = document.querySelector('#wrap canvas');
-
-  for (let i = 0; i < totalFrames; i++) {
-    const tSec = i / GIF_FPS;
-    drawBreathingFrame(tSec);
-    gif.addFrame(canvasEl, { copy: true, delay: frameDelay });
+    setStatus('GIF export failed: ' + (err && err.message ? err.message : err));
   }
-
-  setStatus('Encoding GIF (may take a moment)...');
-  gif.render();
 }
 
 async function exportBatchPngZip() {
@@ -523,7 +537,7 @@ async function exportBatchPngZip() {
       syncSeedInput();
       setStatus('Rendering ' + (i + 1) + ' / ' + count + ' (seed ' + artSeed + ')...');
 
-      applyPixelDensityAndRebuild(EXPORT_PIXEL_DENSITY);
+      applyPixelDensityAndRebuild(PNG_PIXEL_DENSITY);
       drawBreathingFrame(PNG_STILL_T);
 
       const canvasEl = document.querySelector('#wrap canvas');
@@ -531,7 +545,7 @@ async function exportBatchPngZip() {
         canvasEl.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png');
       });
 
-      const name = 'column-tiles_seed-' + artSeed + '-' + CANVAS_SIZE + 'px-' + EXPORT_PIXEL_DENSITY + 'x.png';
+      const name = 'column-tiles_seed-' + artSeed + '-' + CANVAS_SIZE + 'px-' + PNG_PIXEL_DENSITY + 'x.png';
       folder.file(name, blob);
     }
 
@@ -590,8 +604,19 @@ function drawColumns() {
 }
 
 function drawTilesInColumn(x) {
+  const centerY = height / 2;
+  const columnTop = centerY - COLUMN_HEIGHT / 2;
+  const columnBottom = centerY + COLUMN_HEIGHT / 2;
+  const firstTileCenterY = columnTop + TILE_HEIGHT / 2;
+  const lastTileCenterY = columnBottom - TILE_HEIGHT / 2;
+
   for (let j = 0; j < TILE_COUNT; j++) {
-    const tileY = map(j, 0, TILE_COUNT, TILE_Y_START, TILE_Y_END);
+    let tileY;
+    if (TILE_COUNT === 1) {
+      tileY = (firstTileCenterY + lastTileCenterY) / 2;
+    } else {
+      tileY = map(j, 0, TILE_COUNT - 1, firstTileCenterY, lastTileCenterY);
+    }
     const colors = getRandomColors(gradientCount);
     drawGradientTile(x, tileY, colors);
   }
@@ -599,6 +624,9 @@ function drawTilesInColumn(x) {
 
 function drawGradientTile(x, y, colors) {
   const cnv = createGraphics(TILE_WIDTH, TILE_HEIGHT);
+  // Main canvas may use pixelDensity 2–4 for exports; tile buffers must stay 1:1 logical px
+  // or loadPixels/image() mismatch squishes tiles into thin strips.
+  cnv.pixelDensity(1);
   cnv.colorMode(HSB, 360, 100, 100, 255);
   cnv.noStroke();
   cnv.loadPixels();
@@ -607,7 +635,7 @@ function drawGradientTile(x, y, colors) {
     for (let j = 0; j < cnv.height; j++) {
       const index = (i + j * cnv.width) * 4;
       const colorValue = interpolateColors(colors, i, cnv.width);
-      const alpha = map(j, 0, cnv.height, ALPHA_MIN, ALPHA_MAX);
+      const alpha = map(j, 0, max(1, cnv.height - 1), ALPHA_MIN, ALPHA_MAX);
 
       const r = red(colorValue);
       const g = green(colorValue);
