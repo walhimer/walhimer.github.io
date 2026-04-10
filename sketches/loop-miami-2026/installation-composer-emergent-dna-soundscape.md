@@ -4,7 +4,7 @@
 
 **Project folder (local):** `/Users/markwalhimer/Desktop/Catalog/Loop Miami 2026/` — working summary for Loop / Miami 2026 planning.
 
-**Canonical copy (site + GitHub):** repo folder [`walhimer.github.io/loop-miami-2026/`](https://github.com/walhimer-studio/walhimer.github.io/tree/main/loop-miami-2026) — static URL: `https://walhimer.github.io/loop-miami-2026/installation-composer-emergent-dna-soundscape.md`
+**Canonical copy (site + GitHub):** repo folder [`sketches/loop-miami-2026/`](https://github.com/walhimer-studio/walhimer.github.io/tree/main/sketches/loop-miami-2026) — listed under **[Catalog](https://mark-walhimer.com/sketches/index.html)** — static URL: `https://mark-walhimer.com/sketches/loop-miami-2026/installation-composer-emergent-dna-soundscape.md` (mirror: `https://walhimer.github.io/sketches/loop-miami-2026/installation-composer-emergent-dna-soundscape.md`). Old path `/loop-miami-2026/` redirects here.
 
 This document consolidates a working-session discussion: technical options for **Loop / Onland**, the **Bloom** line of work, **GLB vs runtime**, **sound**, **aesthetic references** from verses on MUD / Loop, possible **hub / lobby** patterns (now optional), and alignment with **mark-walhimer.com** / **GitHub** (`walhimer`, `walhimer-studio`).
 
