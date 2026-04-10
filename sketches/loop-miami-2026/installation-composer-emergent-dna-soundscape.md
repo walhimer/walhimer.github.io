@@ -4,7 +4,7 @@
 
 **Project folder (local):** `/Users/markwalhimer/Desktop/Catalog/Loop Miami 2026/` — working summary for Loop / Miami 2026 planning.
 
-**Canonical copy (site + GitHub):** repo folder [`sketches/loop-miami-2026/`](https://github.com/walhimer-studio/walhimer.github.io/tree/main/sketches/loop-miami-2026) — listed under **[Catalog](https://mark-walhimer.com/sketches/index.html)** — static URL: `https://mark-walhimer.com/sketches/loop-miami-2026/installation-composer-emergent-dna-soundscape.md` (mirror: `https://walhimer.github.io/sketches/loop-miami-2026/installation-composer-emergent-dna-soundscape.md`). Old path `/loop-miami-2026/` redirects here.
+**Canonical copy (site + GitHub):** repo folder [`sketches/loop-miami-2026/`](https://github.com/walhimer-studio/walhimer.github.io/tree/main/sketches/loop-miami-2026) — listed first in **[Catalog](https://mark-walhimer.com/sketches/index.html)** — static URL: `https://mark-walhimer.com/sketches/loop-miami-2026/installation-composer-emergent-dna-soundscape.md` (mirror: `https://walhimer.github.io/sketches/loop-miami-2026/installation-composer-emergent-dna-soundscape.md`). Old path `/loop-miami-2026/` redirects here. The same folder holds **copies of discussed prototypes** (Bloom, hybrid + GLB, walk/moon/audio, city gradient, technical drawing, traveling landscape, orchestrator); see [`index.html`](https://mark-walhimer.com/sketches/loop-miami-2026/).
 
 This document consolidates a working-session discussion: technical options for **Loop / Onland**, the **Bloom** line of work, **GLB vs runtime**, **sound**, **aesthetic references** from verses on MUD / Loop, possible **hub / lobby** patterns (now optional), and alignment with **mark-walhimer.com** / **GitHub** (`walhimer`, `walhimer-studio`).
 
@@ -128,6 +128,8 @@ A useful pole star for the **room that unfolds** (different each time, no requir
 | `technical-drawing-with-elevation*.html` | Technical Drawing / elevation line of work. |
 | `walk_moon_audio_standalone.html` | Walking + moon + generative audio (Three.js + Tone.js). |
 | `city_gradient_standalone.html` | p5 WEBGL corridor / gradient boxes (walking / tunnel prototype). |
+
+**Bundled in `sketches/loop-miami-2026/`:** working copies of the above (where applicable) for a single-folder Loop Miami bundle; the **Catalog** lists them under the **Loop Miami 2026** series.
 
 ---
 
