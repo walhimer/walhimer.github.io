@@ -24,11 +24,7 @@
       line-height: 1.55;
       min-height: 100vh;
     }
-    /* Outer breathing room + centered column */
-    .wrap {
-      max-width: 40rem;
-      margin: 0 auto;
-    }
+    .wrap { max-width: 40rem; margin: 0 auto; }
     .page-meta {
       color: #9a9690;
       font-size: 0.72rem;
@@ -36,7 +32,6 @@
       text-transform: uppercase;
       margin-bottom: 0.75rem;
     }
-    /* Light “white space” frame — everything important sits inside this */
     .stage {
       background: var(--stage);
       color: var(--ink);
@@ -81,10 +76,9 @@
       font-size: 0.88rem;
       color: #333;
     }
+    .box + .box { margin-top: 0.65rem; }
     .box strong { color: var(--ink); }
-    code { font-size: 0.82em; background: #eeeae4; padding: 0.15em 0.4em; border-radius: 4px; }
-
-    /* Open slot: your embed, image, or bullets — edit the HTML inside */
+    code { font-size: 0.82em; background: #eeeae4; padding: 0.15em 0.4em; border-radius: 4px; word-break: break-all; }
     .slot {
       border: 2px dashed #c9c2b6;
       border-radius: 10px;
@@ -101,7 +95,6 @@
       margin-bottom: 0.65rem;
     }
     .slot ul { color: var(--ink); }
-
     footer {
       margin-top: 1.75rem;
       padding-top: 1rem;
@@ -127,6 +120,18 @@
         </ul>
       </section>
 
+      <section id="onland-upload" aria-labelledby="onland-heading">
+        <h2 id="onland-heading">Onland / Loop — Upload dialog</h2>
+        <div class="box">
+          <strong>Why <code>index.html</code> fails:</strong> The URL field next to “OR” only accepts a <strong>direct file</strong> (GLB, PNG, JPG, GIF, PDF, MP4, MP3). A webpage URL is not a valid “file type,” so you see <em>File type is not valid</em>.
+        </div>
+        <div class="box">
+          <strong>Use this PNG URL in the Upload URL box</strong> (under 5 MB, valid type):<br>
+          <code>https://mark-walhimer.com/sketches/loop-miami-2026/loop-miami-critique-card.png</code><br>
+          It is a small placeholder card (cream). Put the real experience in <strong>Title / Description</strong> and paste <code>critique-hub.html</code> there, or open it from <strong>Advanced Options ? Custom URL</strong> on a placed object if the tool allows any https link (that path is separate from the Upload file-type check).
+        </div>
+      </section>
+
       <section id="your-space" aria-labelledby="your-heading">
         <h2 id="your-heading">Your space</h2>
         <p class="lede" style="margin-bottom:0.65rem;">Use this block for screen-share or print: talking points, stills, or paste HTML below (image, iframe embed).</p>
@@ -140,9 +145,9 @@
       </section>
 
       <section id="constraints" aria-labelledby="cap-heading">
-        <h2 id="cap-heading">Upload note</h2>
+        <h2 id="cap-heading">Size note</h2>
         <div class="box">
-          <strong>Under ~5&nbsp;MB?</strong> Don’t zip the whole bundle. Prefer one small GLB + this link in chat: <code>https://mark-walhimer.com/sketches/loop-miami-2026/critique-hub.html</code> — or open prototypes in the browser / screen-share. See <a href="index.html">bundle index</a>.
+          <strong>Under ~5 MB:</strong> Do not zip the whole bundle. For heavy sketches, screen-share or link from Description. See <a href="index.html">bundle index</a>.
         </div>
       </section>
 
