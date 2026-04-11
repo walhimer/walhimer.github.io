@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mangle — sample audition</title>
+  <style>
+    :root {
+      font-family: system-ui, sans-serif;
+      background: #111;
+      color: #e8e8e8;
+    }
+    body {
+      max-width: 40rem;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h1 { font-weight: 600; font-size: 1.25rem; }
+    p { font-size: 0.9rem; opacity: 0.88; line-height: 1.45; }
+    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 1rem 0; }
+    button, label.file {
+      font: inherit;
+      padding: 0.45rem 0.85rem;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #222;
+      color: #eee;
+      cursor: pointer;
+    }
+    label.file input { display: none; }
+    button:hover, label.file:hover { background: #2a2a2a; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    #list {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0;
+      max-height: 60vh;
+      overflow: auto;
+      border: 1px solid #333;
+      border-radius: 6px;
+    }
+    #list li {
+      padding: 0.45rem 0.65rem;
+      border-bottom: 1px solid #222;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    #list li:hover { background: #1e1e1e; }
+    #list li.playing { background: #1a2a1a; outline: 1px solid #353; }
+    .hint { font-size: 0.8rem; opacity: 0.75; margin-top: 1rem; }
+    .nav { font-size: 0.85rem; margin-bottom: 1rem; }
+    .nav a { color: #8cf; }
+  </style>
+</head>
+<body>
+  <p class="nav"><a href="index.html">Mangle player</a></p>
+  <h1>Sample audition</h1>
+  <p>
+    Choose a folder on your device (for example your
+    <code>Mangle-samples/piano-pentatonic</code> folder).
+    Click a filename to play it once. Files stay on your machine; nothing is uploaded to this site.
+  </p>
+
+  <div class="row">
+    <label class="file">
+      Choose folder
+      <input type="file" id="folder" webkitdirectory multiple />
+    </label>
+    <button type="button" id="btn-stop" disabled>Stop</button>
+  </div>
+
+  <ul id="list"></ul>
+
+  <p class="hint">
+    Use Safari or Chrome. Folder pick requires a click. Audio is decoded in your browser only.
+  </p>
+
+  <script src="vendor/Tone.js"></script>
+  <script src="audition.js"></script>
+</body>
+</html>
