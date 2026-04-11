@@ -44,9 +44,35 @@
     .hint {
       font-size: 0.85rem;
       opacity: 0.8;
-      margin-top: 0.5rem;
+      margin-top: 0.75rem;
     }
     input[type="file"] { font-size: 0.8rem; max-width: 100%; }
+    label.file {
+      font-size: 0.85rem;
+      display: inline-block;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #222;
+      cursor: pointer;
+    }
+    label.file:hover { background: #2a2a2a; }
+    label.file input { display: none; }
+    .bank-row {
+      margin-top: 0.75rem;
+    }
+    .bank-row label { font-size: 0.85rem; display: block; margin-bottom: 0.35rem; opacity: 0.9; }
+    #sample-bank {
+      width: 100%;
+      max-width: 100%;
+      font: inherit;
+      padding: 0.45rem 0.5rem;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #222;
+      color: #eee;
+    }
+    #sample-bank:disabled { opacity: 0.5; }
     .nav { font-size: 0.85rem; margin-bottom: 1rem; }
     .nav a { color: #8cf; }
   </style>
@@ -64,9 +90,23 @@
   </div>
 
   <p class="hint">
-    Optional: load your own file —
+    <strong>Load folder</strong> (all audio in that folder) —
+    <label class="file">
+      Choose folder
+      <input type="file" id="sample-folder" webkitdirectory multiple />
+    </label>
+  </p>
+  <p class="hint">
+    Or <strong>one file</strong> —
     <input type="file" id="sample-file" accept="audio/*" />
   </p>
+
+  <div class="bank-row">
+    <label for="sample-bank">Looping sample</label>
+    <select id="sample-bank" disabled aria-label="Which sample to loop">
+      <option value="">— Load a folder or file —</option>
+    </select>
+  </div>
 
   <script src="vendor/Tone.js"></script>
   <script src="app.js"></script>
