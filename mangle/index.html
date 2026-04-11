@@ -86,7 +86,7 @@
     .mode-row input { vertical-align: middle; margin-right: 0.3rem; }
     .bloom-opts, .sc-opts { margin-top: 0.65rem; font-size: 0.85rem; }
     .bloom-opts label, .sc-opts label { display: block; margin: 0.4rem 0; }
-    #pulse-interval, #sc-melody, #sc-texture { width: 100%; max-width: 14rem; vertical-align: middle; }
+    #pulse-interval, #sc-melody, #sc-texture, #liminal-duration, #liminal-sparse { width: 100%; max-width: 14rem; vertical-align: middle; }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -101,9 +101,10 @@
       <label><input type="radio" name="mode" id="mode-loop" value="loop" checked /> Loop</label>
       <label><input type="radio" name="mode" id="mode-bloom" value="bloom" /> Garden pulse</label>
       <label><input type="radio" name="mode" id="mode-soundscape" value="soundscape" /> Soundscape</label>
+      <label><input type="radio" name="mode" id="mode-liminal" value="liminal" /> Liminal</label>
     </div>
     <p class="hint" style="margin-top:0.5rem;opacity:0.75;">
-      <strong>Loop</strong> &mdash; one sample repeats. <strong>Garden pulse</strong> &mdash; dry hits in time (Bloom-like). <strong>Soundscape</strong> &mdash; long reverb, optional bass drone and soft noise (after the &ldquo;Painting with John&rdquo; p5 sketch: pentatonic line + bed + texture). Your long-decay piano folder fits here.
+      <strong>Loop</strong> &mdash; one sample repeats. <strong>Garden pulse</strong> &mdash; dry hits in time (Bloom-like). <strong>Soundscape</strong> &mdash; long reverb, sketch layers. <strong>Liminal</strong> &mdash; sparse, quiet threshold (in-between), then opens to the same full Soundscape pulse. Your long-decay piano folder fits Soundscape / Liminal.
     </p>
     <p class="hint" id="penta-row">
       <label><input type="checkbox" id="pentatonic-only" checked /> Pentatonic filenames (C D E G A), e.g. C4.ogg</label>
@@ -126,6 +127,15 @@
       <label><input type="checkbox" id="sc-sketch-reverb" checked /> Sketch reverb sends (bass 6s / line+samples 5s / noise 2s)</label>
       <label><input type="checkbox" id="sc-bass-drift" checked /> Slow bass drift (sketch: new root ~every 10s)</label>
       <p class="hint" style="opacity:0.7;margin-top:0.5rem;">Matches the p5 <code>sketch.js</code> in your Audio_Scape folder: global reverb per layer, sine bass, triangle &ldquo;clarinet,&rdquo; pink hits. Samples layer on top (your long-tail bank).</p>
+    </div>
+    <div class="sc-opts hidden" id="liminal-opts">
+      <label>Threshold (open after): <span id="liminal-duration-label">120</span>s
+        <input type="range" id="liminal-duration" min="90" max="150" step="5" value="120" />
+      </label>
+      <label>Sparse pulse (threshold): <span id="liminal-sparse-label">14</span>s
+        <input type="range" id="liminal-sparse" min="8" max="22" step="1" value="14" />
+      </label>
+      <p class="hint" style="opacity:0.7;margin-top:0.5rem;">First phase: quieter samples, longer gaps, no triangle line. Then same behavior as Soundscape (melody + noise timing from above).</p>
     </div>
   </fieldset>
 

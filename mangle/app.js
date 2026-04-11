@@ -1,5 +1,5 @@
 /**
- * Mangle: Loop, Garden pulse, Soundscape (Painting-with-John-style bed + long reverb).
+ * Mangle: Loop, Garden pulse, Soundscape, Liminal (sparse threshold then full soundscape).
  */
 (function () {
   "use strict";
@@ -45,6 +45,8 @@
 
   let audioReady = false;
   let recording = false;
+  /** @type {number | null} */
+  let liminalTransitionId = null;
 
   /** @type {string[]} */
   let bankBlobUrls = [];
@@ -74,6 +76,11 @@
   const scTriangle = document.getElementById("sc-triangle");
   const scSketchReverb = document.getElementById("sc-sketch-reverb");
   const scBassDrift = document.getElementById("sc-bass-drift");
+  const liminalOpts = document.getElementById("liminal-opts");
+  const liminalDuration = document.getElementById("liminal-duration");
+  const liminalDurationLabel = document.getElementById("liminal-duration-label");
+  const liminalSparse = document.getElementById("liminal-sparse");
+  const liminalSparseLabel = document.getElementById("liminal-sparse-label");
 
   const DEFAULT_SAMPLE =
     "https://tonejs.github.io/audio/casio/A1.mp3";
@@ -94,7 +101,7 @@
   function getMode() {
     const el = document.querySelector('input[name="mode"]:checked');
     const v = el && el.value;
-    if (v === "bloom" || v === "soundscape") return v;
+    if (v === "bloom" || v === "soundscape" || v === "liminal") return v;
     return "loop";
   }
 
@@ -207,6 +214,14 @@
   }
 
   function disposePulsedLayers() {
+    if (liminalTransitionId !== null) {
+      try {
+        Tone.Transport.clear(liminalTransitionId);
+      } catch (e) {
+        console.warn(e);
+      }
+      liminalTransitionId = null;
+    }
     stopAndDisposeLoop(melodyLoop);
     melodyLoop = null;
     stopAndDisposeLoop(textureLoop);
@@ -542,6 +557,189 @@
     }
   }
 
+  /**
+   * Liminal: sparse bed (long intervals, quiet samples, no triangle), then opens to full Soundscape.
+   */
+  async function buildLiminalGraph() {
+    disposeAllGraph();
+    const indices = getBloomIndices();
+    if (!indices.length) {
+      throw new Error("No samples.");
+    }
+
+    bloomOrder = shuffle(indices);
+    bloomStep = 0;
+
+    const urls = {};
+    for (let k = 0; k < bank.urls.length; k++) {
+      urls["s" + k] = bank.urls[k];
+    }
+
+    const useSketchReverbs = scSketchReverb.checked;
+    const liminalSec = liminalDuration
+      ? parseFloat(liminalDuration.value) || 120
+      : 120;
+    const sparseSec = liminalSparse
+      ? parseFloat(liminalSparse.value) || 14
+      : 14;
+
+    master = new Tone.Gain(0.88);
+    master.toDestination();
+
+    recorder = new Tone.Recorder();
+    master.connect(recorder);
+
+    if (useSketchReverbs) {
+      reverbBass = new Tone.Reverb({ decay: 6, wet: 0.5 });
+      reverbLine = new Tone.Reverb({ decay: 5, wet: 0.7 });
+      reverbPerc = new Tone.Reverb({ decay: 2, wet: 0.3 });
+      await Promise.all([
+        reverbBass.generate(),
+        reverbLine.generate(),
+        reverbPerc.generate(),
+      ]);
+      reverbBass.connect(master);
+      reverbLine.connect(master);
+      reverbPerc.connect(master);
+    } else {
+      reverbNode = new Tone.Reverb({
+        decay: 8,
+        wet: 0.52,
+      });
+      await reverbNode.generate();
+      reverbNode.connect(master);
+    }
+
+    const busLine = useSketchReverbs ? reverbLine : reverbNode;
+    const busBass = useSketchReverbs ? reverbBass : reverbNode;
+    const busPerc = useSketchReverbs ? reverbPerc : reverbNode;
+
+    playersObj = new Tone.Players({
+      urls: urls,
+      fadeOut: 0.2,
+      onerror: function (e) {
+        console.error(e);
+      },
+    }).connect(busLine);
+
+    await Tone.loaded();
+
+    if (scDrone.checked) {
+      const startMidi =
+        SKETCH_BASS_START[Math.floor(Math.random() * SKETCH_BASS_START.length)];
+      droneOsc = new Tone.Oscillator({
+        type: "sine",
+        frequency: mtof(startMidi),
+      }).start();
+      droneGain = new Tone.Gain(0.045);
+      droneOsc.connect(droneGain);
+      droneGain.connect(busBass);
+      if (scBassDrift.checked) {
+        bassDriftLoop = new Tone.Loop(function (time) {
+          if (!droneOsc) return;
+          const m =
+            SKETCH_BASS_DRIFT[
+              Math.floor(Math.random() * SKETCH_BASS_DRIFT.length)
+            ];
+          droneOsc.frequency.setValueAtTime(mtof(m), time);
+        }, "10s");
+        bassDriftLoop.start(0);
+      }
+    }
+
+    if (scTriangle.checked) {
+      clarinetOsc = new Tone.Oscillator({
+        type: "triangle",
+        frequency: mtof(SKETCH_CM_PENTA[0]),
+      }).start();
+      clarinetGain = new Tone.Gain(0.001);
+      clarinetOsc.connect(clarinetGain);
+      clarinetGain.connect(busLine);
+    }
+
+    if (scTextureOn.checked) {
+      noiseSrc = new Tone.Noise("pink").start();
+      noiseGain = new Tone.Gain(0);
+      noiseSrc.connect(noiseGain);
+      noiseGain.connect(busPerc);
+    }
+
+    const mSec = parseFloat(scMelody.value) || 4;
+    const tSec = parseFloat(scTexture.value) || 7;
+    const sparseNoiseSec = Math.max(tSec, 12);
+
+    function attachFullSoundscapeLoops() {
+      melodyLoop = new Tone.Loop(function (time) {
+        if (!playersObj || !bloomOrder.length) return;
+        const bankIdx = bloomOrder[bloomStep % bloomOrder.length];
+        bloomStep += 1;
+        const pl = playersObj.player("s" + bankIdx);
+        pl.volume.value = -14 + Math.random() * 8;
+        pl.start(time);
+
+        if (scTriangle.checked && clarinetOsc && clarinetGain) {
+          const n =
+            SKETCH_CM_PENTA[
+              Math.floor(Math.random() * SKETCH_CM_PENTA.length)
+            ];
+          clarinetOsc.frequency.setValueAtTime(mtof(n), time);
+          clarinetGain.gain.cancelScheduledValues(time);
+          clarinetGain.gain.setValueAtTime(0.001, time);
+          clarinetGain.gain.linearRampToValueAtTime(0.1, time + 0.5);
+          clarinetGain.gain.setValueAtTime(0.1, time + 1.5);
+          clarinetGain.gain.linearRampToValueAtTime(0.001, time + 3.5);
+        }
+      }, mSec + "s");
+      melodyLoop.start(0);
+
+      if (noiseGain) {
+        textureLoop = new Tone.Loop(function (time) {
+          noiseGain.gain.cancelScheduledValues(time);
+          noiseGain.gain.setValueAtTime(0.001, time);
+          noiseGain.gain.linearRampToValueAtTime(0.05, time + 0.01);
+          noiseGain.gain.linearRampToValueAtTime(0.05, time + 0.2);
+          noiseGain.gain.linearRampToValueAtTime(0.001, time + 0.7);
+        }, tSec + "s");
+        textureLoop.start(0);
+      }
+    }
+
+    melodyLoop = new Tone.Loop(function (time) {
+      if (!playersObj || !bloomOrder.length) return;
+      const bankIdx = bloomOrder[bloomStep % bloomOrder.length];
+      bloomStep += 1;
+      const pl = playersObj.player("s" + bankIdx);
+      pl.volume.value = -22 + Math.random() * 6;
+      pl.start(time);
+    }, sparseSec + "s");
+    melodyLoop.start(0);
+
+    if (noiseGain) {
+      textureLoop = new Tone.Loop(function (time) {
+        noiseGain.gain.cancelScheduledValues(time);
+        noiseGain.gain.setValueAtTime(0.001, time);
+        noiseGain.gain.linearRampToValueAtTime(0.035, time + 0.02);
+        noiseGain.gain.linearRampToValueAtTime(0.035, time + 0.25);
+        noiseGain.gain.linearRampToValueAtTime(0.001, time + 0.9);
+      }, sparseNoiseSec + "s");
+      textureLoop.start(0);
+    }
+
+    liminalTransitionId = Tone.Transport.scheduleOnce(function () {
+      liminalTransitionId = null;
+      stopAndDisposeLoop(melodyLoop);
+      melodyLoop = null;
+      stopAndDisposeLoop(textureLoop);
+      textureLoop = null;
+      attachFullSoundscapeLoops();
+      setStatus(
+        "Liminal: threshold passed (" +
+          liminalSec +
+          "s)  now full Soundscape pulse."
+      );
+    }, liminalSec);
+  }
+
   async function loadSampleUrl(url, opts) {
     const silent = opts && opts.silent;
     if (!silent) {
@@ -585,19 +783,27 @@
     bankWrap.style.opacity = loop ? "1" : "0.45";
     bankSelect.disabled = !loop || bank.urls.length === 0;
 
+    const liminal = mode === "liminal";
+    const scOrLiminal = sc || liminal;
+
     bloomOpts.classList.toggle("hidden", !bloom);
-    scOpts.classList.toggle("hidden", !sc);
+    scOpts.classList.toggle("hidden", !scOrLiminal);
+    if (liminalOpts) {
+      liminalOpts.classList.toggle("hidden", !liminal);
+    }
     pentaRow.style.display = loop ? "none" : "block";
 
     pulseInput.disabled = !bloom;
     pentatonicOnly.disabled = loop;
-    scMelody.disabled = !sc;
-    scTexture.disabled = !sc;
-    scDrone.disabled = !sc;
-    scTextureOn.disabled = !sc;
-    scTriangle.disabled = !sc;
-    scSketchReverb.disabled = !sc;
-    scBassDrift.disabled = !sc;
+    scMelody.disabled = !scOrLiminal;
+    scTexture.disabled = !scOrLiminal;
+    scDrone.disabled = !scOrLiminal;
+    scTextureOn.disabled = !scOrLiminal;
+    scTriangle.disabled = !scOrLiminal;
+    scSketchReverb.disabled = !scOrLiminal;
+    scBassDrift.disabled = !scOrLiminal;
+    if (liminalDuration) liminalDuration.disabled = !liminal;
+    if (liminalSparse) liminalSparse.disabled = !liminal;
   }
 
   document.querySelectorAll('input[name="mode"]').forEach(function (r) {
@@ -615,6 +821,17 @@
   scTexture.addEventListener("input", function () {
     scTextureLabel.textContent = scTexture.value;
   });
+
+  if (liminalDuration) {
+    liminalDuration.addEventListener("input", function () {
+      liminalDurationLabel.textContent = liminalDuration.value;
+    });
+  }
+  if (liminalSparse) {
+    liminalSparse.addEventListener("input", function () {
+      liminalSparseLabel.textContent = liminalSparse.value;
+    });
+  }
 
   btnStart.addEventListener("click", async () => {
     try {
@@ -664,6 +881,29 @@
         return;
       }
 
+      if (mode === "liminal") {
+        if (!bank.urls.length) {
+          setStatus(
+            "Liminal needs your samples \u2014 load a long-decay pentatonic folder."
+          );
+          return;
+        }
+        Tone.Transport.stop(0);
+        setTransportButtons(false);
+        btnStart.disabled = false;
+        setStatus("Loading Liminal (sparse threshold, then open)...");
+        await buildLiminalGraph();
+        Tone.Transport.start();
+        setTransportButtons(true);
+        var ls = liminalDuration ? liminalDuration.value : "120";
+        setStatus(
+          "Liminal: sparse " +
+            ls +
+            "s, then full Soundscape pulse. (Threshold / in-between.)"
+        );
+        return;
+      }
+
       if (!player) {
         await loadSampleUrl(DEFAULT_SAMPLE);
       }
@@ -709,7 +949,7 @@
     stopAndDisposeLoop(textureLoop);
     textureLoop = null;
     const mode = getMode();
-    if (mode === "bloom" || mode === "soundscape") {
+    if (mode === "bloom" || mode === "soundscape" || mode === "liminal") {
       disposePulsedLayers();
       if (master) {
         try {
