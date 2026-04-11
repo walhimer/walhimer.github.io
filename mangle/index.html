@@ -11,7 +11,7 @@
       color: #e8e8e8;
     }
     body {
-      max-width: 38rem;
+      max-width: 40rem;
       margin: 2rem auto;
       padding: 0 1rem;
     }
@@ -82,11 +82,12 @@
       padding: 0.75rem 1rem;
     }
     fieldset legend { font-size: 0.85rem; padding: 0 0.35rem; }
-    .mode-row label { margin-right: 1rem; font-size: 0.88rem; cursor: pointer; }
-    .mode-row input { vertical-align: middle; margin-right: 0.35rem; }
-    .bloom-opts { margin-top: 0.65rem; font-size: 0.85rem; }
-    .bloom-opts label { display: block; margin: 0.4rem 0; }
-    #pulse-interval { width: 100%; max-width: 14rem; vertical-align: middle; }
+    .mode-row label { margin-right: 0.85rem; font-size: 0.85rem; cursor: pointer; display: inline-block; }
+    .mode-row input { vertical-align: middle; margin-right: 0.3rem; }
+    .bloom-opts, .sc-opts { margin-top: 0.65rem; font-size: 0.85rem; }
+    .bloom-opts label, .sc-opts label { display: block; margin: 0.4rem 0; }
+    #pulse-interval, #sc-melody, #sc-texture { width: 100%; max-width: 14rem; vertical-align: middle; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -99,15 +100,29 @@
     <div class="mode-row">
       <label><input type="radio" name="mode" id="mode-loop" value="loop" checked /> Loop</label>
       <label><input type="radio" name="mode" id="mode-bloom" value="bloom" /> Garden pulse</label>
+      <label><input type="radio" name="mode" id="mode-soundscape" value="soundscape" /> Soundscape</label>
     </div>
     <p class="hint" style="margin-top:0.5rem;opacity:0.75;">
-      <strong>Loop</strong> &mdash; one sample repeats (ambient). <strong>Garden pulse</strong> &mdash; discrete hits on a steady beat, shuffled through your bank (like <em>Bloom Four Walls</em> / pentatonic garden sketches). Load your piano folder first.
+      <strong>Loop</strong> &mdash; one sample repeats. <strong>Garden pulse</strong> &mdash; dry hits in time (Bloom-like). <strong>Soundscape</strong> &mdash; long reverb, optional bass drone and soft noise (after the &ldquo;Painting with John&rdquo; p5 sketch: pentatonic line + bed + texture). Your long-decay piano folder fits here.
+    </p>
+    <p class="hint" id="penta-row">
+      <label><input type="checkbox" id="pentatonic-only" checked /> Pentatonic filenames (C D E G A), e.g. C4.ogg</label>
     </p>
     <div class="bloom-opts" id="bloom-opts">
-      <label>Pulse interval: <span id="pulse-label">1.8</span>s
+      <label>Pulse (Garden): <span id="pulse-label">1.8</span>s
         <input type="range" id="pulse-interval" min="0.35" max="3" step="0.05" value="1.8" />
       </label>
-      <label><input type="checkbox" id="pentatonic-only" checked /> Pentatonic names only (C D E G A &mdash; uses note letters in filenames, e.g. C4.ogg)</label>
+    </div>
+    <div class="sc-opts hidden" id="sc-opts">
+      <label>Melody pulse: <span id="sc-melody-label">4</span>s
+        <input type="range" id="sc-melody" min="2" max="10" step="0.25" value="4" />
+      </label>
+      <label>Noise breath: <span id="sc-texture-label">7</span>s
+        <input type="range" id="sc-texture" min="3" max="14" step="0.25" value="7" />
+      </label>
+      <label><input type="checkbox" id="sc-drone" checked /> Low sine drone (bed)</label>
+      <label><input type="checkbox" id="sc-texture-on" checked /> Pink-noise taps (texture)</label>
+      <p class="hint" style="opacity:0.7;margin-top:0.5rem;">Reverb is long and wet; samples should be your pentatonic/long-tail set. (Sketch used C <em>minor</em> pentatonic on synths; yours can stay major-pentatonic files.)</p>
     </div>
   </fieldset>
 
