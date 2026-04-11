@@ -30,13 +30,36 @@
     #lifebar-wrap{position:fixed;bottom:0;left:0;width:100%;height:2px;background:rgba(0,0,0,.04);z-index:10;}
     #lifebar{height:100%;width:0%;background:rgba(0,0,0,.18);transition:width .1s linear;}
     #wall-counter{position:fixed;top:22px;right:28px;font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(0,0,0,.18);pointer-events:none;z-index:10;}
-    #corner-stop{
+    .bo-chrome{transition:opacity .25s ease,visibility .25s;}
+    body:not(.back-house) .bo-chrome{opacity:0;visibility:hidden;}
+    body.back-house .bo-chrome{opacity:1;visibility:visible;}
+    #corner-toggle{
       position:fixed;top:0;right:0;width:min(28vw,140px);height:min(28vw,140px);
-      z-index:40;cursor:pointer;background:transparent;border:none;padding:0;
+      z-index:60;cursor:pointer;background:transparent;border:none;padding:0;
       pointer-events:none;
     }
-    #corner-stop[aria-disabled="false"]:hover{background:rgba(0,0,0,.03);}
+    #corner-toggle[aria-disabled="false"]:hover{background:rgba(0,0,0,.04);}
     #credit{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.12);pointer-events:none;white-space:nowrap;z-index:10;}
+    .back-house{
+      position:fixed;top:0;right:0;bottom:0;width:min(100%,380px);max-width:100%;
+      z-index:50;background:rgba(250,248,245,.97);border-left:1px solid rgba(0,0,0,.08);
+      box-shadow:-8px 0 32px rgba(0,0,0,.06);overflow-y:auto;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      padding:1.1rem 1rem 1.25rem;
+    }
+    .back-house[hidden]{display:none!important;}
+    .back-house-title{font-size:0.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,0,0,.4);margin:0 0 .5rem;}
+    .back-house h2{font-size:1.05rem;font-weight:600;letter-spacing:-.02em;margin:0 0 .65rem;color:#111;}
+    .back-house-lede{font-size:0.82rem;line-height:1.45;color:rgba(0,0,0,.55);margin:0 0 1rem;}
+    .back-house-links{list-style:none;margin:0 0 1rem;padding:0;font-size:0.82rem;line-height:1.65;}
+    .back-house-links a{color:#2563eb;text-decoration:none;border-bottom:1px solid rgba(37,99,235,.25);}
+    .back-house-links a:hover{border-bottom-color:#2563eb;}
+    .back-house-actions{display:flex;flex-direction:column;gap:.5rem;}
+    .back-house-actions button{
+      font:inherit;font-size:0.8rem;padding:.45rem .65rem;border-radius:8px;border:1px solid rgba(0,0,0,.12);
+      background:#fff;cursor:pointer;text-align:left;
+    }
+    .back-house-actions button:hover{background:#fafafa;}
   </style>
 </head>
 <body>
@@ -44,16 +67,29 @@
   <div class="ov-label">Immersive Installation</div>
   <div class="ov-title">Bloom &nbsp;/ <em>Release</em></div>
   <div class="ov-dot"></div>
-  <div class="ov-hint" id="ov-hint">Loading &nbsp;·&nbsp; top-right corner stops</div>
+  <div class="ov-hint" id="ov-hint">Loading &nbsp;·&nbsp; top-right opens back of house</div>
   <div class="ov-attribution"><i>Salamander Grand Piano</i> (Yamaha C5) by Alexander Holm · CC BY 3.0 · FreePats — https://freepats.zenvoid.org/Piano/acoustic-grand-piano.html</div>
   <div class="ov-loading" id="ov-loading">Loading piano samples</div>
   <div id="progress-wrap"><div id="progress-bar"></div></div>
 </div>
-<div id="hint">Drag to look &nbsp;·&nbsp; tap top-right to stop</div>
-<div id="wall-counter">Wall 1 · North</div>
-<button type="button" id="corner-stop" aria-label="Stop experience" title="Stop" aria-disabled="true"></button>
-<div id="lifebar-wrap"><div id="lifebar"></div></div>
-<div id="credit">Bloom / Release &nbsp;·&nbsp; 2025–2026</div>
+<div id="hint" class="bo-chrome">Drag to look &nbsp;·&nbsp; top-right: back of house</div>
+<div id="wall-counter" class="bo-chrome">Wall 1 · North</div>
+<button type="button" id="corner-toggle" aria-label="Toggle back of house controls" title="Back of house" aria-expanded="false" aria-controls="back-house" aria-disabled="true"></button>
+<aside id="back-house" class="back-house" hidden aria-label="Back of house">
+  <p class="back-house-title">Iteration</p>
+  <h2>Back of house</h2>
+  <p class="back-house-lede">Bloom and audio keep running. Use this panel for links and toggles while you refine the piece before upload. Press <kbd>Esc</kbd> to close.</p>
+  <ul class="back-house-links">
+    <li><a href="critique-hub.html">Critique hub</a> — notes, preview list, Loop links</li>
+    <li><a href="index.html">Bundle index</a> — this folder</li>
+  </ul>
+  <div class="back-house-actions">
+    <button type="button" id="btn-mute-audio">Mute audio</button>
+    <button type="button" id="btn-autorotate">Auto-rotate: on</button>
+  </div>
+</aside>
+<div id="lifebar-wrap" class="bo-chrome"><div id="lifebar"></div></div>
+<div id="credit" class="bo-chrome">Bloom / Release &nbsp;·&nbsp; 2025–2026</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -143,6 +179,16 @@ async function loadAudio() {
 
 // Master gain — matches original -8dB
 let masterGain = null;
+let muted = false;
+
+function ensureMasterGain() {
+  if (!audioReady || !actx) return;
+  if (!masterGain) {
+    masterGain = actx.createGain();
+    masterGain.connect(actx.destination);
+  }
+  masterGain.gain.setValueAtTime(muted ? 0 : 0.4, actx.currentTime);
+}
 
 function playNote(noteName, velocity) {
   if (!audioReady || !actx) return;
@@ -151,11 +197,7 @@ function playNote(noteName, velocity) {
   const buf = audioBuffers[map.s];
   if (!buf) return;
 
-  if (!masterGain) {
-    masterGain = actx.createGain();
-    masterGain.gain.value = 0.4;
-    masterGain.connect(actx.destination);
-  }
+  ensureMasterGain();
 
   const src = actx.createBufferSource();
   src.buffer = buf;
@@ -389,21 +431,23 @@ window.addEventListener('resize',()=>{
 
 // ── RENDER LOOP ───────────────────────────────────────────────────────
 const lifebar=document.getElementById('lifebar');
-const cornerStop=document.getElementById('corner-stop');
+const cornerToggle=document.getElementById('corner-toggle');
+const backHouse=document.getElementById('back-house');
+const btnMuteAudio=document.getElementById('btn-mute-audio');
+const btnAutorotate=document.getElementById('btn-autorotate');
 let running=false,last=null,autoRotate=true;
 
-function setCornerStopActive(on){
-  cornerStop.setAttribute('aria-disabled', on ? 'false' : 'true');
-  cornerStop.style.pointerEvents=on?'auto':'none';
+function setCornerToggleActive(on){
+  cornerToggle.setAttribute('aria-disabled', on ? 'false' : 'true');
+  cornerToggle.style.pointerEvents=on?'auto':'none';
 }
 
-function stopExperience(){
+function toggleBackHouse(){
   if(!running)return;
-  running=false;
-  setCornerStopActive(false);
-  try{
-    if(actx&&actx.state==='running')actx.suspend();
-  }catch(_){/* ignore */}
+  var open=!document.body.classList.contains('back-house');
+  document.body.classList.toggle('back-house',open);
+  backHouse.hidden=!open;
+  cornerToggle.setAttribute('aria-expanded',open?'true':'false');
 }
 function loop(t){
   requestAnimationFrame(loop);
@@ -435,18 +479,40 @@ async function begin(){
   ovLoading.style.display='block';
   progressWrap.style.display='block';
   await loadAudio();
+  ensureMasterGain();
   try{ if(actx&&actx.state==='suspended')await actx.resume(); }catch(_){/* autoplay may need a gesture */}
   overlay.classList.add('fade');
   running=true; last=null;
-  setCornerStopActive(true);
+  setCornerToggleActive(true);
   setTimeout(()=>overlay.style.display='none',1400);
   setTimeout(()=>{if(!hintHidden){hintEl.classList.add('gone');hintHidden=true;}},6000);
 }
 
-cornerStop.addEventListener('click',function(e){
+cornerToggle.addEventListener('click',function(e){
   e.preventDefault();
   e.stopPropagation();
-  stopExperience();
+  if(cornerToggle.getAttribute('aria-disabled')==='true')return;
+  toggleBackHouse();
+});
+
+btnMuteAudio.addEventListener('click',function(){
+  muted=!muted;
+  ensureMasterGain();
+  btnMuteAudio.textContent=muted?'Unmute audio':'Mute audio';
+});
+
+btnAutorotate.addEventListener('click',function(){
+  autoRotate=!autoRotate;
+  btnAutorotate.textContent='Auto-rotate: '+(autoRotate?'on':'off');
+});
+
+document.addEventListener('keydown',function(ev){
+  if(ev.key==='Escape'&&document.body.classList.contains('back-house')){
+    ev.preventDefault();
+    document.body.classList.remove('back-house');
+    backHouse.hidden=true;
+    cornerToggle.setAttribute('aria-expanded','false');
+  }
 });
 
 function tryResumeAudio(){
