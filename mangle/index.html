@@ -11,7 +11,7 @@
       color: #e8e8e8;
     }
     body {
-      max-width: 36rem;
+      max-width: 38rem;
       margin: 2rem auto;
       padding: 0 1rem;
     }
@@ -75,12 +75,41 @@
     #sample-bank:disabled { opacity: 0.5; }
     .nav { font-size: 0.85rem; margin-bottom: 1rem; }
     .nav a { color: #8cf; }
+    fieldset {
+      border: 1px solid #333;
+      border-radius: 8px;
+      margin: 1rem 0;
+      padding: 0.75rem 1rem;
+    }
+    fieldset legend { font-size: 0.85rem; padding: 0 0.35rem; }
+    .mode-row label { margin-right: 1rem; font-size: 0.88rem; cursor: pointer; }
+    .mode-row input { vertical-align: middle; margin-right: 0.35rem; }
+    .bloom-opts { margin-top: 0.65rem; font-size: 0.85rem; }
+    .bloom-opts label { display: block; margin: 0.4rem 0; }
+    #pulse-interval { width: 100%; max-width: 14rem; vertical-align: middle; }
   </style>
 </head>
 <body>
   <p class="nav"><a href="audition.html">Sample audition</a></p>
   <h1>Mangle</h1>
   <p id="status">Press <strong>Start</strong> once (browsers require a click before audio).</p>
+
+  <fieldset>
+    <legend>Playback</legend>
+    <div class="mode-row">
+      <label><input type="radio" name="mode" id="mode-loop" value="loop" checked /> Loop</label>
+      <label><input type="radio" name="mode" id="mode-bloom" value="bloom" /> Garden pulse</label>
+    </div>
+    <p class="hint" style="margin-top:0.5rem;opacity:0.75;">
+      <strong>Loop</strong> &mdash; one sample repeats (ambient). <strong>Garden pulse</strong> &mdash; discrete hits on a steady beat, shuffled through your bank (like <em>Bloom Four Walls</em> / pentatonic garden sketches). Load your piano folder first.
+    </p>
+    <div class="bloom-opts" id="bloom-opts">
+      <label>Pulse interval: <span id="pulse-label">1.8</span>s
+        <input type="range" id="pulse-interval" min="0.35" max="3" step="0.05" value="1.8" />
+      </label>
+      <label><input type="checkbox" id="pentatonic-only" checked /> Pentatonic names only (C D E G A &mdash; uses note letters in filenames, e.g. C4.ogg)</label>
+    </div>
+  </fieldset>
 
   <div class="row">
     <button type="button" id="btn-start">Start</button>
@@ -90,21 +119,21 @@
   </div>
 
   <p class="hint">
-    <strong>Load folder</strong> (all audio in that folder) —
+    <strong>Load folder</strong> &mdash;
     <label class="file">
       Choose folder
       <input type="file" id="sample-folder" webkitdirectory multiple />
     </label>
   </p>
   <p class="hint">
-    Or <strong>one file</strong> —
+    Or <strong>one file</strong> &mdash;
     <input type="file" id="sample-file" accept="audio/*" />
   </p>
 
-  <div class="bank-row">
-    <label for="sample-bank">Looping sample</label>
+  <div class="bank-row" id="bank-wrap">
+    <label for="sample-bank">Looping sample (Loop mode)</label>
     <select id="sample-bank" disabled aria-label="Which sample to loop">
-      <option value="">— Load a folder or file —</option>
+      <option value="">&mdash; Load a folder or file &mdash;</option>
     </select>
   </div>
 

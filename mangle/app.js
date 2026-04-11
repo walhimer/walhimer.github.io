@@ -1,11 +1,19 @@
 /**
- * Mangle ó Transport + looping Player + bank (folder or single file) + record tap.
+ * Mangle ù Loop mode OR Bloom-style pulsed pentatonic bank (Bloom Four Wallsùlike).
  */
 (function () {
   "use strict";
 
   /** @type {Tone.Player | null} */
   let player = null;
+  /** @type {Tone.Players | null} */
+  let playersObj = null;
+  /** @type {Tone.Loop | null} */
+  let bloomLoop = null;
+  /** shuffled bank indices for bloom */
+  let bloomOrder = [];
+  let bloomStep = 0;
+
   /** @type {Tone.Gain | null} */
   let master = null;
   /** @type {Tone.Recorder | null} */
@@ -16,7 +24,6 @@
 
   /** @type {string[]} */
   let bankBlobUrls = [];
-  /** parallel to select options: same order */
   const bank = { urls: /** @type {string[]} */ ([]), names: /** @type {string[]} */ ([]) };
 
   const statusEl = document.getElementById("status");
@@ -27,11 +34,22 @@
   const fileInput = document.getElementById("sample-file");
   const folderInput = document.getElementById("sample-folder");
   const bankSelect = document.getElementById("sample-bank");
+  const pulseInput = document.getElementById("pulse-interval");
+  const pulseLabel = document.getElementById("pulse-label");
+  const pentatonicOnly = document.getElementById("pentatonic-only");
+  const bankWrap = document.getElementById("bank-wrap");
 
   const DEFAULT_SAMPLE =
     "https://tonejs.github.io/audio/casio/A1.mp3";
 
   const AUDIO_EXT = /\.(wav|mp3|flac|aiff|aif|ogg|m4a)$/i;
+
+  const PENTA_LETTERS = new Set(["C", "D", "E", "G", "A"]);
+
+  function getMode() {
+    const el = document.querySelector('input[name="mode"]:checked');
+    return el && el.value === "bloom" ? "bloom" : "loop";
+  }
 
   function setStatus(msg) {
     statusEl.textContent = msg;
@@ -49,6 +67,44 @@
     audioReady = true;
   }
 
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = a[i];
+      a[i] = a[j];
+      a[j] = t;
+    }
+    return a;
+  }
+
+  /** e.g. 448532__tedagame__c5.ogg or C4.ogg ? C, 5 */
+  function extractNoteFromFilename(name) {
+    const matches = name.match(/([A-Ga-g])(\d+)/g);
+    if (!matches || !matches.length) return null;
+    const last = matches[matches.length - 1];
+    const m = last.match(/([A-Ga-g])(\d+)/i);
+    if (!m) return null;
+    return { letter: m[1].toUpperCase(), oct: parseInt(m[2], 10) };
+  }
+
+  function getBloomIndices() {
+    const onlyPenta = pentatonicOnly.checked;
+    const n = bank.urls.length;
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      if (!onlyPenta) {
+        out.push(i);
+        continue;
+      }
+      const ex = extractNoteFromFilename(bank.names[i]);
+      if (ex && PENTA_LETTERS.has(ex.letter)) {
+        out.push(i);
+      }
+    }
+    return out.length ? out : bank.urls.map((_, i) => i);
+  }
+
   function revokeBank() {
     bankBlobUrls.forEach((u) => URL.revokeObjectURL(u));
     bankBlobUrls = [];
@@ -57,7 +113,7 @@
     bankSelect.innerHTML = "";
     const opt = document.createElement("option");
     opt.value = "";
-    opt.textContent = "ó Load a folder or file ó";
+    opt.textContent = "ù Load a folder or file ù";
     bankSelect.appendChild(opt);
     bankSelect.disabled = true;
     bankSelect.value = "";
@@ -76,7 +132,7 @@
       a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: "base" })
     );
     if (!audioFiles.length) {
-      setStatus("No audio files in that folder (.wav, .mp3, .ogg, Ö).");
+      setStatus("No audio files in that folder (.wav, .mp3, .ogg, ù).");
       return;
     }
     audioFiles.forEach((f) => {
@@ -91,26 +147,61 @@
     });
     bankSelect.disabled = false;
     bankSelect.selectedIndex = 1;
-    setStatus(audioFiles.length + " files loaded ó pick one above, then Start.");
+    setStatus(audioFiles.length + " files loaded ù Loop: pick one; Garden pulse: Start (needs samples).");
   }
 
-  function buildGraph(url) {
-    Tone.Transport.stop(0);
-    setTransportButtons(false);
-    btnStart.disabled = false;
+  function disposeBloom() {
+    if (bloomLoop) {
+      try {
+        bloomLoop.stop(0);
+        bloomLoop.dispose();
+      } catch (e) {
+        console.warn(e);
+      }
+      bloomLoop = null;
+    }
+    if (playersObj) {
+      try {
+        playersObj.dispose();
+      } catch (e) {
+        console.warn(e);
+      }
+      playersObj = null;
+    }
+    bloomOrder = [];
+    bloomStep = 0;
+  }
 
+  function disposeAllGraph() {
+    disposeBloom();
     if (player) {
-      player.dispose();
+      try {
+        player.dispose();
+      } catch (e) {
+        console.warn(e);
+      }
       player = null;
     }
     if (master) {
-      master.dispose();
+      try {
+        master.dispose();
+      } catch (e) {
+        console.warn(e);
+      }
       master = null;
     }
     if (recorder) {
-      recorder.dispose();
+      try {
+        recorder.dispose();
+      } catch (e) {
+        console.warn(e);
+      }
       recorder = null;
     }
+  }
+
+  function buildLoopGraph(url) {
+    disposeAllGraph();
 
     master = new Tone.Gain(1);
     master.toDestination();
@@ -132,19 +223,65 @@
     player.sync().start(0);
   }
 
+  async function buildBloomGraph() {
+    disposeAllGraph();
+    const indices = getBloomIndices();
+    if (!indices.length) {
+      throw new Error("No samples for Garden pulse.");
+    }
+
+    bloomOrder = shuffle(indices);
+    bloomStep = 0;
+
+    const urls = {};
+    for (let k = 0; k < bank.urls.length; k++) {
+      urls["s" + k] = bank.urls[k];
+    }
+
+    master = new Tone.Gain(0.85);
+    master.toDestination();
+
+    recorder = new Tone.Recorder();
+    master.connect(recorder);
+
+    playersObj = new Tone.Players({
+      urls,
+      fadeOut: 0.06,
+      onerror: (e) => console.error(e),
+    }).connect(master);
+
+    await Tone.loaded();
+
+    const sec = parseFloat(pulseInput.value) || 1.8;
+    const interval = sec + "s";
+
+    bloomLoop = new Tone.Loop(function (time) {
+      if (!playersObj || !bloomOrder.length) return;
+      const bankIdx = bloomOrder[bloomStep % bloomOrder.length];
+      bloomStep += 1;
+      const pl = playersObj.player("s" + bankIdx);
+      pl.volume.value = -16 + Math.random() * 9;
+      pl.start(time);
+    }, interval);
+
+    bloomLoop.start(0);
+  }
+
   async function loadSampleUrl(url, opts) {
     const silent = opts && opts.silent;
     if (!silent) {
-      setStatus("Loading sampleÖ");
+      setStatus("Loading sampleù");
     }
-    buildGraph(url);
+    Tone.Transport.stop(0);
+    setTransportButtons(false);
+    btnStart.disabled = false;
+    buildLoopGraph(url);
     await Tone.loaded();
     if (!silent) {
-      setStatus("Ready ó press Start to play.");
+      setStatus("Ready ù press Start to play.");
     }
   }
 
-  /** Switch the looping sample; keeps transport running if it was playing. */
   async function switchToBankIndex(index) {
     const url = bank.urls[index];
     if (url == null) return;
@@ -160,13 +297,53 @@
       setTransportButtons(true);
       setStatus("Playing: " + (bank.names[index] || ""));
     } else {
-      setStatus("Loaded: " + (bank.names[index] || "") + " ó press Start.");
+      setStatus("Loaded: " + (bank.names[index] || "") + " ù press Start.");
     }
   }
+
+  function syncModeUi() {
+    const bloom = getMode() === "bloom";
+    bankWrap.style.opacity = bloom ? "0.45" : "1";
+    bankSelect.disabled = bloom || bank.urls.length === 0;
+    pulseInput.disabled = !bloom;
+    pentatonicOnly.disabled = !bloom;
+  }
+
+  document.querySelectorAll('input[name="mode"]').forEach(function (r) {
+    r.addEventListener("change", syncModeUi);
+  });
+
+  pulseInput.addEventListener("input", function () {
+    pulseLabel.textContent = pulseInput.value;
+  });
 
   btnStart.addEventListener("click", async () => {
     try {
       await ensureAudio();
+      const mode = getMode();
+
+      if (mode === "bloom") {
+        if (!bank.urls.length) {
+          setStatus("Garden pulse needs your samples ù load a folder (e.g. pentatonic piano).");
+          return;
+        }
+        Tone.Transport.stop(0);
+        setTransportButtons(false);
+        btnStart.disabled = false;
+        setStatus("Loading Garden pulseù");
+        await buildBloomGraph();
+        Tone.Transport.start();
+        setTransportButtons(true);
+        setStatus(
+          "Garden pulse ù " +
+            bloomOrder.length +
+            " steps, " +
+            pulseInput.value +
+            "s (Bloom / sketch-style beat)."
+        );
+        return;
+      }
+
       if (!player) {
         await loadSampleUrl(DEFAULT_SAMPLE);
       }
@@ -177,7 +354,7 @@
         !Number.isNaN(idx) && bank.names[idx] != null
           ? bank.names[idx]
           : "";
-      setStatus(name ? "Playing: " + name : "Playing.");
+      setStatus(name ? "Playing (loop): " + name : "Playing.");
     } catch (err) {
       console.error(err);
       setStatus("Error starting audio. Check the console.");
@@ -185,7 +362,8 @@
   });
 
   btnPause.addEventListener("click", () => {
-    if (!audioReady || !player) return;
+    if (!audioReady) return;
+    if (!player && !playersObj) return;
     Tone.Transport.pause();
     setTransportButtons(false);
     btnStart.disabled = false;
@@ -193,8 +371,12 @@
   });
 
   btnStop.addEventListener("click", () => {
-    if (!audioReady || !player) return;
+    if (!audioReady) return;
+    if (!player && !playersObj) return;
     Tone.Transport.stop(0);
+    if (bloomLoop) {
+      bloomLoop.stop(0);
+    }
     setTransportButtons(false);
     btnStart.disabled = false;
     setStatus("Stopped.");
@@ -204,7 +386,7 @@
     try {
       await ensureAudio();
       if (!recorder) {
-        setStatus("Press Start once (or load a file) so the audio path exists ó then record.");
+        setStatus("Press Start once (or load a file) so the audio path exists ù then record.");
         return;
       }
 
@@ -213,10 +395,12 @@
         recording = true;
         btnRecord.textContent = "Stop recording";
         btnRecord.classList.add("recording");
+        const playing =
+          Tone.Transport.state === "started" && (!!player || !!playersObj);
         setStatus(
-          player && Tone.Transport.state === "started"
-            ? "Playing ó recordingÖ"
-            : "Recording (silent until you Start)Ö"
+          playing
+            ? "Playing ù recordingù"
+            : "Recording (silent until you Start)ù"
         );
       } else {
         const blob = await recorder.stop();
@@ -235,7 +419,7 @@
       }
     } catch (err) {
       console.error(err);
-      setStatus("Recording failed ó see console.");
+      setStatus("Recording failed ù see console.");
       recording = false;
       btnRecord.textContent = "Record";
       btnRecord.classList.remove("recording");
@@ -248,10 +432,11 @@
     try {
       await ensureAudio();
       fillBankFromFiles(files);
-      if (bank.urls.length) {
+      if (bank.urls.length && getMode() === "loop") {
         await loadSampleUrl(bank.urls[0], { silent: true });
       }
       e.target.value = "";
+      syncModeUi();
     } catch (err) {
       console.error(err);
       setStatus("Could not load that folder.");
@@ -276,6 +461,7 @@
       bankSelect.value = "0";
       await loadSampleUrl(url);
       e.target.value = "";
+      syncModeUi();
     } catch (err) {
       console.error(err);
       setStatus("Could not load that file.");
@@ -295,4 +481,6 @@
       setStatus("Could not switch sample.");
     }
   });
+
+  syncModeUi();
 })();
