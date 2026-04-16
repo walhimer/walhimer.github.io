@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="297.0mm" height="210.0mm" viewBox="0.00 -13.24 1200.00 848.48" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 L1.5,3 z" fill="#333" />
+    </marker>
+  </defs>
+  <title>Light Art 023 — Mark Walhimer, 2026 — Walhimer Studio — technical plan / elevation</title>
+  <desc>Light Art 023 by Mark Walhimer (2026), Walhimer Studio (https://mark-walhimer.com). Room 20′×20′, ceiling 12′. LED linear elements, DMX / programmable lighting controller, aluminum or steel suspension &amp; raceway, power distribution. NTS — NOT TO SCALE. Artist requests full-size mockup prior to fabrication. Schematic grid — not every luminaire shown.</desc>
+  <style>
+      .text { font-family: system-ui, "Helvetica Neue", sans-serif; fill: #111; }
+      .title { font-size: 14px; font-weight: 600; }
+      .meta { font-size: 10px; fill: #333; }
+      .nts { font-size: 11px; font-weight: 600; fill: #111; }
+      .dim { stroke: #333; stroke-width: 0.55; fill: none; }
+      .dim-help { stroke: #666; stroke-width: 0.35; stroke-dasharray: 4 3; fill: none; }
+      .dim-text { font-size: 11px; fill: #111; }
+      .room { fill: none; stroke: #111; stroke-width: 1.2; }
+      .grid { stroke: #999; stroke-width: 0.35; }
+      .elev { fill: none; stroke: #111; stroke-width: 1.0; }
+      .ceiling { stroke: #666; stroke-width: 0.6; stroke-dasharray: 4 3; }
+      .page { fill: #ffffff; stroke: none; }
+      .thumb-cap { font-size: 11px; fill: #333; }
+      .thumb-head { font-size: 12px; font-weight: 600; fill: #111; }
+    </style>
+  <rect x="0.00" y="-13.24" width="1200.00" height="848.48" class="page" />
+  <g id="plan">
+    <rect x="22.0" y="22.0" width="560.0" height="560.0" class="room" />
+    <line x1="22.0" y1="22.0" x2="22.0" y2="582.0" class="grid" />
+    <line x1="50.0" y1="22.0" x2="50.0" y2="582.0" class="grid" />
+    <line x1="78.0" y1="22.0" x2="78.0" y2="582.0" class="grid" />
+    <line x1="106.0" y1="22.0" x2="106.0" y2="582.0" class="grid" />
+    <line x1="134.0" y1="22.0" x2="134.0" y2="582.0" class="grid" />
+    <line x1="162.0" y1="22.0" x2="162.0" y2="582.0" class="grid" />
+    <line x1="190.0" y1="22.0" x2="190.0" y2="582.0" class="grid" />
+    <line x1="218.0" y1="22.0" x2="218.0" y2="582.0" class="grid" />
+    <line x1="246.0" y1="22.0" x2="246.0" y2="582.0" class="grid" />
+    <line x1="274.0" y1="22.0" x2="274.0" y2="582.0" class="grid" />
+    <line x1="302.0" y1="22.0" x2="302.0" y2="582.0" class="grid" />
+    <line x1="330.0" y1="22.0" x2="330.0" y2="582.0" class="grid" />
+    <line x1="358.0" y1="22.0" x2="358.0" y2="582.0" class="grid" />
+    <line x1="386.0" y1="22.0" x2="386.0" y2="582.0" class="grid" />
+    <line x1="414.0" y1="22.0" x2="414.0" y2="582.0" class="grid" />
+    <line x1="442.0" y1="22.0" x2="442.0" y2="582.0" class="grid" />
+    <line x1="470.0" y1="22.0" x2="470.0" y2="582.0" class="grid" />
+    <line x1="498.0" y1="22.0" x2="498.0" y2="582.0" class="grid" />
+    <line x1="526.0" y1="22.0" x2="526.0" y2="582.0" class="grid" />
+    <line x1="554.0" y1="22.0" x2="554.0" y2="582.0" class="grid" />
+    <line x1="582.0" y1="22.0" x2="582.0" y2="582.0" class="grid" />
+    <line x1="22.0" y1="22.0" x2="582.0" y2="22.0" class="grid" />
+    <line x1="22.0" y1="50.0" x2="582.0" y2="50.0" class="grid" />
+    <line x1="22.0" y1="78.0" x2="582.0" y2="78.0" class="grid" />
+    <line x1="22.0" y1="106.0" x2="582.0" y2="106.0" class="grid" />
+    <line x1="22.0" y1="134.0" x2="582.0" y2="134.0" class="grid" />
+    <line x1="22.0" y1="162.0" x2="582.0" y2="162.0" class="grid" />
+    <line x1="22.0" y1="190.0" x2="582.0" y2="190.0" class="grid" />
+    <line x1="22.0" y1="218.0" x2="582.0" y2="218.0" class="grid" />
+    <line x1="22.0" y1="246.0" x2="582.0" y2="246.0" class="grid" />
+    <line x1="22.0" y1="274.0" x2="582.0" y2="274.0" class="grid" />
+    <line x1="22.0" y1="302.0" x2="582.0" y2="302.0" class="grid" />
+    <line x1="22.0" y1="330.0" x2="582.0" y2="330.0" class="grid" />
+    <line x1="22.0" y1="358.0" x2="582.0" y2="358.0" class="grid" />
+    <line x1="22.0" y1="386.0" x2="582.0" y2="386.0" class="grid" />
+    <line x1="22.0" y1="414.0" x2="582.0" y2="414.0" class="grid" />
+    <line x1="22.0" y1="442.0" x2="582.0" y2="442.0" class="grid" />
+    <line x1="22.0" y1="470.0" x2="582.0" y2="470.0" class="grid" />
+    <line x1="22.0" y1="498.0" x2="582.0" y2="498.0" class="grid" />
+    <line x1="22.0" y1="526.0" x2="582.0" y2="526.0" class="grid" />
+    <line x1="22.0" y1="554.0" x2="582.0" y2="554.0" class="grid" />
+    <line x1="22.0" y1="582.0" x2="582.0" y2="582.0" class="grid" />
+    <line x1="22.0" y1="604.0" x2="582.0" y2="604.0" class="dim" />
+    <text x="302.0" y="618.0" text-anchor="middle" class="text dim-text">20′</text>
+    <line x1="4.0" y1="22.0" x2="4.0" y2="582.0" class="dim" />
+    <text x="-2.0" y="302.0" text-anchor="middle" class="text dim-text" transform="rotate(-90 -2.0 302.0)">20′</text>
+    <text x="22.0" y="14.0" class="text meta">PLAN — GRID (SCHEMATIC)</text>
+  </g>
+  <g id="elevation">
+    <rect x="618.0" y="134.0" width="560.0" height="336.0" class="elev" />
+    <line x1="618.0" y1="134.0" x2="1178.0" y2="134.0" class="ceiling" />
+    <text x="618.0" y="126.0" class="text meta">ELEVATION — ONE BAY (SCHEMATIC)</text>
+    <line x1="1192.0" y1="134.0" x2="1192.0" y2="470.0" class="dim" />
+    <text x="1200.0" y="302.0" text-anchor="middle" class="text dim-text" transform="rotate(-90 1200.0 302.0)">12′ CLEAR</text>
+  </g>
+  <g id="title-block">
+    <text x="22.0" y="640.0" class="text title">Light Art 023</text>
+    <text x="22.0" y="658.0" class="text meta">Mark Walhimer, 2026</text>
+    <text x="22.0" y="676.0" class="text meta">Walhimer Studio</text>
+    <text x="22.0" y="694.0" class="text meta">mark-walhimer.com</text>
+    <text x="22.0" y="712.0" class="text meta">LED linear elements, DMX / programmable lighting controller, aluminum or steel suspension &amp; raceway, power distribution</text>
+    <text x="22.0" y="730.0" class="text nts">NTS — NOT TO SCALE</text>
+    <text x="22.0" y="748.0" class="text meta">Artist requests full-size mockup prior to fabrication.</text>
+    <text x="22.0" y="766.0" class="text meta">ROOM: 20′ × 20′  ·  CEILING: 12′  ·  GRID: 20 × 20 CELLS (1′) — SCHEMATIC</text>
+    <text x="22.0" y="784.0" class="text meta">UNITS: FEET · ORTHOGONAL LUMINOUS VOLUME — NOT EVERY MEMBER SHOWN</text>
+  </g>
+  <g id="nts-callout">
+    <text x="1192.3" y="9.9" text-anchor="end" class="text nts">NTS — NOT TO SCALE</text>
+  </g>
+</svg>
