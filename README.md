@@ -64,6 +64,7 @@ git push origin main
 1. Keep `data/catalog.json` current via `python3 _scripts/refresh_catalog.py`.
 2. Open `catalog-db.html` to browse/search/filter the collection as a mini database.
 3. If links or labels need adjustment, update `catalog-db.html` only (no manifest schema change required).
+4. Run `python3 _scripts/check_repo_layout.py` before commit to catch root-level folder drift.
 
 ---
 
