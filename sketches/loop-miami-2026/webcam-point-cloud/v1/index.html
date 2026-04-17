@@ -55,13 +55,14 @@
       });
 
       colorMode(RGB, 255);
-      stroke(255);
-      strokeWeight(1.6);
+      stroke(255, 255, 255);
+      strokeWeight(4);
       noFill();
     }
 
     function draw() {
       background(0);
+      noLights();
       orbitControl();
       scale(-1, 1, 1);
 
@@ -80,7 +81,9 @@
       const cloudScale = min((width * fillAmount) / maskWidth, (height * fillAmount) / maskHeight);
       const centerX = (mask.minX + mask.maxX) * 0.5;
       const centerY = (mask.minY + mask.maxY) * 0.5;
-      strokeWeight(max(1.6, cloudScale * 0.16));
+
+      stroke(255, 255, 255);
+      strokeWeight(min(12, max(3.5, cloudScale * 0.42)));
 
       beginShape(POINTS);
       for (let y = 0; y < camH; y += step) {
