@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visible — Abstract Technical Drawing (Emergent DNA 1.1)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/walhimer-studio/EmergentDNA@v1.1.0/src/emergent-dna-core.js"></script>
+  <script src="visible-piano.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; font-family: 'Courier Prime', monospace; }
+    #canvas-container { position: fixed; inset: 0; z-index: 1; }
+    #emergent-dna-wrap {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+      padding: 10px 14px 18px; background: linear-gradient(to top, rgba(0,0,0,0.92), transparent);
+      pointer-events: none;
+    }
+    #emergent-dna {
+      font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.04em;
+      text-transform: uppercase; text-align: center; min-height: 1.2em;
+    }
+    #lifebar-container {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+      height: 4px; background: rgba(255,255,255,0.08);
+    }
+    #lifebar { height: 100%; width: 0%; background: #fff; transition: width 0.12s linear; }
+    #gate {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1rem; background: #0a0a0a; color: #e8e8e8; text-align: center; padding: 2rem;
+    }
+    #gate h1 { font-size: 1.25rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; }
+    #gate p { max-width: 28rem; font-size: 0.85rem; line-height: 1.6; color: #9a9a9a; }
+    #startBtn {
+      margin-top: 0.5rem; padding: 0.65rem 1.4rem;
+      font-family: 'Courier Prime', monospace; font-size: 0.75rem; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 2px; transition: background 0.2s, border-color 0.2s;
+    }
+    #startBtn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.55); }
+    #startBtn:disabled { opacity: 0.45; cursor: wait; }
+    #gate.hidden { display: none; }
+    video#cam { display: none; }
+    #recaptureBtn {
+      display: none;
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 20;
+      padding: 0.5rem 0.85rem;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: rgba(0,0,0,0.55);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 2px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    #recaptureBtn:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.45);
+    }
+    body.sketch-active #recaptureBtn { display: block; }
+  </style>
+</head>
+<body>
+  <div id="gate">
+    <h1>Visible</h1>
+    <p>
+      One frame from your camera seeds an individual in the species pool (Emergent DNA 1.1).
+      The drawing is an abstract technical elevation: queued line work, grid, symbols — driven by genome traits, not a generic sketch.
+    </p>
+    <button type="button" id="startBtn">Allow camera &amp; begin</button>
+  </div>
+
+  <button type="button" id="recaptureBtn" hidden>New capture</button>
+
+  <video id="cam" playsinline muted></video>
+  <canvas id="analysis" style="display:none"></canvas>
+
+  <div id="canvas-container"></div>
+  <div id="lifebar-container"><div id="lifebar"></div></div>
+  <div id="emergent-dna-wrap"><div id="emergent-dna"></div></div>
+
+  <script src="td-core-fragment.js"></script>
+  <script>
+(function () {
+  'use strict';
+
+  var ED = window.EmergentDNA;
+  var geneSchema = {
+    lineDensity: [0.35, 1.0],
+    wobble: [0.5, 3.5],
+    noiseScale: [0.012, 0.045],
+    hatchWeight: [0.4, 1.2]
+  };
+
+  var pool = new ED.SocialPool({ storageKey: 'emergent-visible-pool-v1' });
+
+  var state = { seed: null, genome: null, individual: null, frameFingerprint: null };
+
+  function hashToSeed(str) {
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0) || 1;
+  }
+
+  function analyzeFrame(video, canvas) {
+    var w = Math.min(160, video.videoWidth || 160);
+    var h = Math.min(120, video.videoHeight || 120);
+    if (w < 8 || h < 8) return { fingerprint: 'empty', stats: {} };
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, w, h);
+    var img = ctx.getImageData(0, 0, w, h);
+    var d = img.data;
+    var r = 0, g = 0, b = 0, edge = 0, prev = null;
+    for (var i = 0; i < d.length; i += 4) {
+      r += d[i]; g += d[i + 1]; b += d[i + 2];
+      var lum = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+      if (prev !== null) edge += Math.abs(lum - prev);
+      prev = lum;
+    }
+    var n = d.length / 4;
+    r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
+    var fp = ['rgb', r, g, b, 'edge', Math.round(edge)].join(':');
+    return {
+      fingerprint: fp,
+      stats: { meanR: r, meanG: g, meanB: b, edge: edge }
+    };
+  }
+
+  function applyConfigFromGenome(ind, genome) {
+    var st = genome.speciesTraits;
+    var ld = ind.lineDensity != null ? ind.lineDensity : 0.7;
+    var pl = st.plasticity;
+    var meta = st.metabolic;
+    CONFIG.complexity = Math.max(3, Math.min(14, Math.round(4 + ld * 7 + pl * 2)));
+    CONFIG.lineWeight = Math.max(0.9, Math.min(2.2, 1.2 + (meta - 1) * 1.2 + ld * 0.25));
+    CONFIG.stepMs = Math.max(10, Math.min(32, Math.round(24 - pl * 5)));
+    var ns = ind.noiseScale != null ? ind.noiseScale : 0.025;
+    var hw = ind.hatchWeight != null ? ind.hatchWeight : 0.85;
+    CONFIG.showDots = ns > 0.026;
+    CONFIG.showText = hw > 0.95;
+    CONFIG.showZigzags = (ind.wobble != null ? ind.wobble : 1.5) > 2.2;
+  }
+
+  /** Camera fingerprint biases species traits before pool nudging (review signal). */
+  function nudgeSpeciesTraitsFromFingerprint(genome, fingerprint) {
+    var h = 0;
+    for (var i = 0; i < fingerprint.length; i++) {
+      h = (h * 31 + fingerprint.charCodeAt(i)) | 0;
+    }
+    var t = Math.abs(h % 1000) / 1000;
+    genome.speciesTraits.plasticity = 0.35 + t * 0.45;
+    genome.speciesTraits.metabolic = 0.85 + (1 - t) * 0.35;
+  }
+
+  var gate = document.getElementById('gate');
+  var startBtn = document.getElementById('startBtn');
+  var recaptureBtn = document.getElementById('recaptureBtn');
+  var video = document.getElementById('cam');
+  var acanvas = document.getElementById('analysis');
+  var p5Started = false;
+
+  function startCamera() {
+    return navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
+      .then(function (stream) {
+        video.srcObject = stream;
+        return video.play();
+      });
+  }
+
+  function runCapture() {
+    var snap = analyzeFrame(video, acanvas);
+    state.frameFingerprint = snap.fingerprint;
+    state.seed = hashToSeed(snap.fingerprint);
+    state.genome = new ED.SpeciesGenome(state.seed, geneSchema);
+    nudgeSpeciesTraitsFromFingerprint(state.genome, snap.fingerprint);
+    ED.nudgeSpeciesFromPool(state.genome, pool, 0.35);
+    state.individual = ED.expressIndividual(state.genome);
+    applyConfigFromGenome(state.individual, state.genome);
+    window.__VISIBLE_SEED__ = state.seed;
+    window.audioReady = true;
+    window.__visibleFinishRun = function () {
+      pool.record({
+        speciesTraits: state.genome.speciesTraits,
+        extra: {
+          lineDensity: state.individual.lineDensity,
+          wobble: state.individual.wobble,
+          noiseScale: state.individual.noiseScale,
+          hatchWeight: state.individual.hatchWeight
+        }
+      });
+    };
+    if (!p5Started) {
+      p5Started = true;
+      new p5();
+    } else if (typeof window.resetDrawing === 'function') {
+      window.resetDrawing();
+    }
+  }
+
+  recaptureBtn.addEventListener('click', function () {
+    if (window.VisiblePiano && window.VisiblePiano.preload) {
+      window.VisiblePiano.preload();
+    }
+    runCapture();
+  });
+
+  startBtn.addEventListener('click', function () {
+    startBtn.disabled = true;
+    if (window.VisiblePiano && window.VisiblePiano.preload) {
+      window.VisiblePiano.preload();
+    }
+    startCamera()
+      .then(function () {
+        gate.classList.add('hidden');
+        document.body.classList.add('sketch-active');
+        recaptureBtn.hidden = false;
+        runCapture();
+      })
+      .catch(function () {
+        startBtn.disabled = false;
+        alert('Camera access is required for this sketch.');
+      });
+  });
+})();
+  </script>
+</body>
+</html>

@@ -1,10 +1,10 @@
 # Loop Miami 2026
 
-Planning and thread-review notes for **Loop Art Critique** / Miami 2026 (Installation Composer × Emergent DNA × soundscape).
+Planning and thread-review notes for **Loop Art Critique** / Miami 2026 (Installation Composer ï¿½ Emergent DNA ï¿½ soundscape).
 
 ## Document
 
-- **[installation-composer-emergent-dna-soundscape.md](installation-composer-emergent-dna-soundscape.md)** — full working summary (technical stack, Bloom, hub format, GitHub alignment).
+- **[installation-composer-emergent-dna-soundscape.md](installation-composer-emergent-dna-soundscape.md)** ï¿½ full working summary (technical stack, Bloom, hub format, GitHub alignment).
 
 ## Prototypes bundled here
 
@@ -21,4 +21,4 @@ This folder lives under the **[Catalog](https://mark-walhimer.com/sketches/index
 
 ## Repository
 
-https://github.com/walhimer-studio/walhimer.github.io — folder path: `sketches/loop-miami-2026/`
+https://github.com/walhimer-studio/walhimer.github.io ï¿½ folder path: `sketches/loop-miami-2026/`

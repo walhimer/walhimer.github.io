@@ -735,7 +735,7 @@
       setStatus(
         "Liminal: threshold passed (" +
           liminalSec +
-          "s) ù now full Soundscape pulse."
+          "s) ÔøΩ now full Soundscape pulse."
       );
     }, liminalSec);
   }

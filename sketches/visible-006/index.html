@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visible 006 - Face-Driven Walker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #050505;
+      color: #f0f0f0;
+      font-family: "Courier New", Courier, monospace;
+    }
+    #canvas-container {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+    }
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+      text-align: center;
+      background: #070707;
+    }
+    #gate.hidden { display: none; }
+    #gate h1 {
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    #gate p {
+      max-width: 38rem;
+      line-height: 1.6;
+      font-size: 0.82rem;
+      color: #b5b5b5;
+    }
+    #startBtn {
+      margin-top: 8px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: transparent;
+      color: #fff;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+    #startBtn:hover { background: rgba(255,255,255,0.08); }
+    #status {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 8;
+      font-size: 11px;
+      line-height: 1.4;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 10px;
+      max-width: min(92vw, 560px);
+      white-space: pre-line;
+    }
+    #reseedBtn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 8;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+    }
+    #reseedBtn:hover { background: rgba(255,255,255,0.1); }
+    video#cam, canvas#analysis { display: none; }
+  </style>
+</head>
+<body>
+  <div id="gate">
+    <h1>Visible 006</h1>
+    <p>
+      This version reads face geometry from the camera to drive a walking figure.
+      It does not identify a person. No face recognition, no name matching, no persistent biometric storage.
+      The walker moves toward the lens like a mirror response.
+    </p>
+    <button type="button" id="startBtn">Allow camera and begin</button>
+  </div>
+
+  <div id="status">Waiting for camera access...</div>
+  <button type="button" id="reseedBtn" hidden>New capture</button>
+  <div id="canvas-container"></div>
+  <video id="cam" playsinline muted></video>
+  <canvas id="analysis"></canvas>
+
+  <script src="../p5.min.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      const gate = document.getElementById("gate");
+      const startBtn = document.getElementById("startBtn");
+      const reseedBtn = document.getElementById("reseedBtn");
+      const statusEl = document.getElementById("status");
+      const video = document.getElementById("cam");
+      const analysisCanvas = document.getElementById("analysis");
+
+      let faceDetector = null;
+      let detectorSupported = false;
+      let detectorBusy = false;
+      let frameCounter = 0;
+      let p5Started = false;
+
+      const state = {
+        seed: 1,
+        hasFace: false,
+        faceX: 0.5,
+        faceY: 0.5,
+        faceArea: 0.08,
+        brightness: 0.5,
+        motion: 0.0,
+        prevFaceX: 0.5,
+        prevFaceY: 0.5
+      };
+
+      function constrain01(v) {
+        return Math.max(0, Math.min(1, v));
+      }
+
+      function hashString(str) {
+        let h = 2166136261;
+        for (let i = 0; i < str.length; i++) {
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return (h >>> 0) || 1;
+      }
+
+      function setStatus(lines) {
+        statusEl.textContent = lines.join("\n");
+      }
+
+      function updateStatus() {
+        const mode = detectorSupported ? "Face mode: detector active" : "Face mode: fallback feature mode";
+        const confirm = state.hasFace
+          ? "Face detected: yes (feature-only analysis, no identity)"
+          : "Face detected: no (show your face to drive the walker)";
+        const metrics = `x=${state.faceX.toFixed(3)}  y=${state.faceY.toFixed(3)}  area=${state.faceArea.toFixed(3)}  motion=${state.motion.toFixed(3)}`;
+        setStatus([mode, confirm, metrics]);
+      }
+
+      function pickPrimaryFace(faces) {
+        if (!faces || !faces.length) return null;
+        let best = faces[0];
+        let bestArea = best.boundingBox.width * best.boundingBox.height;
+        for (let i = 1; i < faces.length; i++) {
+          const f = faces[i];
+          const area = f.boundingBox.width * f.boundingBox.height;
+          if (area > bestArea) {
+            best = f;
+            bestArea = area;
+          }
+        }
+        return best;
+      }
+
+      function sampleBrightnessFromRegion(x, y, w, h, vw, vh) {
+        const ctx = analysisCanvas.getContext("2d", { willReadFrequently: true });
+        analysisCanvas.width = vw;
+        analysisCanvas.height = vh;
+        ctx.drawImage(video, 0, 0, vw, vh);
+
+        const rx = Math.max(0, Math.floor(x));
+        const ry = Math.max(0, Math.floor(y));
+        const rw = Math.max(1, Math.min(vw - rx, Math.floor(w)));
+        const rh = Math.max(1, Math.min(vh - ry, Math.floor(h)));
+
+        const img = ctx.getImageData(rx, ry, rw, rh).data;
+        let total = 0;
+        const count = img.length / 4;
+        for (let i = 0; i < img.length; i += 4) {
+          total += 0.299 * img[i] + 0.587 * img[i + 1] + 0.114 * img[i + 2];
+        }
+        return count > 0 ? (total / count) / 255 : 0.5;
+      }
+
+      async function detectAndUpdateFace() {
+        if (detectorBusy || !video.videoWidth || !video.videoHeight) return;
+        detectorBusy = true;
+        try {
+          if (faceDetector) {
+            const faces = await faceDetector.detect(video);
+            const face = pickPrimaryFace(faces);
+            if (face) {
+              const bb = face.boundingBox;
+              const vw = video.videoWidth;
+              const vh = video.videoHeight;
+              const cx = (bb.x + bb.width * 0.5) / vw;
+              const cy = (bb.y + bb.height * 0.5) / vh;
+              const area = (bb.width * bb.height) / (vw * vh);
+              const motion = Math.hypot(cx - state.prevFaceX, cy - state.prevFaceY);
+
+              state.prevFaceX = state.faceX;
+              state.prevFaceY = state.faceY;
+              state.faceX = constrain01(cx);
+              state.faceY = constrain01(cy);
+              state.faceArea = constrain01(area * 3.2);
+              state.motion = Math.min(1, motion * 8.0);
+              state.brightness = sampleBrightnessFromRegion(bb.x, bb.y, bb.width, bb.height, vw, vh);
+              state.hasFace = true;
+            } else {
+              state.hasFace = false;
+            }
+          } else {
+            const vw = Math.min(240, video.videoWidth || 240);
+            const vh = Math.min(180, video.videoHeight || 180);
+            const b = sampleBrightnessFromRegion(0, 0, vw, vh, vw, vh);
+            state.motion = Math.abs(b - state.brightness) * 2.0;
+            state.brightness = b;
+            state.hasFace = true;
+          }
+        } catch (_err) {
+          state.hasFace = false;
+        } finally {
+          detectorBusy = false;
+          updateStatus();
+        }
+      }
+
+      function reseedFromCurrentFace() {
+        const token = [
+          Math.round(state.faceX * 1000),
+          Math.round(state.faceY * 1000),
+          Math.round(state.faceArea * 1000),
+          Math.round(state.brightness * 1000)
+        ].join(":");
+        state.seed = hashString(token);
+        window.__VISIBLE6_SEED__ = state.seed;
+        if (typeof window.resetWalkerScene === "function") window.resetWalkerScene();
+      }
+
+      async function startCamera() {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: false
+        });
+        video.srcObject = stream;
+        await video.play();
+      }
+
+      function initDetector() {
+        detectorSupported = "FaceDetector" in window;
+        if (detectorSupported) {
+          try {
+            faceDetector = new FaceDetector({ fastMode: true, maxDetectedFaces: 2 });
+          } catch (_e) {
+            detectorSupported = false;
+            faceDetector = null;
+          }
+        }
+        updateStatus();
+      }
+
+      reseedBtn.addEventListener("click", reseedFromCurrentFace);
+
+      startBtn.addEventListener("click", async function () {
+        startBtn.disabled = true;
+        try {
+          initDetector();
+          await startCamera();
+          gate.classList.add("hidden");
+          reseedBtn.hidden = false;
+
+          if (!p5Started) {
+            p5Started = true;
+            new p5(function (p) {
+              let cs = 0;
+              let walkerCycle = 0;
+              let walkerX = 0;
+              let trail = [];
+
+              function reseedScene() {
+                p.randomSeed(state.seed);
+                p.noiseSeed(state.seed);
+                walkerCycle = 0;
+                trail = [];
+                walkerX = cs * 0.5;
+              }
+
+              window.resetWalkerScene = reseedScene;
+
+              function drawGround() {
+                p.push();
+                p.stroke(230, 90);
+                p.strokeWeight(1);
+                const y = cs * 0.82;
+                p.line(cs * 0.1, y, cs * 0.9, y);
+                p.stroke(230, 35);
+                for (let i = 0; i <= 12; i++) {
+                  const x = p.map(i, 0, 12, cs * 0.1, cs * 0.9);
+                  p.line(x, y - 6, x, y + 6);
+                }
+                p.pop();
+              }
+
+              function drawWalker(x, yBase, scaleAmount, phase) {
+                const stride = 18 * scaleAmount * (0.5 + state.motion * 1.8);
+                const bob = Math.sin(phase * 2) * (5 * scaleAmount);
+                const legA = Math.sin(phase) * stride;
+                const legB = Math.sin(phase + Math.PI) * stride;
+                const armA = Math.sin(phase + Math.PI) * stride * 0.6;
+                const armB = Math.sin(phase) * stride * 0.6;
+
+                const hipY = yBase - 28 * scaleAmount + bob;
+                const shoulderY = yBase - 55 * scaleAmount + bob;
+                const headY = yBase - 75 * scaleAmount + bob;
+
+                p.push();
+                p.stroke(255, 235);
+                p.strokeWeight(Math.max(1.2, 2.0 * scaleAmount));
+                p.noFill();
+                p.circle(x, headY, 13 * scaleAmount);
+                p.line(x, shoulderY, x, hipY);
+                p.line(x, shoulderY + 5 * scaleAmount, x + armA, shoulderY + 18 * scaleAmount);
+                p.line(x, shoulderY + 5 * scaleAmount, x + armB, shoulderY + 18 * scaleAmount);
+                p.line(x, hipY, x + legA, yBase);
+                p.line(x, hipY, x + legB, yBase);
+                p.pop();
+              }
+
+              p.setup = function () {
+                cs = Math.min(window.innerWidth, window.innerHeight);
+                const c = p.createCanvas(cs, cs);
+                c.parent("canvas-container");
+                p.frameRate(60);
+                p.pixelDensity(2);
+                reseedScene();
+              };
+
+              p.windowResized = function () {
+                cs = Math.min(window.innerWidth, window.innerHeight);
+                p.resizeCanvas(cs, cs);
+                reseedScene();
+              };
+
+              p.draw = function () {
+                frameCounter++;
+                if (frameCounter % 8 === 0) detectAndUpdateFace();
+
+                p.background(5);
+                drawGround();
+
+                const targetX = p.map(1 - state.faceX, 0, 1, cs * 0.2, cs * 0.8);
+                walkerX = p.lerp(walkerX, targetX, 0.07);
+
+                const nearBias = p.constrain(state.faceArea * 1.6 + (state.hasFace ? 0.1 : -0.1), 0, 1);
+                const approach = p.lerp(0.05, 1.0, nearBias);
+                walkerCycle += (0.018 + state.motion * 0.07 + state.brightness * 0.01) * approach;
+
+                const z = (Math.sin(walkerCycle * 0.35) * 0.5 + 0.5) * approach;
+                const scaleAmount = p.lerp(0.52, 1.62, z);
+                const yBase = p.lerp(cs * 0.86, cs * 0.78, z);
+
+                trail.push({ x: walkerX, y: yBase, s: scaleAmount });
+                if (trail.length > 28) trail.shift();
+
+                for (let i = 0; i < trail.length; i++) {
+                  const t = trail[i];
+                  const a = p.map(i, 0, trail.length - 1, 16, 95);
+                  p.push();
+                  p.stroke(255, a);
+                  p.strokeWeight(Math.max(0.6, t.s * 0.9));
+                  p.point(t.x, t.y - 16 * t.s);
+                  p.pop();
+                }
+
+                drawWalker(walkerX, yBase, scaleAmount, walkerCycle * 3.2);
+
+                p.push();
+                p.noStroke();
+                p.fill(255, 150);
+                p.textAlign(p.CENTER, p.CENTER);
+                p.textSize(Math.max(10, cs * 0.018));
+                p.text("MIRROR WALK", cs * 0.5, cs * 0.95);
+                p.pop();
+              };
+            });
+          } else {
+            reseedFromCurrentFace();
+          }
+        } catch (_err) {
+          startBtn.disabled = false;
+          setStatus(["Camera access failed.", "Please allow camera permissions and try again."]);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

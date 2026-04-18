@@ -1,6 +1,6 @@
-# Critique frame GLB (16×9, ~9 ft tall)
+# Critique frame GLB (16ï¿½9, ~9 ft tall)
 
-Single **`critique-frame-16x9-9ft.glb`**: thin slab + four front bezel pieces (the “eye” frame around the opening). Units are **meters** (glTF default).
+Single **`critique-frame-16x9-9ft.glb`**: thin slab + four front bezel pieces (the ï¿½eyeï¿½ frame around the opening). Units are **meters** (glTF default).
 
 | Quantity | Value |
 |----------|--------|
@@ -23,7 +23,7 @@ Requires **Node 18+** (for `Blob` / `arrayBuffer`).
 Ideas while you wait on tech:
 
 1. **Bake a snapshot** of the critique page as a **PNG/JPG** and use it as a **texture** on the inner quad in Blender (replace the gray panel with a UV-mapped plane), then export GLB again.
-2. **Loop / Verse** may allow a **URL object** or **link** near the frame—same content, different affordance than live HTML on geometry.
+2. **Loop / Verse** may allow a **URL object** or **link** near the frameï¿½same content, different affordance than live HTML on geometry.
 3. **Short link + QR** texture on a small plaque mesh beside the screen.
 4. **Video texture** (MP4) on the surface if the platform supports video materials.
 
