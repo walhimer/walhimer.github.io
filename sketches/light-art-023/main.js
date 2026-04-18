@@ -10,6 +10,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { createOscExport } from './light_art_023_osc.js';
 
 const params = {
   roomFt: 24,
@@ -32,6 +33,7 @@ const state = {
   pulse: 0,
   audioReady: false,
   visualComplexity: 1,
+  sceneSeed: 20260416,
 };
 
 function clamp(v, min, max) {
@@ -291,6 +293,8 @@ function createAudioEngine() {
 }
 
 function init() {
+  let oscExport;
+
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -386,6 +390,7 @@ function init() {
     params.diameter = randomIn(0.25, 2.8);
     params.entropy = randomIn(0.1, 1);
     params.tempo = Math.round(randomIn(42, 112));
+    state.sceneSeed = Math.floor(randomIn(1, 2147483646));
 
     visualMode.grid = Math.random() > 0.2;
     visualMode.points = Math.random() > 0.2;
@@ -396,6 +401,7 @@ function init() {
     }
     syncUiFromParams();
     rebuildVisuals();
+    if (oscExport) oscExport.sendNow();
   }
 
   function onResize() {
@@ -439,6 +445,44 @@ function init() {
   ];
 
   const fieldMap = {};
+  oscExport = createOscExport({
+    getSnapshot: () => ({
+      roomFt: params.roomFt,
+      ceilingFt: params.ceilingFt,
+      gridDiv: params.gridDiv,
+      diameter: params.diameter,
+      entropy: params.entropy,
+      tempo: params.tempo,
+      seed: state.sceneSeed,
+      visGrid: visualMode.grid,
+      visPoints: visualMode.points,
+      visBoxes: visualMode.boxes,
+      visCurves: visualMode.curves,
+      morph: state.morph,
+      pulse: state.pulse,
+    }),
+    onStatus: (st) => {
+      const el = document.getElementById('osc-status');
+      if (el) el.textContent = st;
+    },
+  });
+
+  const oscWsEl = document.getElementById('osc-ws');
+  if (oscWsEl) {
+    oscExport.setWsUrl(oscWsEl.value.trim());
+  }
+  const oscEnableEl = document.getElementById('osc-enable');
+  if (oscEnableEl) {
+    oscEnableEl.addEventListener('change', () => {
+      oscExport.setEnabled(oscEnableEl.checked);
+    });
+  }
+  if (oscWsEl) {
+    oscWsEl.addEventListener('change', () => {
+      oscExport.setWsUrl(oscWsEl.value.trim());
+    });
+  }
+
   function bindUi() {
     fieldDefs.forEach(([id, key, parse, fmt]) => {
       const input = document.getElementById(id);
@@ -448,6 +492,7 @@ function init() {
         params[key] = parse(input.value);
         valueEl.textContent = fmt(params[key]);
         rebuildVisuals();
+        oscExport.sendNow();
       });
       valueEl.textContent = fmt(params[key]);
     });
@@ -462,6 +507,7 @@ function init() {
           document.getElementById('vis-grid').checked = true;
         }
         rebuildVisuals();
+        oscExport.sendNow();
       });
     });
   }
@@ -520,6 +566,7 @@ function init() {
     if (state.audioReady) {
       audioEngine.updateFromState();
     }
+    oscExport.maybeSend();
     controls.update();
     composer.render();
   }

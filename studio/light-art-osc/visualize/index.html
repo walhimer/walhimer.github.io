@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Light Art OSC — visualize</title>
+    <style>
+      :root {
+        --bg: #06080c;
+        --panel: #0e1218;
+        --border: rgba(255, 255, 255, 0.12);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.58);
+        --accent: #7ec8ff;
+        --tab-inactive: rgba(255, 255, 255, 0.45);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      header {
+        padding: 16px 20px 12px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(180deg, #0a0e14 0%, var(--bg) 100%);
+      }
+      header h1 {
+        margin: 0 0 6px;
+        font-size: 1.15rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        max-width: 72ch;
+      }
+      nav.tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 10px 16px 0;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+      }
+      nav.tabs button {
+        appearance: none;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--tab-inactive);
+        padding: 10px 14px;
+        border-radius: 8px 8px 0 0;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      nav.tabs button:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      nav.tabs button[aria-selected="true"] {
+        color: var(--accent);
+        border-color: var(--border);
+        border-bottom-color: var(--panel);
+        background: var(--panel);
+        margin-bottom: -1px;
+      }
+      main {
+        padding: 0;
+      }
+      section.panel {
+        display: none;
+        padding: 20px;
+        max-width: 1100px;
+        margin: 0 auto;
+        min-height: 42vh;
+        background: var(--panel);
+        border-left: 1px solid var(--border);
+        border-right: 1px solid var(--border);
+      }
+      section.panel.active {
+        display: block;
+      }
+      section.panel h2 {
+        margin: 0 0 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      section.panel h3 {
+        margin: 20px 0 8px;
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+      section.panel p,
+      section.panel li {
+        color: var(--muted);
+        max-width: 75ch;
+      }
+      section.panel ul {
+        padding-left: 1.2rem;
+      }
+      .callout {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin: 14px 0;
+        background: rgba(0, 0, 0, 0.25);
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+      table.map {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.86rem;
+      }
+      table.map th,
+      table.map td {
+        border: 1px solid var(--border);
+        padding: 8px 10px;
+        text-align: left;
+      }
+      table.map th {
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-weight: 600;
+      }
+      table.map td:first-child {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.82rem;
+        color: #b8e0ff;
+      }
+      pre.cmd {
+        margin: 10px 0;
+        padding: 12px 14px;
+        border-radius: 8px;
+        background: #020306;
+        border: 1px solid var(--border);
+        overflow-x: auto;
+        font-size: 0.82rem;
+        line-height: 1.4;
+        color: #c8dde8;
+      }
+      .mermaid {
+        margin: 16px 0;
+        display: flex;
+        justify-content: center;
+      }
+      footer {
+        padding: 16px 20px 24px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Light Art OSC — visualize</h1>
+      <p>
+        Tabbed view of the stack: addresses, data flow, and how to run the bridge. UDP OSC cannot be read directly in a
+        browser; this page is the map. Live packets still require a terminal self-test or a future WebSocket bridge.
+      </p>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button type="button" role="tab" id="tab-btn-overview" aria-selected="true" aria-controls="tab-overview">Overview</button>
+      <button type="button" role="tab" id="tab-btn-map" aria-selected="false" aria-controls="tab-map">OSC map</button>
+      <button type="button" role="tab" id="tab-btn-flow" aria-selected="false" aria-controls="tab-flow">Flow</button>
+      <button type="button" role="tab" id="tab-btn-bridge" aria-selected="false" aria-controls="tab-bridge">Bridge</button>
+    </nav>
+
+    <main>
+      <section class="panel active" id="tab-overview" role="tabpanel" aria-labelledby="tab-btn-overview">
+        <h2>What you are looking at</h2>
+        <p>
+          <strong>Light Art OSC</strong> is the contract between <strong>Light Art 023</strong> (browser lab: Three.js +
+          Tone.js) and the room: <strong>OSC</strong> as UDP glue, then <strong>Python</strong> (or other services) for
+          DMX / Art-Net / sACN. <strong>EmergentDNA</strong> holds replayable seeds; the browser holds the phenotype.
+        </p>
+        <div class="callout">
+          <strong style="color: var(--text)">Why this is not “live OSC” yet.</strong> Safari/Chrome cannot bind a UDP
+          socket to sniff OSC. To see packets today, run <code style="color: #b8e0ff">osc_self_test</code> in Python or
+          Node (Bridge tab). A small local WebSocket relay could mirror UDP into this page later.
+        </div>
+        <h3>Tabs</h3>
+        <ul>
+          <li><strong>OSC map</strong> — draft addresses under <code>/lightart/...</code></li>
+          <li><strong>Flow</strong> — same Mermaid diagrams as <code>FLOW.md</code></li>
+          <li><strong>Bridge</strong> — copy-paste commands from <code>light-art-osc</code></li>
+        </ul>
+      </section>
+
+      <section class="panel" id="tab-map" role="tabpanel" aria-labelledby="tab-btn-map" hidden>
+        <h2>OSC address map (draft v0.1)</h2>
+        <p>Namespace <code>/lightart</code>. Default dev bind: <code>127.0.0.1:9000</code> UDP.</p>
+
+        <h3>Parameters</h3>
+        <table class="map">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Args</th>
+              <th>Type</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>/lightart/room/ft</td>
+              <td>1</td>
+              <td>float</td>
+              <td>Room width/depth (feet), square footprint in 023</td>
+            </tr>
+            <tr>
+              <td>/lightart/ceiling/ft</td>
+              <td>1</td>
+              <td>float</td>
+              <td>Ceiling height (feet)</td>
+            </tr>
+            <tr>
+              <td>/lightart/grid/div</td>
+              <td>1</td>
+              <td>int</td>
+              <td>Grid divisions per axis</td>
+            </tr>
+            <tr>
+              <td>/lightart/diameter</td>
+              <td>1</td>
+              <td>float</td>
+              <td>Member thickness / sonic spread scale</td>
+            </tr>
+            <tr>
+              <td>/lightart/entropy</td>
+              <td>1</td>
+              <td>float</td>
+              <td>0–1</td>
+            </tr>
+            <tr>
+              <td>/lightart/tempo/bpm</td>
+              <td>1</td>
+              <td>float</td>
+              <td>Transport BPM</td>
+            </tr>
+            <tr>
+              <td>/lightart/seed</td>
+              <td>1</td>
+              <td>int</td>
+              <td>Optional scene seed for deterministic runs</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Visual families (0 = off, 1 = on)</h3>
+        <table class="map">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Args</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>/lightart/vis/grid</td>
+              <td>1</td>
+              <td>float</td>
+            </tr>
+            <tr>
+              <td>/lightart/vis/points</td>
+              <td>1</td>
+              <td>float</td>
+            </tr>
+            <tr>
+              <td>/lightart/vis/boxes</td>
+              <td>1</td>
+              <td>float</td>
+            </tr>
+            <tr>
+              <td>/lightart/vis/curves</td>
+              <td>1</td>
+              <td>float</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Derived / modulation</h3>
+        <table class="map">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Args</th>
+              <th>Type</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>/lightart/morph</td>
+              <td>1</td>
+              <td>float</td>
+              <td>0–1, slow phasor analog</td>
+            </tr>
+            <tr>
+              <td>/lightart/pulse</td>
+              <td>1</td>
+              <td>float</td>
+              <td>0–1, faster modulation analog</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Robotics (intent — not wired in v0)</h3>
+        <table class="map">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Args</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>/lightart/robot/intent</td>
+              <td>string or blob</td>
+              <td>High-level command; supervisor must validate</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="panel" id="tab-flow" role="tabpanel" aria-labelledby="tab-btn-flow" hidden>
+        <h2>Data flow</h2>
+        <p style="color: var(--muted); margin-bottom: 16px">Rendered from the same structure as <code>FLOW.md</code>.</p>
+
+        <h3>1. System context</h3>
+        <div class="mermaid" id="mermaid-context">
+flowchart LR
+  subgraph lab["Creative lab"]
+    LA023["Light Art 023\nbrowser: Three.js + Tone.js"]
+  end
+
+  subgraph bridges["Network bridges"]
+    OSCB["OSC UDP\n127.0.0.1 or LAN"]
+    MIDIB["MIDI\ncontrollers / clock"]
+  end
+
+  subgraph services["Show services"]
+    PY["Python bridge\nlisten + map"]
+    DMX["DMX / Art-Net / sACN\nOLA or fixture stack"]
+    ROB["Robotics supervisor\nlimits + estop"]
+  end
+
+  subgraph room["Room"]
+    LX["Lights / LED"]
+    VID["Video / walls"]
+    MOT["Actuators"]
+  end
+
+  LA023 <-->|future export| OSCB
+  MIDIB -->|normalized| PY
+  OSCB <--> PY
+  PY --> DMX --> LX
+  PY -.->|intent only| ROB --> MOT
+  LA023 --> VID
+        </div>
+
+        <h3>2. Parameter and seed flow</h3>
+        <div class="mermaid" id="mermaid-seed">
+flowchart TB
+  subgraph genotype["Genotype (replay)"]
+    ED["EmergentDNA\nSeedRng / Rand"]
+    SEED["scene seed\ninteger"]
+  end
+
+  subgraph state["Shared state\nmatches Light Art 023"]
+    P["params:\nroom, ceiling, grid,\ndiameter, entropy, tempo"]
+    V["visual toggles"]
+    M["derived:\nmorph, pulse"]
+  end
+
+  subgraph wire["Export"]
+    OSC["OSC messages\nsee OSC map tab"]
+  end
+
+  SEED --> ED
+  ED -.->|optional traits| state
+  P --> OSC
+  V --> OSC
+  M --> OSC
+        </div>
+
+        <h3>3. Message sequence (future)</h3>
+        <div class="mermaid" id="mermaid-seq">
+sequenceDiagram
+  participant U as Operator
+  participant Web as Light Art 023
+  participant Br as Python OSC bridge
+  participant D as DMX service
+
+  U->>Web: adjust entropy / tempo
+  Web->>Web: update params + audio + visuals
+  Note over Web,Br: future: OSC send
+  Web->>Br: OSC /lightart/...
+  Br->>Br: validate + map
+  Br->>D: Art-Net / sACN / OLA
+  D->>D: universes to fixtures
+        </div>
+      </section>
+
+      <section class="panel" id="tab-bridge" role="tabpanel" aria-labelledby="tab-btn-bridge" hidden>
+        <h2>Bridge commands</h2>
+        <p>Run from <code>studio/light-art-osc</code> (clone root). Self-test sends <strong>13</strong> messages and expects <strong>13</strong> back.</p>
+
+        <h3>Python (venv)</h3>
+        <pre class="cmd">cd studio/light-art-osc
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 bridge/osc_self_test.py</pre>
+
+        <h3>Node (osc.js)</h3>
+        <pre class="cmd">cd studio/light-art-osc/bridge
+npm install
+cd ..
+node bridge/osc_self_test.cjs</pre>
+
+        <h3>Two terminals (debug)</h3>
+        <pre class="cmd">python3 bridge/osc_listen.py</pre>
+        <p style="margin-top: 8px">Second terminal:</p>
+        <pre class="cmd">python3 bridge/osc_send_test.py</pre>
+
+        <div class="callout">
+          If you see <code>bind EADDRINUSE</code>, another process is using port 9000. Stop other listeners or use
+          <code>--port 9002</code> on both sides.
+        </div>
+
+        <h3>Serve this HTML</h3>
+        <pre class="cmd">cd studio/light-art-osc
+python3 -m http.server 8890</pre>
+        <p>Open <code>http://localhost:8890/visualize/</code></p>
+      </section>
+    </main>
+
+    <footer>Walhimer Studio · Light Art OSC · 2026</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      (function () {
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'dark',
+          securityLevel: 'loose',
+          flowchart: { useMaxWidth: true, htmlLabels: true },
+          themeVariables: {
+            primaryColor: '#1a2838',
+            primaryTextColor: '#e8f0ff',
+            primaryBorderColor: '#7ec8ff',
+            lineColor: '#8aa4bc',
+            secondaryColor: '#0e1218',
+            tertiaryColor: '#06080c',
+          },
+        });
+
+        var flowRendered = false;
+        var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+        var panels = document.querySelectorAll('section.panel');
+
+        function showPanel(id) {
+          tabs.forEach(function (btn) {
+            var on = btn.id === 'tab-btn-' + id;
+            btn.setAttribute('aria-selected', on ? 'true' : 'false');
+          });
+          panels.forEach(function (panel) {
+            var on = panel.id === 'tab-' + id;
+            panel.classList.toggle('active', on);
+            panel.hidden = !on;
+          });
+          if (id === 'flow' && !flowRendered) {
+            flowRendered = true;
+            mermaid.run({ querySelector: '#tab-flow .mermaid' });
+          }
+        }
+
+        tabs.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var id = btn.id.replace('tab-btn-', '');
+            showPanel(id);
+          });
+        });
+
+        showPanel('overview');
+      })();
+    </script>
+  </body>
+</html>

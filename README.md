@@ -11,6 +11,7 @@ Two tiers on the site, plus a JSON manifest and optional narrative archive pages
 | Location | Purpose |
 |----------|---------|
 | `installations/` | Promoted work — pieces linked from the homepage |
+| `studio/` | **Studio tooling** (OSC bridges, local scripts). **Not** a second catalog — see **[Studio tooling outside the catalog](docs/unified-catalog.md#studio-tooling-outside-the-catalog)** in **unified-catalog.md**. |
 | `sketches/` | Full archive — HTML sketches by series, plus optional folders like `tezos-early-works/` (chronicle + images) |
 | `sketches/index.html` | **Catalog UI** — series list, search, filters (**single source of truth** for sketch filenames; URL path remains `/sketches/`) |
 | `catalog-db.html` | **Collection DB viewer** — lightweight browser tool for `data/catalog.json` (search/filter/sort + Installation/Sketch/Linked Art links). |

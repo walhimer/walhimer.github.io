@@ -77,3 +77,17 @@ Each work includes **`linked_art`**: JSON-LD with `@context`, `id`, `type` (`Hum
 ## Export elsewhere
 
 Map `dublin_core.*` and identifiers to CSV for Omeka, CollectiveAccess, or spreadsheets; keep `artifacts` as a column or sidecar if you need a file manifest for migration.
+
+## Studio tooling outside the catalog
+
+The **catalog** and **backup story** for *artworks* is unchanged: **`works[]`** in **`data/catalog.json`**, fed by **`SERIES`** in **`sketches/index.html`** and **`installations/`**, refreshed with **`python3 _scripts/refresh_catalog.py`**. Nothing in this section replaces that workflow.
+
+Some repo folders are **versioned tooling** (OSC bridges, Python/Node helpers, Mermaid specs). They are **not** automatic rows in **`works[]`** unless you also add a sketch URL under **`sketches/`** and register it in **`SERIES`** like any other piece.
+
+| Path | Role |
+|------|------|
+| `sketches/` | **Catalog-eligible HTML** — register in **`SERIES`**, then **refresh** and commit **`data/catalog.json`**. |
+| `studio/` | **Tooling only** (e.g. `studio/light-art-osc/`) — run locally; optional companion to a sketch such as **`sketches/light-art-023/`**. Does not appear in the collection DB unless the paired sketch/installation is catalogued. |
+| `installations/` | Promoted pages — covered in **After changing installations** above. |
+
+**Light Art 023 + OSC:** the public lab is **`sketches/light-art-023/`**. OSC relay code and maps live in **`studio/light-art-osc/`**. Separate libraries (e.g. EmergentDNA on GitHub) stay separate repos; link them from work metadata or README if needed.

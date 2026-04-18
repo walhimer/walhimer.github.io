@@ -5,6 +5,8 @@ Light Art 023 turns the system into a **modular AV room lab**. Multiple visual f
 **Studio:** Walhimer Studio · [mark-walhimer.com](https://mark-walhimer.com)  
 **Artist:** Mark Walhimer · **2026**
 
+**Repo:** In **[walhimer.github.io](https://github.com/walhimer-studio/walhimer.github.io)** this sketch lives at **`sketches/light-art-023/`**. The OSC bridge and maps live at **`studio/light-art-osc/`**. Catalog rules: **[unified-catalog.md](../../docs/unified-catalog.md#studio-tooling-outside-the-catalog)**.
+
 ---
 
 ## Repository layout
@@ -13,9 +15,13 @@ Light Art 023 turns the system into a **modular AV room lab**. Multiple visual f
 |------|---------|
 | `index.html` | Host page + controls + visual family toggles + import map (Three.js, Tone.js) |
 | `main.js` | Modular AV engine (grid, points, boxes, curves + layered random sound) |
+| `light_art_023_osc.js` | Optional OSC export via WebSocket (see `LIGHT_ART_023_OSC.md`) |
 | `light_art_023_technical_drawing.py` | SVG: plan + elevation schematic |
 | `light_art_023_technical_drawing.svg` | Generated output |
 | `LIGHT_ART_023.md` | This file |
+| `LIGHT_ART_023_OSC.md` | OSC export + relay run instructions |
+| `ART_INSTALLATION_LAB.md` | Dome / hardware roadmap (cleaned from PDF; design intent) |
+| `WHEN_YOU_RETURN.md` | Quick reminder: run lab + OSC relay |
 
 ### Core controls
 

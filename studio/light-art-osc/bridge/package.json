@@ -1,0 +1,18 @@
+{
+  "name": "light-art-osc-bridge",
+  "version": "1.0.0",
+  "description": "Minimal OSC listen/send and self-test (Python + Node osc.js).",
+  "main": "osc_self_test.cjs",
+  "scripts": {
+    "osc:self-test": "node osc_self_test.cjs",
+    "osc:relay": "node ws_to_osc.cjs",
+    "test": "node osc_self_test.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "osc": "2.4.5",
+    "ws": "8.18.0"
+  }
+}

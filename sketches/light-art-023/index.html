@@ -95,6 +95,34 @@
         opacity: 0.6;
         cursor: default;
       }
+      #ui .osc-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 6px 0 4px;
+      }
+      #ui .osc-row label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+      #osc-ws {
+        width: 100%;
+        margin: 4px 0 6px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(0, 0, 0, 0.4);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 11px;
+      }
+      #osc-status {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.55);
+        font-variant-numeric: tabular-nums;
+        margin-bottom: 4px;
+      }
     </style>
     <script type="importmap">
       {
@@ -150,6 +178,14 @@
         <input id="tempo" type="range" min="35" max="130" step="1" value="68" />
         <div class="value" data-value="tempo">68</div>
       </div>
+
+      <div class="section">OSC export</div>
+      <div class="osc-row">
+        <label><input id="osc-enable" type="checkbox" /> Enable WebSocket → relay</label>
+      </div>
+      <label for="osc-ws">Relay URL</label>
+      <input id="osc-ws" type="text" spellcheck="false" value="ws://127.0.0.1:9091" autocomplete="off" />
+      <div id="osc-status">disconnected</div>
     </div>
     <div id="hint">
       Light Art 023 · modular room families + mangle-like audio drift · drag orbit · scroll zoom
