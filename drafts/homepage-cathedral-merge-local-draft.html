@@ -1,58 +1,12 @@
 <!DOCTYPE html>
-<!--
-  homepage-cathedral-launch-candidate.html — prepared for production /index.html.
-  Do not replace the live site until steps in drafts/LAUNCH-homepage-checklist.md are done.
-  Test this file by temporarily copying it to repo root as index.html on a branch or locally.
--->
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) — same as production index -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TVXX0YPGCN"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TVXX0YPGCN');
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
-  <!-- LAUNCH: When this file is copied to /index.html, indexable by default (no noindex). -->
-  <title>Mark Walhimer — Selected Works</title>
-  <meta name="description" content="Selected works by Mark Walhimer — digital installation artist. Featured pieces, catalog, and studio practice." />
-  <link rel="canonical" href="https://mark-walhimer.com/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Mark Walhimer — Selected Works" />
-  <meta property="og:description" content="Selected works by Mark Walhimer — digital installation artist. Featured pieces, catalog, and studio practice." />
-  <meta property="og:url" content="https://mark-walhimer.com/" />
-  <meta property="og:image" content="https://mark-walhimer.com/installations/technical-drawing-preview.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Mark Walhimer — Selected Works" />
-  <meta name="twitter:description" content="Selected works by Mark Walhimer — digital installation artist. Featured pieces, catalog, and studio practice." />
-  <meta name="twitter:image" content="https://mark-walhimer.com/installations/technical-drawing-preview.png" />
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Person",
-        "name": "Mark Walhimer",
-        "url": "https://mark-walhimer.com/",
-        "jobTitle": "Digital installation artist and museum designer",
-        "sameAs": [
-          "https://www.instagram.com/markwalhimer/",
-          "https://x.com/WalhimerArt",
-          "https://museumplanning.com"
-        ]
-      },
-      {
-        "@type": "WebSite",
-        "name": "Mark Walhimer",
-        "url": "https://mark-walhimer.com/"
-      }
-    ]
-  }
-  </script>
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Local draft — Cathedral — Mark Walhimer</title>
+  <meta name="description" content="Local-only draft: cathedral carousel. Not for publish." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
@@ -822,15 +776,15 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="index.html">Mark Walhimer</a>
+  <a class="nav-logo" href="../index.html">Mark Walhimer</a>
   <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav-links">
     <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path class="line" d="M1 1h18M1 7h18M1 13h18"/></svg>
   </button>
   <div class="nav-links" id="site-nav-links">
-    <a href="index.html" class="active">Selected Works</a>
-    <a href="sketches/index.html">Catalog</a>
-    <a href="bio/index.html">Bio / CV</a>
-    <a href="contact/index.html">Contact</a>
+    <a href="../index.html" class="active">Selected Works</a>
+    <a href="../sketches/index.html">Catalog</a>
+    <a href="../bio/index.html">Bio / CV</a>
+    <a href="../contact/index.html">Contact</a>
   </div>
 </nav>
 
@@ -844,7 +798,7 @@
     <div class="carousel-shell">
       <div class="carousel-viewport" id="carousel-viewport">
         <div class="carousel-track" id="carousel-track" role="list">
-          <!-- Slide 1: live iframe over HTTPS; file:// shows still image -->
+          <!-- Slide 1: live iframe when served over HTTP (see serve-drafts.sh); screenshot when file:// -->
           <article class="carousel-slide" role="listitem" aria-label="Bloom / Four Walls — featured">
             <div class="bloom-slide-stack">
               <div class="bloom-embed-wrap" id="bloom-embed-wrap">
@@ -859,7 +813,7 @@
               <div class="bloom-slide-link bloom-static-fallback">
                 <img
                   class="bloom-slide-img"
-                  src="drafts/bloom-four-walls-carousel-preview.png"
+                  src="bloom-four-walls-carousel-preview.png"
                   width="1024"
                   height="529"
                   alt="Bloom / Four Walls — still preview (use local server for live sketch in carousel)"
@@ -872,7 +826,7 @@
             <div class="slide-caption">
               <div class="slide-caption-inner">
                 <span>Featured</span>
-                <span id="bloom-caption-detail">Bloom / Four Walls — live embed when you open this page on the site (HTTPS)</span>
+                <span id="bloom-caption-detail">Bloom / Four Walls — run serve-drafts.sh for live embed in this page</span>
               </div>
             </div>
           </article>
@@ -891,7 +845,7 @@
               <div class="la023-slide-link la023-static-fallback">
                 <img
                   class="la023-slide-img"
-                  src="sketches/light-art-023/light_art_023_technical_drawing.svg"
+                  src="artwork-02-light-art-023/light_art_023_technical_drawing.svg"
                   width="800"
                   height="600"
                   alt="Light Art 023 — technical preview (use local server for live sketch)"
@@ -903,7 +857,7 @@
             <div class="slide-caption">
               <div class="slide-caption-inner">
                 <span>Featured</span>
-                <span id="la023-caption-detail">Light Art 023 — live embed when you open this page on the site (HTTPS)</span>
+                <span id="la023-caption-detail">Light Art 023 — run serve-drafts.sh for live embed in this page</span>
               </div>
             </div>
           </article>
@@ -922,15 +876,15 @@
               <div class="art03-static-fallback">
                 <div class="art03-static-inner">
                   <strong>Abstract technical drawing</strong>
-                  Elevation study — still preview. Open this page on the live site (HTTPS) to play the full sketch in the carousel.
-                  <div class="art03-static-hint">HTTPS · mark-walhimer.com</div>
+                  Elevation study — still preview. Run the local draft server to play the full sketch in this carousel.
+                  <div class="art03-static-hint">./serve-drafts.sh · http://localhost:8765/</div>
                 </div>
               </div>
             </div>
             <div class="slide-caption">
               <div class="slide-caption-inner">
                 <span>Featured</span>
-                <span id="art03-caption-detail">Abstract technical drawing — live embed when you open this page on the site (HTTPS)</span>
+                <span id="art03-caption-detail">Abstract technical drawing — run serve-drafts.sh for live embed in this page</span>
               </div>
             </div>
           </article>
@@ -949,15 +903,15 @@
               <div class="art04-static-fallback">
                 <div class="art04-static-inner">
                   <strong>Abstract technical drawing</strong>
-                  Studio layout with sidebar — still preview. Open this page on the live site (HTTPS) to play the full sketch in the carousel.
-                  <div class="art04-static-hint">HTTPS · mark-walhimer.com</div>
+                  Studio layout with sidebar — still preview. Run the local draft server to play the full sketch in this carousel.
+                  <div class="art04-static-hint">./serve-drafts.sh · http://localhost:8765/</div>
                 </div>
               </div>
             </div>
             <div class="slide-caption">
               <div class="slide-caption-inner">
                 <span>Featured</span>
-                <span id="art04-caption-detail">Abstract technical drawing — live embed when you open this page on the site (HTTPS)</span>
+                <span id="art04-caption-detail">Abstract technical drawing — run serve-drafts.sh for live embed in this page</span>
               </div>
             </div>
           </article>
@@ -977,15 +931,15 @@
                 <div class="art05-static-inner">
                   <strong>Window 93</strong>
                   <div class="art05-static-meta">Test for corner projection · October 17, 2024</div>
-                  Translucent gradient cube (WEBGL) — still preview. Open this page on the live site (HTTPS) for the live sketch in the carousel.
-                  <div class="art05-static-hint">HTTPS · mark-walhimer.com</div>
+                  Translucent gradient cube (WEBGL) — still preview. Run the local draft server to play live in this carousel.
+                  <div class="art05-static-hint">./serve-drafts.sh · http://localhost:8765/</div>
                 </div>
               </div>
             </div>
             <div class="slide-caption">
               <div class="slide-caption-inner">
                 <span>Featured</span>
-                <span id="art05-caption-detail">Window 93 — live embed when you open this page on the site (HTTPS)</span>
+                <span id="art05-caption-detail">Window 93 — run serve-drafts.sh for live embed in this page</span>
               </div>
             </div>
           </article>
@@ -1005,15 +959,15 @@
                 <div class="art06-static-inner">
                   <strong>923 centered</strong>
                   <div class="art06-static-meta">WEBGL soft gradient planes · April 26</div>
-                  Breathing layers — still preview. Open this page on the live site (HTTPS) for the live sketch in the carousel.
-                  <div class="art06-static-hint">HTTPS · mark-walhimer.com</div>
+                  Breathing layers — still preview. Run the local draft server to play live in this carousel.
+                  <div class="art06-static-hint">./serve-drafts.sh · http://localhost:8765/</div>
                 </div>
               </div>
             </div>
             <div class="slide-caption">
               <div class="slide-caption-inner">
                 <span>Featured</span>
-                <span id="art06-caption-detail">923 centered — live embed when you open this page on the site (HTTPS)</span>
+                <span id="art06-caption-detail">923 centered — run serve-drafts.sh for live embed in this page</span>
               </div>
             </div>
           </article>
@@ -1033,15 +987,15 @@
                 <div class="art07-static-inner">
                   <strong>Traveling Landscape — Emergent DNA</strong>
                   <div class="art07-static-meta">Three.js · piano · emergent forms</div>
-                  Interactive landscape — still preview. Open this page on the live site (HTTPS) for the live sketch in the carousel.
-                  <div class="art07-static-hint">HTTPS · mark-walhimer.com</div>
+                  Interactive landscape — still preview. Run the local draft server to play live in this carousel.
+                  <div class="art07-static-hint">./serve-drafts.sh · http://localhost:8765/</div>
                 </div>
               </div>
             </div>
             <div class="slide-caption">
               <div class="slide-caption-inner">
                 <span>Featured</span>
-                <span id="art07-caption-detail">Traveling Landscape — Emergent DNA — live embed when you open this page on the site (HTTPS)</span>
+                <span id="art07-caption-detail">Traveling Landscape — Emergent DNA — run serve-drafts.sh for live embed in this page</span>
               </div>
             </div>
           </article>
@@ -1120,7 +1074,7 @@
 (function () {
   var el = document.getElementById('archive-updated');
   if (!el) return;
-  fetch('data/catalog.json')
+  fetch('../data/catalog.json')
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (data) {
       if (!data || !data.updated) return;
@@ -1132,14 +1086,13 @@
 <script>
 (function () {
   var live = document.documentElement.classList.contains('draft-bloom-live');
-  /* Production paths from site root (see LAUNCH-homepage-checklist.md). */
-  var bloomUrl = new URL('installations/bloom-four-walls-sketch.html', window.location.href).href;
-  var la023Url = new URL('sketches/light-art-023/index.html', window.location.href).href;
-  var art03Url = new URL('drafts/artwork-03-technical-drawing-elevation/index.html', window.location.href).href;
-  var art04Url = new URL('drafts/artwork-04-technical-drawing/index.html', window.location.href).href;
-  var art05Url = new URL('drafts/artwork-05-window-93/index.html', window.location.href).href;
-  var art06Url = new URL('drafts/artwork-06-923-centered/index.html', window.location.href).href;
-  var art07Url = new URL('drafts/traveling-landscape-emergent-dna/flying_boxes_emergent_dna_w_piano.html', window.location.href).href;
+  var bloomUrl = new URL('bloom-four-walls-sketch.html', window.location.href).href;
+  var la023Url = new URL('artwork-02-light-art-023/index.html', window.location.href).href;
+  var art03Url = new URL('artwork-03-technical-drawing-elevation/index.html', window.location.href).href;
+  var art04Url = new URL('artwork-04-technical-drawing/index.html', window.location.href).href;
+  var art05Url = new URL('artwork-05-window-93/index.html', window.location.href).href;
+  var art06Url = new URL('artwork-06-923-centered/index.html', window.location.href).href;
+  var art07Url = new URL('traveling-landscape-emergent-dna/flying_boxes_emergent_dna_w_piano.html', window.location.href).href;
 
   var bloomFrame = document.getElementById('bloom-embed-frame');
   if (live && bloomFrame) {
@@ -1148,8 +1101,8 @@
   var capBloom = document.getElementById('bloom-caption-detail');
   if (capBloom) {
     capBloom.textContent = live
-      ? 'Bloom / Four Walls — live in carousel'
-      : 'Bloom / Four Walls — still preview only · open over HTTPS on the live site for full embeds';
+      ? 'Bloom / Four Walls — live in carousel (local draft server)'
+      : 'Bloom / Four Walls — still preview only · run serve-drafts.sh to play live here';
   }
 
   var la023Frame = document.getElementById('la023-embed-frame');
@@ -1159,8 +1112,8 @@
   var capLa = document.getElementById('la023-caption-detail');
   if (capLa) {
     capLa.textContent = live
-      ? 'Light Art 023 — live in carousel'
-      : 'Light Art 023 — still preview only · open over HTTPS on the live site for full embeds';
+      ? 'Light Art 023 — live in carousel (local draft server)'
+      : 'Light Art 023 — still preview only · run serve-drafts.sh to play live here';
   }
 
   var art03Frame = document.getElementById('art03-embed-frame');
@@ -1170,8 +1123,8 @@
   var capArt03 = document.getElementById('art03-caption-detail');
   if (capArt03) {
     capArt03.textContent = live
-      ? 'Abstract technical drawing — live in carousel'
-      : 'Abstract technical drawing — still preview only · open over HTTPS on the live site for full embeds';
+      ? 'Abstract technical drawing — live in carousel (local draft server)'
+      : 'Abstract technical drawing — still preview only · run serve-drafts.sh to play live here';
   }
 
   var art04Frame = document.getElementById('art04-embed-frame');
@@ -1181,8 +1134,8 @@
   var capArt04 = document.getElementById('art04-caption-detail');
   if (capArt04) {
     capArt04.textContent = live
-      ? 'Abstract technical drawing (studio) — live in carousel'
-      : 'Abstract technical drawing (studio) — still preview only · open over HTTPS on the live site for full embeds';
+      ? 'Abstract technical drawing (studio) — live in carousel (local draft server)'
+      : 'Abstract technical drawing (studio) — still preview only · run serve-drafts.sh to play live here';
   }
 
   var art05Frame = document.getElementById('art05-embed-frame');
@@ -1192,8 +1145,8 @@
   var capArt05 = document.getElementById('art05-caption-detail');
   if (capArt05) {
     capArt05.textContent = live
-      ? 'Window 93 — live in carousel · Oct 17, 2024'
-      : 'Window 93 — still preview only · open over HTTPS on the live site for full embeds';
+      ? 'Window 93 — live in carousel (local draft server) · Oct 17, 2024'
+      : 'Window 93 — still preview only · run serve-drafts.sh to play live here';
   }
 
   var art06Frame = document.getElementById('art06-embed-frame');
@@ -1203,8 +1156,8 @@
   var capArt06 = document.getElementById('art06-caption-detail');
   if (capArt06) {
     capArt06.textContent = live
-      ? '923 centered — live in carousel · April 26'
-      : '923 centered — still preview only · open over HTTPS on the live site for full embeds';
+      ? '923 centered — live in carousel (local draft server) · April 26'
+      : '923 centered — still preview only · run serve-drafts.sh to play live here';
   }
 
   var art07Frame = document.getElementById('art07-embed-frame');
@@ -1214,8 +1167,8 @@
   var capArt07 = document.getElementById('art07-caption-detail');
   if (capArt07) {
     capArt07.textContent = live
-      ? 'Traveling Landscape — Emergent DNA (piano) — live in carousel'
-      : 'Traveling Landscape — Emergent DNA (piano) — still preview only · open over HTTPS on the live site for full embeds';
+      ? 'Traveling Landscape — Emergent DNA (piano) — live in carousel (local draft server)'
+      : 'Traveling Landscape — Emergent DNA (piano) — still preview only · run serve-drafts.sh to play live here';
   }
 })();
 </script>

@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catalog — Mark Walhimer</title>
-  <meta name="description" content="Catalog of generative artworks by Mark Walhimer, organized by series with searchable project files and archive works." />
+  <meta name="description" content="Selected installation works at a glance, plus the full studio archive by series — searchable files and versions." />
   <link rel="canonical" href="https://mark-walhimer.com/sketches/index.html" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Catalog — Mark Walhimer" />
-  <meta property="og:description" content="Catalog of generative artworks by Mark Walhimer, organized by series with searchable project files and archive works." />
+  <meta property="og:description" content="Selected installation works at a glance, plus the full studio archive by series — searchable files and versions." />
   <meta property="og:url" content="https://mark-walhimer.com/sketches/index.html" />
   <meta property="og:image" content="https://mark-walhimer.com/installations/technical-drawing-preview.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Catalog — Mark Walhimer" />
-  <meta name="twitter:description" content="Catalog of generative artworks by Mark Walhimer, organized by series with searchable project files and archive works." />
+  <meta name="twitter:description" content="Selected installation works at a glance, plus the full studio archive by series — searchable files and versions." />
   <meta name="twitter:image" content="https://mark-walhimer.com/installations/technical-drawing-preview.png" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap');
@@ -79,6 +79,169 @@
         border-left-color: var(--accent);
         margin-bottom: 0;
       }
+    }
+
+    /* —— Selected installation works (formerly homepage grid) —— */
+    .sw-home-header {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 48px 48px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .sw-home-header h2 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      margin-bottom: 28px;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    .sw-home-header h2 em { font-style: italic; color: var(--accent); }
+    .sw-home-header .header-body { max-width: 680px; }
+    .sw-home-header .lede {
+      font-size: clamp(16px, 1.8vw, 19px);
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(240, 237, 230, 0.85);
+    }
+    .sw-home-header .lede strong { font-weight: 400; color: var(--off); }
+    .grid-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 48px 64px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .grid-label {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 32px;
+    }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      height: min(960px, 85vh);
+      gap: 1px;
+      background: var(--rule);
+    }
+    @media (max-width: 900px) {
+      .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: unset;
+        height: auto;
+      }
+    }
+    @media (max-width: 560px) {
+      .works-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: unset;
+        height: auto;
+      }
+    }
+    .work-card {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.25s;
+      min-height: 0;
+    }
+    .work-card:hover { background: #111; }
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #0d0d0d;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--rule);
+      transition: filter 0.3s;
+    }
+    .work-card:hover .card-thumb { filter: brightness(1.2); }
+    .card-thumb iframe {
+      position: absolute; top: 0; left: 0;
+      width: 800px; height: 600px; border: none;
+      transform: scale(0.4); transform-origin: top left;
+      pointer-events: none;
+    }
+    .card-number {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      color: rgba(102, 102, 96, 0.8);
+      z-index: 2;
+    }
+    .card-arrow {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      width: 26px; height: 26px;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .work-card:hover .card-arrow { border-color: var(--accent); transform: translate(2px, -2px); }
+    .card-arrow svg { width: 10px; height: 10px; }
+    .card-body {
+      padding: 22px 22px 26px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-height: 165px;
+    }
+    .card-category {
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .card-title {
+      font-size: 21px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--off);
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    .card-title em { font-style: italic; }
+    .card-desc {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(240, 237, 230, 0.45);
+      margin-top: 3px;
+      flex: 1;
+      min-height: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    .tag {
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      border: 1px solid var(--rule);
+      padding: 3px 7px;
     }
 
     header { max-width: 1100px; margin: 0 auto; padding: 56px 48px 40px; border-bottom: 1px solid var(--rule); }
@@ -157,6 +320,105 @@
     <a href="../contact/index.html">Contact</a>
   </div>
 </nav>
+
+<section aria-labelledby="sw-h2">
+  <div class="sw-home-header">
+    <h2 id="sw-h2">Selected <em>Works</em></h2>
+    <div class="header-body">
+      <p class="lede">Code-based generative artworks exploring <strong>machine relationships, collective systems, and emotional landscapes</strong>.</p>
+    </div>
+  </div>
+  <div class="grid-wrapper">
+    <p class="grid-label">Installations</p>
+    <div class="works-grid">
+
+    <a class="work-card" href="../installations/living-commons.html">
+      <div class="card-thumb" style="background:#050810;">
+        <span class="card-number">01</span>
+        <iframe src="../installations/living-commons.html?embed=1" loading="lazy" title="Living Commons"></iframe>
+        <div class="card-arrow"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c8a882" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Co-presence &nbsp;·&nbsp; Canvas 2D + WebGL</div>
+        <div class="card-title">Living <em>Commons</em></div>
+        <p class="card-desc">Two viewers, one emergent result. Forms surface from shared presence — what appears belongs to neither and both. No two encounters repeat.</p>
+        <div class="card-tags"><span class="tag">Generative</span><span class="tag">Co-presence</span><span class="tag">Real-time</span></div>
+      </div>
+    </a>
+
+    <a class="work-card" href="../installations/surrender-machines.html">
+      <div class="card-thumb" style="background:#080808;">
+        <span class="card-number">02</span>
+        <iframe src="../installations/surrender-machines.html?embed=1" loading="lazy" title="Surrender Machines"></iframe>
+        <div class="card-arrow"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c8a882" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">3D Machine Forms &nbsp;·&nbsp; p5.js + Web Audio</div>
+        <div class="card-title">Surrender <em>Machines</em></div>
+        <p class="card-desc">Industrial forms rendered in three dimensions — mechanical structures that process, transform, and ultimately dissolve their own purpose.</p>
+        <div class="card-tags"><span class="tag">3D</span><span class="tag">Sound</span><span class="tag">Industrial</span></div>
+      </div>
+    </a>
+
+    <a class="work-card" href="../installations/bloom-four-walls.html">
+      <div class="card-thumb" style="background:#ffffff;">
+        <span class="card-number">03</span>
+        <iframe src="../installations/bloom-four-walls-sketch.html?embed=1" title="Bloom / Four Walls" loading="eager" fetchpriority="high" referrerpolicy="no-referrer"></iframe>
+        <div class="card-arrow"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c8a882" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Immersive 3D &nbsp;·&nbsp; Three.js + Salamander Piano</div>
+        <div class="card-title">Bloom / <em>Four Walls</em></div>
+        <p class="card-desc">A three-dimensional bloom fills the room. Each particle carries a piano note — the space breathes, accumulates, and releases.</p>
+        <div class="card-tags"><span class="tag">WebGL</span><span class="tag">Spatial Audio</span><span class="tag">Immersive</span></div>
+      </div>
+    </a>
+
+    <a class="work-card" href="../installations/traveling-landscape.html">
+      <div class="card-thumb" style="background:#060610;">
+        <span class="card-number">04</span>
+        <iframe src="../installations/traveling-landscape.html?embed=1" loading="lazy" title="Traveling Landscape"></iframe>
+        <div class="card-arrow"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c8a882" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Generative Art &nbsp;·&nbsp; Emergent DNA &nbsp;·&nbsp; p5.js WEBGL</div>
+        <div class="card-title">Traveling <em>Landscape</em></div>
+        <p class="card-desc">A world with an age. Boxes grow from white ground, breathe at full life, and return to white. The camera moves. You do not know what you will find.</p>
+        <div class="card-tags"><span class="tag">WEBGL</span><span class="tag">Emergent DNA</span><span class="tag">Lifecycle</span></div>
+      </div>
+    </a>
+
+    <a class="work-card" href="../installations/shared-ground.html">
+      <div class="card-thumb" style="background:#080806;">
+        <span class="card-number">05</span>
+        <iframe src="../installations/shared-ground.html?embed=1" loading="lazy" title="Shared Ground"></iframe>
+        <div class="card-arrow"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c8a882" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Historical Archive &nbsp;·&nbsp; Canvas 2D + Web Audio</div>
+        <div class="card-title">Shared <em>Ground</em></div>
+        <p class="card-desc">Two histories in a room — move your cursor to carry one. When they approach, photographs that belong to both surface. The archive responds to the relationship between bodies.</p>
+        <div class="card-tags"><span class="tag">Archive</span><span class="tag">Presence</span><span class="tag">Sound</span></div>
+      </div>
+    </a>
+
+    <a class="work-card" href="../installations/technical-drawing-with-elevation.html">
+      <div class="card-thumb" style="background:#0a0a0a;">
+        <span class="card-number">06</span>
+        <iframe src="../installations/technical-drawing-with-elevation-sketch.html?embed=1" loading="lazy" title="Technical Drawing"></iframe>
+        <div class="card-arrow"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c8a882" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Generative Drawing &nbsp;·&nbsp; p5.js</div>
+        <div class="card-title">Technical <em>Drawing</em></div>
+        <p class="card-desc">Infinite architectural documents — each a unique composition of grid, elevation, cube, and notation that no hand drew and no building will follow.</p>
+        <div class="card-tags"><span class="tag">Architecture</span><span class="tag">Generative</span><span class="tag">Download</span></div>
+      </div>
+    </a>
+
+    </div>
+  </div>
+</section>
 
 <header>
   <p class="kicker">Studio archive</p>
@@ -249,7 +511,6 @@ const SERIES = [
   {
     name: 'Traveling Landscape',
     files: [
-      {name:'traveling-landscape/index.html', title:'Traveling Landscape — catalog page', version:false},
       {name:'traveling-landscape.html', title:'Traveling Landscape', version:false},
       {name:'traveling_landscape.html', title:'Traveling Landscape (alt)', version:true},
       {name:'01-traveling-landscape-working.html', title:'Traveling Landscape (working)', version:true},
@@ -506,13 +767,6 @@ const SERIES = [
     ]
   },
   {
-    name: 'Mangle',
-    files: [
-      {name:'mangle/index.html', title:'Mangle — Tone.js sample player', version:false},
-      {name:'mangle/audition.html', title:'Mangle — audition mode', version:true},
-    ]
-  },
-  {
     name: 'Loop Miami 2026',
     files: [
       {name:'loop-miami-2026/critique-hub.html', title:'Critique hub (light page for presentation)', version:false},
@@ -528,8 +782,6 @@ const SERIES = [
       {name:'loop-miami-2026/city_gradient_standalone.html', title:'City gradient — p5 corridor', version:false},
       {name:'loop-miami-2026/technical-drawing-with-elevation-2.html', title:'Technical drawing with elevation', version:false},
       {name:'loop-miami-2026/traveling-landscape.html', title:'Traveling landscape (bundle copy)', version:false},
-      {name:'loop-miami-2026/webcam-point-cloud/v1/index.html', title:'Webcam Point Cloud (v1 browser live)', version:false},
-      {name:'loop-miami-2026/webcam-point-cloud/v2-verse/index.html', title:'Webcam Point Cloud (v2 Verse export)', version:true},
       {name:'loop-miami-2026/orchestrator.html', title:'8-pillar spatial orchestrator', version:false},
     ]
   },

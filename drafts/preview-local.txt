@@ -1,0 +1,15 @@
+Cathedral merge draft — two ways to open it
+
+1) FUNCTIONING DRAFT (live Bloom in the carousel)
+   From this folder run:
+     ./serve-drafts.sh
+   Then open in your browser:
+     http://localhost:8765/homepage-cathedral-merge-local-draft.html
+   The first slide embeds bloom-four-walls-sketch.html (same folder) — the sketch runs only inside this page.
+
+2) QUICK PREVIEW WITHOUT A SERVER (screenshot only)
+   Double-click homepage-cathedral-merge-local-draft.html. Browsers do not reliably run that sketch inside an iframe from file://, so you see a still PNG until you use the server above.
+
+Keep homepage-cathedral-merge-local-draft.html, bloom-four-walls-sketch.html, and bloom-four-walls-carousel-preview.png in this folder.
+
+After Bloom loads, click the pale overlay once if the room / piano need to start.

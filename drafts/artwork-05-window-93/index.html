@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Window 93 — corner projection test — Mark Walhimer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    canvas { display: block; vertical-align: top; }
+  </style>
+</head>
+<body>
+<script>
+let angleY = 0;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  background(255);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function draw() {
+  background(255);
+
+  rotateY(angleY);
+  angleY += 0.007;
+
+  var gl = this._renderer.GL;
+  gl.disable(gl.DEPTH_TEST);
+
+  drawGradientCube(300);
+
+  gl.enable(gl.DEPTH_TEST);
+}
+
+function drawGradientCube(size) {
+  noStroke();
+
+  beginShape();
+  fill(255, 0, 0, 120);
+  vertex(-size / 2, -size / 2, size / 2);
+  vertex(size / 2, -size / 2, size / 2);
+  fill(255, 255, 0, 120);
+  vertex(size / 2, size / 2, size / 2);
+  vertex(-size / 2, size / 2, size / 2);
+  endShape(CLOSE);
+
+  beginShape();
+  fill(0, 0, 255, 120);
+  vertex(-size / 2, -size / 2, -size / 2);
+  vertex(size / 2, -size / 2, -size / 2);
+  fill(0, 255, 255, 120);
+  vertex(size / 2, size / 2, -size / 2);
+  vertex(-size / 2, size / 2, -size / 2);
+  endShape(CLOSE);
+
+  beginShape();
+  fill(255, 0, 255, 120);
+  vertex(-size / 2, -size / 2, -size / 2);
+  vertex(-size / 2, -size / 2, size / 2);
+  fill(255, 255, 255, 120);
+  vertex(-size / 2, size / 2, size / 2);
+  vertex(-size / 2, size / 2, -size / 2);
+  endShape(CLOSE);
+
+  beginShape();
+  fill(0, 255, 0, 120);
+  vertex(size / 2, -size / 2, -size / 2);
+  vertex(size / 2, -size / 2, size / 2);
+  fill(255, 255, 0, 120);
+  vertex(size / 2, size / 2, size / 2);
+  vertex(size / 2, size / 2, -size / 2);
+  endShape(CLOSE);
+
+  beginShape();
+  fill(255, 255, 255, 120);
+  vertex(-size / 2, -size / 2, -size / 2);
+  vertex(size / 2, -size / 2, -size / 2);
+  fill(200, 200, 200, 120);
+  vertex(size / 2, -size / 2, size / 2);
+  vertex(-size / 2, -size / 2, size / 2);
+  endShape(CLOSE);
+
+  beginShape();
+  fill(0, 255, 255, 120);
+  vertex(-size / 2, size / 2, -size / 2);
+  vertex(size / 2, size / 2, -size / 2);
+  fill(0, 0, 255, 120);
+  vertex(size / 2, size / 2, size / 2);
+  vertex(-size / 2, size / 2, size / 2);
+  endShape(CLOSE);
+}
+</script>
+</body>
+</html>
