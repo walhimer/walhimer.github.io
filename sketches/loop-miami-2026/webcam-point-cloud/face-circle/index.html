@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Face point cloud + dot · ball follows</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+  <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      overflow: hidden;
+      font-family: system-ui, sans-serif;
+    }
+    #root {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      align-items: stretch;
+    }
+    #face-slot {
+      flex: 1 1 58%;
+      min-width: 0;
+      height: 100%;
+      position: relative;
+    }
+    #face-slot canvas {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    #ball-slot {
+      flex: 1 1 42%;
+      min-width: 0;
+      height: 100%;
+      background: #0a0a0a;
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      position: relative;
+    }
+    #ballCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #hint {
+      position: fixed;
+      top: 10px;
+      left: 12px;
+      color: #ccc;
+      font-size: 12px;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 8px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+      max-width: min(90vw, 32em);
+      line-height: 1.4;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="hint">Camera on · <strong>Left:</strong> point cloud + nose dot (drag to orbit) · <strong>Right:</strong> ball tracks the dot (smoothed)</div>
+  <div id="root">
+    <div id="face-slot"></div>
+    <div id="ball-slot">
+      <canvas id="ballCanvas" aria-label="Ball follows nose"></canvas>
+    </div>
+  </div>
+
+  <script>
+    let cam;
+    let faceMesh;
+    let facePredictions = [];
+
+    const camW = 320;
+    const camH = 240;
+    const step = 3;
+    const fillAmount = 0.92;
+    const zDepth = 220;
+    const LM_NOSE = 1;
+    const BALL_SMOOTH = 0.14;
+    /** Amplify nose motion on the right panel (×2 from center). */
+    const BALL_MOVE_MAG = 2;
+
+    let ballCanvas;
+    let ballCtx;
+    let ballPx;
+    let ballPy;
+    let faceFrac = 0.58;
+
+    function clamp01(v) {
+      return v < 0 ? 0 : v > 1 ? 1 : v;
+    }
+
+    function syncBallCanvasSize() {
+      if (!ballCanvas) return;
+      const slot = document.getElementById('ball-slot');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rw = Math.floor((slot && slot.clientWidth) || 300);
+      const rh = Math.floor((slot && slot.clientHeight) || 300);
+      ballCanvas.width = Math.max(2, Math.floor(rw * dpr));
+      ballCanvas.height = Math.max(2, Math.floor(rh * dpr));
+      if (ballCtx) {
+        ballCtx.setTransform(1, 0, 0, 1, 0, 0);
+        ballCtx.scale(dpr, dpr);
+      }
+    }
+
+    /**
+     * Same geometry as the left 3D dot: offset from face center in cam space, not absolute
+     * nose position. X is mirrored like the left panel (scale -1). ×BALL_MOVE_MAG from center.
+     */
+    function drawBallFollower(hasFace, circleX, centerX, circleY, centerY) {
+      if (!ballCtx || !ballCanvas) return;
+      const slot = document.getElementById('ball-slot');
+      const cw = (slot && slot.clientWidth) || ballCanvas.clientWidth;
+      const ch = (slot && slot.clientHeight) || ballCanvas.clientHeight;
+      var tx;
+      var ty;
+      if (hasFace) {
+        var rdx = (circleX - centerX) / camW;
+        var rdy = (circleY - centerY) / camH;
+        var mx = clamp01(0.5 + BALL_MOVE_MAG * -rdx);
+        var my = clamp01(0.5 + BALL_MOVE_MAG * rdy);
+        tx = mx * cw;
+        ty = my * ch;
+      }
+      if (!hasFace) {
+        ballPx = null;
+        ballPy = null;
+        ballCtx.fillStyle = '#0a0a0a';
+        ballCtx.fillRect(0, 0, cw, ch);
+        ballCtx.fillStyle = 'rgba(120, 130, 150, 0.35)';
+        ballCtx.font = '13px system-ui,sans-serif';
+        ballCtx.textAlign = 'center';
+        ballCtx.fillText('Face the camera', cw / 2, ch / 2);
+        return;
+      }
+      if (ballPx == null || ballPy == null) {
+        ballPx = tx;
+        ballPy = ty;
+      }
+      ballPx += (tx - ballPx) * BALL_SMOOTH;
+      ballPy += (ty - ballPy) * BALL_SMOOTH;
+
+      ballCtx.fillStyle = '#0a0a0a';
+      ballCtx.fillRect(0, 0, cw, ch);
+
+      const r = Math.min(cw, ch) * 0.055;
+      const grd = ballCtx.createRadialGradient(ballPx, ballPy, 0, ballPx, ballPy, r * 1.8);
+      grd.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+      grd.addColorStop(0.55, 'rgba(180, 210, 255, 0.55)');
+      grd.addColorStop(1, 'rgba(80, 100, 140, 0.15)');
+      ballCtx.beginPath();
+      ballCtx.arc(ballPx, ballPy, r, 0, Math.PI * 2);
+      ballCtx.fillStyle = grd;
+      ballCtx.fill();
+      ballCtx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      ballCtx.lineWidth = 2;
+      ballCtx.stroke();
+    }
+
+    function setup() {
+      const faceW = Math.floor(windowWidth * faceFrac);
+      const cv = createCanvas(faceW, windowHeight, WEBGL);
+      cv.parent('face-slot');
+      pixelDensity(1);
+
+      ballCanvas = document.getElementById('ballCanvas');
+      ballCtx = ballCanvas.getContext('2d');
+      syncBallCanvasSize();
+
+      cam = createCapture(VIDEO, () => {});
+      cam.size(camW, camH);
+      cam.hide();
+
+      faceMesh = ml5.faceMesh({ maxFaces: 1, refineLandmarks: true }, () => {});
+      faceMesh.detectStart(cam, (results) => {
+        facePredictions = Array.isArray(results) ? results : [];
+      });
+
+      colorMode(RGB, 255);
+    }
+
+    function normLandmark(p) {
+      if (!p) return null;
+      const x = p.x;
+      const y = p.y;
+      if (x >= 0 && x <= 1.001 && y >= 0 && y <= 1.001) {
+        return { x: x * camW, y: y * camH };
+      }
+      return { x: x, y: y };
+    }
+
+    function draw() {
+      background(0);
+      noLights();
+      orbitControl();
+      scale(-1, 1, 1);
+
+      cam.loadPixels();
+      if (!cam.pixels.length) {
+        drawBallFollower(false);
+        return;
+      }
+
+      translate(0, 0, -80);
+
+      const mask = getFaceMaskBounds(facePredictions);
+      if (!mask) {
+        drawBallFollower(false);
+        return;
+      }
+
+      const maskWidth = max(1, mask.maxX - mask.minX);
+      const maskHeight = max(1, mask.maxY - mask.minY);
+      const cloudScale = min((width * fillAmount) / maskWidth, (height * fillAmount) / maskHeight);
+      const centerX = (mask.minX + mask.maxX) * 0.5;
+      const centerY = (mask.minY + mask.maxY) * 0.5;
+
+      const kp = facePredictions[0] && facePredictions[0].keypoints;
+      let circleX = centerX;
+      let circleY = centerY;
+      if (kp && kp.length > LM_NOSE) {
+        const n = normLandmark(kp[LM_NOSE]);
+        if (n) {
+          circleX = n.x;
+          circleY = n.y;
+        }
+      }
+
+      drawBallFollower(true, circleX, centerX, circleY, centerY);
+
+      const cx3 = (circleX - centerX) * cloudScale;
+      const cy3 = (circleY - centerY) * cloudScale;
+      const circleR = min(80, max(18, cloudScale * 22));
+
+      stroke(255, 255, 255);
+      strokeWeight(min(12, max(3.5, cloudScale * 0.42)));
+      noFill();
+      beginShape(POINTS);
+      for (let y = 0; y < camH; y += step) {
+        for (let x = 0; x < camW; x += step) {
+          if (!isInFaceNeckMask(x, y, mask)) continue;
+          const idx = (x + y * camW) * 4;
+          const r = cam.pixels[idx];
+          const g = cam.pixels[idx + 1];
+          const b = cam.pixels[idx + 2];
+          const bright = (r + g + b) / 3;
+          const z = map(bright, 0, 255, -zDepth, zDepth);
+          const px = (x - centerX) * cloudScale;
+          const py = (y - centerY) * cloudScale;
+          vertex(px, py, z);
+        }
+      }
+      endShape();
+
+      push();
+      translate(cx3, cy3, zDepth * 0.45);
+      noStroke();
+      fill(255);
+      sphere(max(4, circleR * 0.11));
+      pop();
+
+      push();
+      translate(cx3, cy3, zDepth * 0.48);
+      noFill();
+      stroke(255);
+      strokeWeight(2.2);
+      ellipse(0, 0, circleR, circleR);
+      pop();
+    }
+
+    function getFaceMaskBounds(predictions) {
+      if (!predictions || !predictions.length) return null;
+      const keypoints = predictions[0].keypoints || [];
+      if (!keypoints.length) return null;
+
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+
+      for (const p of keypoints) {
+        minX = min(minX, p.x);
+        minY = min(minY, p.y);
+        maxX = max(maxX, p.x);
+        maxY = max(maxY, p.y);
+      }
+
+      const w = maxX - minX;
+      const h = maxY - minY;
+
+      return {
+        minX: max(0, minX - w * 0.3),
+        maxX: min(camW - 1, maxX + w * 0.3),
+        minY: max(0, minY - h * 0.18),
+        maxY: min(camH - 1, maxY + h * 0.72)
+      };
+    }
+
+    function isInFaceNeckMask(x, y, bounds) {
+      return x >= bounds.minX && x <= bounds.maxX && y >= bounds.minY && y <= bounds.maxY;
+    }
+
+    function windowResized() {
+      const faceW = Math.floor(windowWidth * faceFrac);
+      resizeCanvas(faceW, windowHeight);
+      syncBallCanvasSize();
+    }
+  </script>
+</body>
+</html>

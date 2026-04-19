@@ -60,6 +60,13 @@ git commit -m "Description of change"
 git push origin main
 ```
 
+Fast option:
+
+```bash
+cd ~/Documents/GitHub/walhimer.github.io
+./_scripts/safe_publish.sh "Description of change"
+```
+
 ### Collection DB workflow
 
 1. Keep `data/catalog.json` current via `python3 _scripts/refresh_catalog.py`.
