@@ -270,6 +270,22 @@
       position: relative;
       overflow: hidden;
     }
+    /* iOS Safari: nested flex + min-height:0 can collapse the viewport to 0px — still previews vanish */
+    @media (max-width: 900px) {
+      .hero {
+        min-height: 100vh;
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+      }
+      .carousel-shell {
+        flex: 1 1 auto;
+        min-height: min(72vh, 620px);
+      }
+      .carousel-viewport {
+        flex: 1 1 auto;
+        min-height: min(58vh, 520px);
+      }
+    }
     .slide-placeholder {
       position: absolute;
       inset: 0;
