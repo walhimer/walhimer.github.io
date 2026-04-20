@@ -26,14 +26,14 @@
   <meta property="og:description" content="Selected works by Mark Walhimer — digital installation artist. Featured pieces, catalog, and studio practice." />
   <meta property="og:url" content="https://mark-walhimer.com/" />
   <meta property="og:site_name" content="Mark Walhimer" />
-  <meta property="og:image" content="https://mark-walhimer.com/drafts/bloom-four-walls-carousel-preview.png" />
+  <meta property="og:image" content="https://mark-walhimer.com/images/homepage-featured/001.png" />
   <meta property="og:image:width" content="1024" />
   <meta property="og:image:height" content="529" />
   <meta property="og:image:alt" content="Bloom — four walls, featured installation preview" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Mark Walhimer — Selected Works" />
   <meta name="twitter:description" content="Selected works by Mark Walhimer — digital installation artist. Featured pieces, catalog, and studio practice." />
-  <meta name="twitter:image" content="https://mark-walhimer.com/drafts/bloom-four-walls-carousel-preview.png" />
+  <meta name="twitter:image" content="https://mark-walhimer.com/images/homepage-featured/001.png" />
   <meta name="twitter:image:alt" content="Bloom — four walls, featured installation preview" />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -541,7 +541,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center;
       display: block;
     }
@@ -570,41 +570,41 @@
       border: 0;
       display: block;
     }
-    .art03-static-fallback {
+    /* Slides 3–7 — PNG stills (see /images/homepage-featured/) */
+    .art03-static-fallback.carousel-still-wrap,
+    .art04-static-fallback.carousel-still-wrap,
+    .art05-static-fallback.carousel-still-wrap,
+    .art06-static-fallback.carousel-still-wrap,
+    .art07-static-fallback.carousel-still-wrap {
       position: absolute;
       inset: 0;
       z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 15px;
-      font-weight: 300;
-      text-align: center;
-      padding: clamp(20px, 5vw, 40px);
-    }
-    .art03-static-inner {
-      max-width: 28em;
-      line-height: 1.55;
-    }
-    .art03-static-inner strong {
       display: block;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(20px, 3.5vw, 28px);
-      font-weight: 400;
-      color: #f5f2eb;
-      margin-bottom: 10px;
+      overflow: hidden;
     }
-    .art03-static-hint {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.38);
-      margin-top: 14px;
+    .carousel-still-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
-    html.draft-bloom-live .art03-static-fallback {
+    .art03-static-fallback.carousel-still-wrap,
+    .art04-static-fallback.carousel-still-wrap { background: #1a1a1a; }
+    .art05-static-fallback.carousel-still-wrap {
+      background: #fafafa;
+      border: 1px solid var(--line);
+      box-sizing: border-box;
+    }
+    .art06-static-fallback.carousel-still-wrap,
+    .art07-static-fallback.carousel-still-wrap { background: #0a0a0a; }
+    html.draft-bloom-live .art03-static-fallback,
+    html.draft-bloom-live .art04-static-fallback,
+    html.draft-bloom-live .art05-static-fallback,
+    html.draft-bloom-live .art06-static-fallback,
+    html.draft-bloom-live .art07-static-fallback {
       display: none !important;
     }
 
@@ -629,44 +629,6 @@
       border: 0;
       display: block;
     }
-    .art04-static-fallback {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #1a1a1a;
-      color: #e0e0e0;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 15px;
-      font-weight: 300;
-      text-align: center;
-      padding: clamp(20px, 5vw, 40px);
-    }
-    .art04-static-inner {
-      max-width: 28em;
-      line-height: 1.55;
-    }
-    .art04-static-inner strong {
-      display: block;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(20px, 3.5vw, 28px);
-      font-weight: 400;
-      color: #f5f2eb;
-      margin-bottom: 10px;
-    }
-    .art04-static-hint {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.38);
-      margin-top: 14px;
-    }
-    html.draft-bloom-live .art04-static-fallback {
-      display: none !important;
-    }
-
     /* Slide 5 — Window 93 (p5 WEBGL, corner projection test) */
     .art05-slide-stack {
       position: absolute;
@@ -688,51 +650,6 @@
       border: 0;
       display: block;
     }
-    .art05-static-fallback {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fafafa;
-      color: var(--ink-soft);
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 15px;
-      font-weight: 300;
-      text-align: center;
-      padding: clamp(20px, 5vw, 40px);
-      border: 1px solid var(--line);
-    }
-    .art05-static-inner {
-      max-width: 28em;
-      line-height: 1.55;
-    }
-    .art05-static-inner strong {
-      display: block;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(20px, 3.5vw, 28px);
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 10px;
-    }
-    .art05-static-meta {
-      font-size: 12px;
-      color: var(--gold);
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
-    }
-    .art05-static-hint {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--dim);
-      margin-top: 14px;
-    }
-    html.draft-bloom-live .art05-static-fallback {
-      display: none !important;
-    }
-
     /* Slide 6 — 923 centered (WEBGL soft gradient planes, April 26) */
     .art06-slide-stack {
       position: absolute;
@@ -754,50 +671,6 @@
       border: 0;
       display: block;
     }
-    .art06-static-fallback {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0a0a0a;
-      color: #e0e0e0;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 15px;
-      font-weight: 300;
-      text-align: center;
-      padding: clamp(20px, 5vw, 40px);
-    }
-    .art06-static-inner {
-      max-width: 28em;
-      line-height: 1.55;
-    }
-    .art06-static-inner strong {
-      display: block;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(20px, 3.5vw, 28px);
-      font-weight: 400;
-      color: #f5f2eb;
-      margin-bottom: 10px;
-    }
-    .art06-static-meta {
-      font-size: 12px;
-      color: var(--gold);
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
-    }
-    .art06-static-hint {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.38);
-      margin-top: 14px;
-    }
-    html.draft-bloom-live .art06-static-fallback {
-      display: none !important;
-    }
-
     /* Slide 7 — Traveling Landscape — Emergent DNA (piano) */
     .art07-slide-stack {
       position: absolute;
@@ -819,50 +692,6 @@
       border: 0;
       display: block;
     }
-    .art07-static-fallback {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0a0a0a;
-      color: #e0e0e0;
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 15px;
-      font-weight: 300;
-      text-align: center;
-      padding: clamp(20px, 5vw, 40px);
-    }
-    .art07-static-inner {
-      max-width: 28em;
-      line-height: 1.55;
-    }
-    .art07-static-inner strong {
-      display: block;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(20px, 3.5vw, 28px);
-      font-weight: 400;
-      color: #f5f2eb;
-      margin-bottom: 10px;
-    }
-    .art07-static-meta {
-      font-size: 12px;
-      color: var(--gold);
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
-    }
-    .art07-static-hint {
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.38);
-      margin-top: 14px;
-    }
-    html.draft-bloom-live .art07-static-fallback {
-      display: none !important;
-    }
-
     /* iOS / touch stills: force previews visible even if draft-bloom-live state is wrong */
     html.home-stills-only .bloom-embed-wrap,
     html.home-stills-only .la023-embed-wrap,
@@ -882,7 +711,7 @@
     html.home-stills-only .art05-static-fallback,
     html.home-stills-only .art06-static-fallback,
     html.home-stills-only .art07-static-fallback {
-      display: flex !important;
+      display: block !important;
     }
 
   </style>
@@ -962,10 +791,10 @@
               <div class="bloom-slide-link bloom-static-fallback">
                 <img
                   class="bloom-slide-img"
-                  src="/drafts/bloom-four-walls-carousel-preview.png"
+                  src="/images/homepage-featured/001.png"
                   width="1024"
                   height="529"
-                  alt="Bloom / Four Walls — still preview (use local server for live sketch in carousel)"
+                  alt="Bloom / Four Walls — still preview"
                   loading="eager"
                   decoding="async"
                   fetchpriority="high"
@@ -993,10 +822,10 @@
               <div class="la023-slide-link la023-static-fallback">
                 <img
                   class="la023-slide-img"
-                  src="/sketches/light-art-023/light_art_023_technical_drawing.svg"
+                  src="/images/homepage-featured/002.png"
                   width="800"
                   height="600"
-                  alt="Light Art 023 — technical preview (use local server for live sketch)"
+                  alt="Light Art 023 — still preview"
                   loading="eager"
                   decoding="async"
                 />
@@ -1020,12 +849,16 @@
                   allow="fullscreen"
                 ></iframe>
               </div>
-              <div class="art03-static-fallback">
-                <div class="art03-static-inner">
-                  <strong>Abstract technical drawing</strong>
-                  Elevation study — still preview. Open this page on the live site (HTTPS) to play the full sketch in the carousel.
-                  <div class="art03-static-hint">HTTPS · mark-walhimer.com</div>
-                </div>
+              <div class="art03-static-fallback carousel-still-wrap">
+                <img
+                  class="carousel-still-img"
+                  src="/images/homepage-featured/003.png"
+                  width="1600"
+                  height="900"
+                  alt="Abstract technical drawing — elevation, still preview"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
             <div class="slide-caption">
@@ -1046,12 +879,16 @@
                   allow="fullscreen"
                 ></iframe>
               </div>
-              <div class="art04-static-fallback">
-                <div class="art04-static-inner">
-                  <strong>Abstract technical drawing</strong>
-                  Studio layout with sidebar — still preview. Open this page on the live site (HTTPS) to play the full sketch in the carousel.
-                  <div class="art04-static-hint">HTTPS · mark-walhimer.com</div>
-                </div>
+              <div class="art04-static-fallback carousel-still-wrap">
+                <img
+                  class="carousel-still-img"
+                  src="/images/homepage-featured/004.png"
+                  width="1600"
+                  height="900"
+                  alt="Abstract technical drawing — studio, still preview"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
             <div class="slide-caption">
@@ -1072,13 +909,16 @@
                   allow="fullscreen"
                 ></iframe>
               </div>
-              <div class="art05-static-fallback">
-                <div class="art05-static-inner">
-                  <strong>Window 93</strong>
-                  <div class="art05-static-meta">Test for corner projection · October 17, 2024</div>
-                  Translucent gradient cube (WEBGL) — still preview. Open this page on the live site (HTTPS) for the live sketch in the carousel.
-                  <div class="art05-static-hint">HTTPS · mark-walhimer.com</div>
-                </div>
+              <div class="art05-static-fallback carousel-still-wrap">
+                <img
+                  class="carousel-still-img"
+                  src="/images/homepage-featured/005.png"
+                  width="1600"
+                  height="900"
+                  alt="Window 93 — corner projection test, still preview"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
             <div class="slide-caption">
@@ -1099,13 +939,16 @@
                   allow="fullscreen"
                 ></iframe>
               </div>
-              <div class="art06-static-fallback">
-                <div class="art06-static-inner">
-                  <strong>923 centered</strong>
-                  <div class="art06-static-meta">WEBGL soft gradient planes · April 26</div>
-                  Breathing layers — still preview. Open this page on the live site (HTTPS) for the live sketch in the carousel.
-                  <div class="art06-static-hint">HTTPS · mark-walhimer.com</div>
-                </div>
+              <div class="art06-static-fallback carousel-still-wrap">
+                <img
+                  class="carousel-still-img"
+                  src="/images/homepage-featured/006.png"
+                  width="1600"
+                  height="900"
+                  alt="923 centered — soft gradient planes, still preview"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
             <div class="slide-caption">
@@ -1126,13 +969,16 @@
                   allow="fullscreen autoplay"
                 ></iframe>
               </div>
-              <div class="art07-static-fallback">
-                <div class="art07-static-inner">
-                  <strong>Traveling Landscape — Emergent DNA</strong>
-                  <div class="art07-static-meta">Three.js · piano · emergent forms</div>
-                  Interactive landscape — still preview. Open this page on the live site (HTTPS) for the live sketch in the carousel.
-                  <div class="art07-static-hint">HTTPS · mark-walhimer.com</div>
-                </div>
+              <div class="art07-static-fallback carousel-still-wrap">
+                <img
+                  class="carousel-still-img"
+                  src="/images/homepage-featured/007.png"
+                  width="1600"
+                  height="900"
+                  alt="Traveling Landscape — Emergent DNA (piano), still preview"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
             <div class="slide-caption">
