@@ -336,7 +336,7 @@
         ],
         "sketch": {
           "series": "Surrender Machines",
-          "file": "surrender-machines.html"
+          "file": "surrender/surrender-machines.html"
         },
         "surfaces": [
           "installation",
@@ -346,7 +346,7 @@
       "artifacts": {
         "sketch_entry": {
           "repo_paths": [
-            "sketches/surrender-machines.html"
+            "sketches/surrender/surrender-machines.html"
           ],
           "external_urls": [
             "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js",
@@ -642,6 +642,54 @@
       }
     },
     {
+      "id": "urn:walhimer:sketch:Surrender Machines:index",
+      "dublin_core": {
+        "title": "technical-drawing-chronicle/index",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Technical Drawing — chronicle:index",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000180"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Technical Drawing — chronicle-index",
+        "type": "HumanMadeObject",
+        "_label": "technical-drawing-chronicle/index",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Surrender Machines",
+          "file": "surrender/index.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/surrender/index.html",
+          "sketches/surrender/surrender 7.html",
+          "sketches/surrender/surrender-machine-madrid-v2.html",
+          "sketches/surrender/surrender-machine-madrid.html",
+          "sketches/surrender/surrender-machine.html",
+          "sketches/surrender/surrender-machines.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
       "id": "urn:walhimer:sketch:Surrender Machines:surrender-machine",
       "dublin_core": {
         "title": "surrender-machine",
@@ -674,12 +722,12 @@
         ],
         "sketch": {
           "series": "Surrender Machines",
-          "file": "surrender-machine.html"
+          "file": "surrender/surrender-machine.html"
         }
       },
       "artifacts": {
         "repo_paths": [
-          "sketches/surrender-machine.html"
+          "sketches/surrender/surrender-machine.html"
         ],
         "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
@@ -719,12 +767,12 @@
         ],
         "sketch": {
           "series": "Surrender Machines",
-          "file": "surrender-machine-madrid.html"
+          "file": "surrender/surrender-machine-madrid.html"
         }
       },
       "artifacts": {
         "repo_paths": [
-          "sketches/surrender-machine-madrid.html"
+          "sketches/surrender/surrender-machine-madrid.html"
         ],
         "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
@@ -764,12 +812,12 @@
         ],
         "sketch": {
           "series": "Surrender Machines",
-          "file": "surrender-machine-madrid-v2.html"
+          "file": "surrender/surrender-machine-madrid-v2.html"
         }
       },
       "artifacts": {
         "repo_paths": [
-          "sketches/surrender-machine-madrid-v2.html"
+          "sketches/surrender/surrender-machine-madrid-v2.html"
         ],
         "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
@@ -809,12 +857,12 @@
         ],
         "sketch": {
           "series": "Surrender Machines",
-          "file": "surrender 7.html"
+          "file": "surrender/surrender 7.html"
         }
       },
       "artifacts": {
         "repo_paths": [
-          "sketches/surrender 7.html"
+          "sketches/surrender/surrender 7.html"
         ],
         "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.2/p5.min.js"
