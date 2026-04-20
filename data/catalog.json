@@ -1955,7 +1955,6 @@
       "artifacts": {
         "repo_paths": [
           "sketches/moon-walking/bvh_viewer_07_01.html",
-          "sketches/moon-walking/disks.html",
           "sketches/moon-walking/figure.html",
           "sketches/moon-walking/figure_audio_mobile_simple.html",
           "sketches/moon-walking/funk_boy.html",
@@ -2008,51 +2007,6 @@
           "sketches/moon-walking/moon-dish.html"
         ],
         "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Moon & Walking:disks",
-      "dublin_core": {
-        "title": "disks",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Moon Dish:disks",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000050"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Moon Dish-disks",
-        "type": "HumanMadeObject",
-        "_label": "disks",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Moon & Walking",
-          "file": "moon-walking/disks.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/moon-walking/disks.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
       }
     },
     {
@@ -2320,6 +2274,95 @@
         ],
         "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/ccapture.js/1.1.0/CCapture.all.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:index",
+      "dublin_core": {
+        "title": "technical-drawing-chronicle/index",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Technical Drawing — chronicle:index",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000180"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Technical Drawing — chronicle-index",
+        "type": "HumanMadeObject",
+        "_label": "technical-drawing-chronicle/index",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/index.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/disks.html",
+          "sketches/emergent-discs/index.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:disks",
+      "dublin_core": {
+        "title": "disks",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Moon Dish:disks",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000050"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Moon Dish-disks",
+        "type": "HumanMadeObject",
+        "_label": "disks",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/disks.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/disks.html"
+        ],
+        "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
         ]
       }
