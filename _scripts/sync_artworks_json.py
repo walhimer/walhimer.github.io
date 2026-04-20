@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Refresh data/catalog.json from sketches/index.html (SERIES).
+Refresh data/catalog.json from sketches/catalog-work.html (SERIES), with fallback to sketches/index.html when SERIES is empty.
 
 Legacy name kept so existing docs and muscle memory still work.
 The manifest is data/catalog.json; artworks.json is no longer used.

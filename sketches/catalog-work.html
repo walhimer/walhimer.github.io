@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TVXX0YPGCN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TVXX0YPGCN');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Catalog workspace — Mark Walhimer</title>
+  <meta name="description" content="Internal layout workspace for the studio catalog." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/cathedral-shell.css" />
+  <style>
+    .workspace {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 48px 96px;
+    }
+    .workspace h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .workspace .note {
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      max-width: 42em;
+      margin-bottom: 48px;
+    }
+    .workspace .note a {
+      color: var(--accent);
+    }
+    .workspace-canvas {
+      border: 1px dashed var(--line);
+      border-radius: 2px;
+      background: var(--surface, #faf9f7);
+      padding: clamp(24px, 4vw, 40px);
+    }
+    .sample-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 20px;
+    }
+    .sample-entry {
+      display: grid;
+      grid-template-columns: minmax(200px, 340px) 1fr;
+      gap: clamp(24px, 4vw, 40px);
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .sample-entry { grid-template-columns: 1fr; }
+    }
+    .sample-entry figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      background: #0a0a0a;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .sample-entry figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    .sample-entry figcaption {
+      font-size: 10px;
+      color: var(--dim);
+      padding: 10px 12px;
+      letter-spacing: 0.06em;
+    }
+    .sample-fields {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    .sample-fields dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px 20px;
+      margin: 0 0 20px;
+    }
+    .sample-fields dt {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin: 0;
+      padding-top: 2px;
+    }
+    .sample-fields dd {
+      margin: 0;
+      font-weight: 300;
+    }
+    .sample-fields a {
+      color: var(--accent);
+      word-break: break-word;
+    }
+    .internal-only {
+      margin-top: 24px;
+      padding: 16px 18px;
+      border: 1px dashed rgba(58, 56, 52, 0.35);
+      border-radius: 2px;
+      background: rgba(58, 56, 52, 0.04);
+    }
+    .internal-only .tag {
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 10px;
+    }
+    .internal-only dd {
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+  </style>
+</head>
+<body class="shell-page">
+<nav>
+  <a class="nav-logo" href="/">Mark Walhimer</a>
+  <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav-links">
+    <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path class="line" d="M1 1h18M1 7h18M1 13h18"/></svg>
+  </button>
+  <div class="nav-links" id="site-nav-links">
+    <a href="/">Selected Works</a>
+    <a href="/sketches/index.html">Catalog</a>
+    <a href="/bio/index.html">Bio / CV</a>
+    <a href="/contact/index.html">Contact</a>
+  </div>
+</nav>
+
+<main class="workspace">
+  <h1>Catalog <em style="font-style: italic; color: var(--accent);">workspace</em></h1>
+  <p class="note">
+    Blank layout area — add series and UI here as you go.
+    The public catalog remains at
+    <a href="/sketches/index.html">/sketches/index.html</a>.
+    Put your <code>const SERIES</code> in the script block below when you are ready.
+    While <code>SERIES</code> is empty, refresh uses the legacy list from <code>sketches/index.html</code> so nothing is lost.
+    When you add your first series here, copy the full <code>SERIES</code> array from <code>index.html</code> (then edit down), or the manifest will only include what you list in this file.
+  </p>
+
+  <div class="workspace-canvas">
+    <p class="sample-label">Sample entry (template — not a second manifest)</p>
+    <article class="sample-entry" aria-label="Sample catalog entry: Bloom / Four Walls">
+      <figure>
+        <img
+          src="/images/homepage-featured/001.png"
+          width="1024"
+          height="529"
+          alt="Still preview — Bloom / Four Walls"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Archival still · same image family as homepage carousel</figcaption>
+      </figure>
+      <div class="sample-fields">
+        <dl>
+          <dt>Catalog ID</dt>
+          <dd><strong>WS-000003</strong> (studio catalog number — not a museum accession)</dd>
+          <dt>Title</dt>
+          <dd>Bloom / Four Walls</dd>
+          <dt>Date</dt>
+          <dd>2026-03-15</dd>
+          <dt>Stable ID</dt>
+          <dd><code style="font-size:12px;">urn:walhimer:work:bloom-four-walls</code></dd>
+          <dt>Live piece</dt>
+          <dd><a href="/installations/bloom-four-walls-sketch.html">/installations/bloom-four-walls-sketch.html</a></dd>
+          <dt>Platform / chain notes</dt>
+          <dd>Example: originally listed on [platform]; if the site closes, replace with current mirror (e.g. AR Weave). Keep your files in-repo as the archive.</dd>
+          <dt>External link (sample)</dt>
+          <dd><a href="https://objkt.com" rel="noopener">https://objkt.com</a> · placeholder — swap for real listing or explorer URL</dd>
+        </dl>
+        <p style="font-size:13px;color:var(--ink-soft);max-width:36em;">
+          Dublin Core + Linked Art blocks can mirror <code>data/catalog.json</code> later; this page is layout-only for now.
+        </p>
+        <aside class="internal-only" aria-label="Studio-only fields">
+          <div class="tag">Internal only · not for public pages</div>
+          <dl>
+            <dt>Collector wallet</dt>
+            <dd>0x0000…0000 · example — store real wallets here in your private notes or a non-published field</dd>
+          </dl>
+        </aside>
+      </div>
+    </article>
+  </div>
+</main>
+
+<script>
+/* Parsed by _scripts/refresh_catalog.py — add series blocks here when you are ready. */
+const SERIES = [];
+</script>
+<script>
+(function () {
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var btn = nav.querySelector('.nav-toggle');
+  var panel = document.getElementById('site-nav-links');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', function () {
+    var open = nav.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  panel.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      nav.classList.remove('nav-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open menu');
+    });
+  });
+})();
+</script>
+</body>
+</html>

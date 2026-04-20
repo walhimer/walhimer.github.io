@@ -4,10 +4,11 @@
 Single manifest: data/catalog.json
 
 - Canonical persisted data: `works[]` (Dublin Core, Linked Art, site, artifacts).
-- Sketch series order and file lists come from `sketches/index.html` (const SERIES) on each run.
+- Sketch series order and file lists come from `sketches/catalog-work.html` (`const SERIES`).
+  While that array is empty, the refresh falls back to `sketches/index.html` so catalog.json does not lose rows.
 - Installation-tier HTML is discovered from `works[]` plus any `installations/*.html` on disk.
 
-Run after changing sketches/index.html SERIES or adding installation HTML:
+Run after changing SERIES or adding installation HTML:
 
   python3 _scripts/refresh_catalog.py
 
@@ -36,6 +37,9 @@ from catalog_lib import (
     parse_series_from_index,
     soundscapes_summary,
 )
+
+# While catalog-work.html has an empty SERIES, keep using sketches/index.html for the list.
+LEGACY_SERIES_INDEX = ROOT / "sketches" / "index.html"
 
 CATALOG = ROOT / "data" / "catalog.json"
 LEGACY_ARTWORKS = ROOT / "artworks.json"
@@ -72,8 +76,18 @@ def refresh_catalog(from_artworks: bool = False) -> None:
     catalog.pop("sketches_emit_order", None)
 
     sketch_series: list = []
+    series_source = "sketches/index.html"
     if INDEX.exists():
-        sketch_series = parse_series_from_index(INDEX.read_text(encoding="utf-8"))
+        primary = parse_series_from_index(INDEX.read_text(encoding="utf-8"))
+        if primary:
+            sketch_series = primary
+            series_source = "sketches/catalog-work.html"
+    if not sketch_series and LEGACY_SERIES_INDEX.exists():
+        sketch_series = parse_series_from_index(
+            LEGACY_SERIES_INDEX.read_text(encoding="utf-8")
+        )
+        if sketch_series:
+            series_source = "sketches/index.html (fallback; catalog-work SERIES empty)"
     if not sketch_series and LEGACY_ARTWORKS.exists():
         legacy = json.loads(LEGACY_ARTWORKS.read_text(encoding="utf-8"))
         sketch_series = legacy.get("sketches") or []
@@ -98,7 +112,7 @@ def refresh_catalog(from_artworks: bool = False) -> None:
     catalog["version"] = max(int(catalog.get("version") or 1), 2)
     catalog["profile"] = (
         "Walhimer Studio unified catalog. Canonical rows are works[]. "
-        "Sketch series order comes from sketches/index.html on refresh; "
+        f"Sketch series order comes from {series_source} on refresh; "
         "installation HTML is merged from works[] and installations/*.html. "
         "Soundscape list is derived from works, not stored separately."
     )

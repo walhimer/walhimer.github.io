@@ -9,7 +9,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-INDEX = ROOT / "sketches" / "index.html"
+# Canonical SERIES for data/catalog.json refresh (add sketches here as you build this page).
+INDEX = ROOT / "sketches" / "catalog-work.html"
 
 # src="..." href="..." - capture local refs (exclude obvious non-file schemes)
 LOCAL_ATTR_RE = re.compile(
@@ -41,7 +42,7 @@ def extract_bracket_array(html: str, marker: str) -> str:
 
 def parse_series_from_index(html: str) -> list[dict[str, list[str]]]:
     if "const SERIES = " not in html:
-        raise SystemExit("Could not find SERIES block in sketches/index.html")
+        raise SystemExit("Could not find SERIES block in sketches/catalog-work.html")
     body = extract_bracket_array(html, "const SERIES = ")
 
     chunks = re.split(r"\n  \{\n    name: ", body)
@@ -60,7 +61,7 @@ def parse_series_from_index(html: str) -> list[dict[str, list[str]]]:
         out.append({"series": series_name, "files": filenames})
 
     if not out:
-        raise SystemExit("Parsed zero series - check index.html format.")
+        return []
     return out
 
 

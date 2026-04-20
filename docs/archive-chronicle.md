@@ -6,19 +6,28 @@ This document describes how **generative work, the public site, and the manifest
 
 ## What "archive" means here
 
-There are **three** related ideas:
+There are **three** layers to the story (plus a **registration** shortcut table):
 
-### 1. Catalog index (live, searchable)
+### 1. Catalog index (public, searchable)
 
 - **URL:** [mark-walhimer.com/sketches/](https://mark-walhimer.com/sketches/) (or `/sketches/index.html`)
-- **Role:** The **working archive** of sketch files: every HTML entry is listed by **series**, with **search**, **expand/collapse**, and filters (All / Works only / Versions).
-- **Source of truth for that list:** the **`SERIES` JavaScript array** in `sketches/index.html`. When you add a sketch, you add it here so it appears and is findable.
+- **Role:** The **public** archive of sketch files: every HTML entry is listed by **series**, with **search**, **expand/collapse**, and filters (All / Works only / Versions).
+- **Manifest refresh:** Sketch order for **`data/catalog.json`** is read from **`const SERIES`** in **`sketches/catalog-work.html`**. While that array is **empty**, the refresh script uses the legacy **`SERIES`** in **`sketches/index.html`** so rows are not dropped. When you populate **`catalog-work.html`**, copy the full **`SERIES`** from the index first, then edit—otherwise only listed series appear in the manifest.
+- **Internal workspace:** **`sketches/catalog-work.html`** (`noindex`) — layout experiments and a **sample catalog entry** (HTML only; not a second JSON manifest). Not linked from primary nav.
+
+### 1b. Where to register new sketches (summary)
+
+| You are… | Edit **`SERIES` in…** |
+|----------|------------------------|
+| Still using empty **`catalog-work`** | **`sketches/index.html`** (legacy; drives refresh via fallback) |
+| Ready to own the new list | **`sketches/catalog-work.html`** (then refresh no longer uses empty fallback for sketches) |
+
 - **Collection DB access:** Catalog footer includes a low-visibility link to `/catalog-db.html` for internal-style browsing.
 
 ### 2. `data/catalog.json` (single manifest)
 
-- **Role:** The **only** JSON manifest: canonical **`works[]`** (Dublin Core + Linked Art + **`artifacts`**). Sketch series order comes from **`sketches/index.html`** on refresh; installation HTML is merged from **`works[]`** plus **`installations/*.html`** on disk. Soundscape pieces are rows in **`works`** (not a duplicate list).
-- **Sketches list:** Refreshed from `sketches/index.html` by the same script; do **not** hand-edit long file lists in JSON - edit **`SERIES`** in the index instead.
+- **Role:** The **only** JSON manifest: canonical **`works[]`** (Dublin Core + Linked Art + **`artifacts`**). Sketch series order comes from **`sketches/catalog-work.html`** on refresh, with **fallback** to **`sketches/index.html`** when **`catalog-work`** has an empty **`SERIES`**. Installation HTML is merged from **`works[]`** plus **`installations/*.html`** on disk. Soundscape pieces are rows in **`works`** (not a duplicate list).
+- **Sketches list:** Refreshed by the same script; do **not** hand-edit long file lists in JSON — edit **`SERIES`** in **`catalog-work.html`** (or **`index.html`** while using fallback) instead.
 - **Details:** See **[unified-catalog.md](./unified-catalog.md)**.
 
 ```bash
@@ -43,7 +52,7 @@ These are **not** nested Git repos; they are folders in the site repo, linked fr
 | Step | Action |
 |------|--------|
 | Add a sketch file | Put self-contained HTML in `sketches/` (per site rules: works offline). |
-| Register it | Add it to the right block in **`SERIES`** inside `sketches/index.html`. |
+| Register it | Add it to **`SERIES`** in **`sketches/catalog-work.html`** (or **`sketches/index.html`** while **`catalog-work`** is still empty). |
 | Sync catalog | Run `python3 _scripts/refresh_catalog.py`, then commit `data/catalog.json`. |
 | Promote to installation | Copy to `installations/`, update homepage cards, run **`refresh_catalog.py`**, then edit **`works[]`** in `data/catalog.json` if you need custom titles or dates. |
 | Push | `git add`, `git commit`, `git push` to `main`. |

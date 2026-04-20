@@ -4,7 +4,7 @@ There is **one** persisted dataset: **`works[]`** - each row is a work with **Du
 
 **Refresh inputs** (not stored as top-level JSON arrays):
 
-- **Sketch series + file order** - read from **`const SERIES`** in `sketches/index.html` on every run.
+- **Sketch series + file order** - read from **`const SERIES`** in **`sketches/catalog-work.html`** on every run. If that array is **empty**, refresh uses **`sketches/index.html`** (legacy) so **`catalog.json`** does not lose sketch rows while the workspace page is still blank.
 - **Installation-tier HTML** - merged from existing **`works[]`** rows that have **`site.installation`**, plus any new **`installations/*.html`** files on disk (excluding `installations/index.html` and auxiliary `*-artwork.html` embeds).
 
 **Soundscapes** are **not** a separate block in JSON. Filter **`works`** where **`soundscape`** appears in **`site.surfaces`** (or **`site.soundscape`** is set). The refresh script logs how many such rows exist; optional **`site.soundscape.public_url`** can point at **`/audio/`** when you mirror pieces there.
@@ -15,7 +15,7 @@ There is **one** persisted dataset: **`works[]`** - each row is a work with **Du
 
 ### After changing sketch listings
 
-1. Edit **`SERIES`** in `sketches/index.html`.
+1. Edit **`SERIES`** in **`sketches/catalog-work.html`** (or **`sketches/index.html`** when **`catalog-work`** is still empty).
 2. Run:
 
    ```bash
@@ -64,7 +64,7 @@ Then delete **`artworks.json`** and commit.
 | `date` | Date or range |
 | `description` | Short description |
 | `identifier` | Stable **URN** (same as work `id`) - does not encode series |
-| `catalog_number` | Accession-style code **`WS-000001`** - **`WS-NNNNNN`** - series-independent; stable across refresh once assigned; new works get the next free number |
+| `catalog_number` | Studio **catalog ID** **`WS-000001`**–**`WS-NNNNNN`** (not a museum accession); series-independent; stable across refresh once assigned; new works get the next free number |
 | `type` | e.g. `InteractiveResource` |
 | `format` | e.g. `text/html` |
 | `language` | e.g. `en` |
@@ -80,7 +80,7 @@ Map `dublin_core.*` and identifiers to CSV for Omeka, CollectiveAccess, or sprea
 
 ## Studio tooling outside the catalog
 
-The **catalog** and **backup story** for *artworks* is unchanged: **`works[]`** in **`data/catalog.json`**, fed by **`SERIES`** in **`sketches/index.html`** and **`installations/`**, refreshed with **`python3 _scripts/refresh_catalog.py`**. Nothing in this section replaces that workflow.
+The **catalog** and **backup story** for *artworks* is unchanged: **`works[]`** in **`data/catalog.json`**, fed by **`SERIES`** in **`sketches/catalog-work.html`** (with fallback to **`sketches/index.html`** when **`catalog-work`** is empty) and **`installations/`**, refreshed with **`python3 _scripts/refresh_catalog.py`**. Nothing in this section replaces that workflow.
 
 Some repo folders are **versioned tooling** (OSC bridges, Python/Node helpers, Mermaid specs). They are **not** automatic rows in **`works[]`** unless you also add a sketch URL under **`sketches/`** and register it in **`SERIES`** like any other piece.
 
