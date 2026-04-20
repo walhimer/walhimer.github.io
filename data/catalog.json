@@ -7610,6 +7610,68 @@
       }
     },
     {
+      "id": "urn:walhimer:sketch:Bloom:index",
+      "dublin_core": {
+        "title": "technical-drawing-chronicle/index",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Technical Drawing — chronicle:index",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000180"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Technical Drawing — chronicle-index",
+        "type": "HumanMadeObject",
+        "_label": "technical-drawing-chronicle/index",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/index.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/bloom-four-walls.html",
+          "sketches/bloom/bloom-garden.html",
+          "sketches/bloom/bloom-release-cathedral/index.html",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/A3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/A4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/C3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/C4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/D3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/D4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/E3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/E4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/G3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/G4.ogg",
+          "sketches/bloom/bloom-release.html",
+          "sketches/bloom/bloom-surrender.html",
+          "sketches/bloom/bloom.html",
+          "sketches/bloom/index.html",
+          "sketches/bloom/installation-builder-bloom.html",
+          "sketches/bloom/orchestrator-bloom.html",
+          "sketches/bloom/radial-gradient.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
       "id": "urn:walhimer:sketch:Bloom:bloom-garden",
       "dublin_core": {
         "title": "bloom-garden",
@@ -7926,6 +7988,54 @@
           "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/E4.ogg",
           "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/G3.ogg",
           "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/G4.ogg"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Technical:index",
+      "dublin_core": {
+        "title": "technical-drawing-chronicle/index",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Technical Drawing — chronicle:index",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000180"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Technical Drawing — chronicle-index",
+        "type": "HumanMadeObject",
+        "_label": "technical-drawing-chronicle/index",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Technical",
+          "file": "technical/index.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/technical/index.html",
+          "sketches/technical/technical-drawing-chronicle/assets/technical-021-teia-878978.png",
+          "sketches/technical/technical-drawing-chronicle/index.html",
+          "sketches/technical/technical-drawing-fxhash.html",
+          "sketches/technical/technical-drawing-with-elevation.html",
+          "sketches/technical/technical-drawing.html"
         ],
         "external_urls": []
       }

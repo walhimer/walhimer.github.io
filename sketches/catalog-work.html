@@ -145,12 +145,17 @@
 <main class="workspace">
   <h1>Catalog <em style="font-style: italic; color: var(--accent);">workspace</em></h1>
   <p class="note">
-    Blank layout area — add series and UI here as you go.
-    The public catalog remains at
-    <a href="/sketches/index.html">/sketches/index.html</a>.
-    Put your <code>const SERIES</code> in the script block below when you are ready.
-    While <code>SERIES</code> is empty, refresh uses the legacy list from <code>sketches/index.html</code> so nothing is lost.
-    When you add your first series here, copy the full <code>SERIES</code> array from <code>index.html</code> (then edit down), or the manifest will only include what you list in this file.
+    <strong>What this page is:</strong> (1) a <strong>layout lab</strong> for a rich catalog row (image, studio catalog ID, links) &mdash; not a second list of works;
+    (2) an <strong>optional</strong> source for <code>const SERIES</code> used by <code>_scripts/refresh_catalog.py</code> when you choose to maintain the manifest here instead of in <code>sketches/index.html</code>.
+  </p>
+  <p class="note">
+    <strong>Public catalog:</strong> <a href="/sketches/index.html">/sketches/index.html</a> (collapsible series + file rows). Series files live in folders; each major series can expose a hub page, e.g.
+    <a href="/sketches/bloom/index.html">Bloom series index</a> &middot;
+    <a href="/sketches/technical/index.html">Technical series index</a>.
+  </p>
+  <p class="note">
+    While <code>SERIES</code> below is empty, <code>refresh_catalog.py</code> reads the <code>SERIES</code> array from <code>sketches/index.html</code> so nothing is lost.
+    If you add <code>SERIES</code> here, copy the full array from <code>index.html</code> first (then edit), or generated <code>data/catalog.json</code> will only include what you list in this file.
   </p>
 
   <div class="workspace-canvas">

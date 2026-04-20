@@ -10,6 +10,7 @@
 
 | Path | Role |
 |------|------|
+| `index.html` | Bloom — series index (links to all sketches in this folder; also first row under **Bloom** in `sketches/index.html`) |
 | `bloom.html` | Bloom — radial gradient |
 | `bloom-four-walls.html` | Bloom / Four Walls (large sketch) |
 | `bloom-release.html` | Bloom / Release |
