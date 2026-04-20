@@ -1917,7 +1917,58 @@
       }
     },
     {
-      "id": "urn:walhimer:sketch:Moon Dish:moon-dish",
+      "id": "urn:walhimer:sketch:Moon & Walking:index",
+      "dublin_core": {
+        "title": "technical-drawing-chronicle/index",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Technical Drawing — chronicle:index",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000180"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Technical Drawing — chronicle-index",
+        "type": "HumanMadeObject",
+        "_label": "technical-drawing-chronicle/index",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Moon & Walking",
+          "file": "moon-walking/index.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/moon-walking/bvh_viewer_07_01.html",
+          "sketches/moon-walking/disks.html",
+          "sketches/moon-walking/figure.html",
+          "sketches/moon-walking/figure_audio_mobile_simple.html",
+          "sketches/moon-walking/funk_boy.html",
+          "sketches/moon-walking/index.html",
+          "sketches/moon-walking/infinite-walk.html",
+          "sketches/moon-walking/moon-dish.html",
+          "sketches/moon-walking/one_revolution.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Moon & Walking:moon-dish",
       "dublin_core": {
         "title": "moon-dish",
         "creator": "Mark Walhimer",
@@ -1948,19 +1999,19 @@
           "sketch"
         ],
         "sketch": {
-          "series": "Moon Dish",
-          "file": "moon-dish.html"
+          "series": "Moon & Walking",
+          "file": "moon-walking/moon-dish.html"
         }
       },
       "artifacts": {
         "repo_paths": [
-          "sketches/moon-dish.html"
+          "sketches/moon-walking/moon-dish.html"
         ],
         "external_urls": []
       }
     },
     {
-      "id": "urn:walhimer:sketch:Moon Dish:disks",
+      "id": "urn:walhimer:sketch:Moon & Walking:disks",
       "dublin_core": {
         "title": "disks",
         "creator": "Mark Walhimer",
@@ -1991,15 +2042,284 @@
           "sketch"
         ],
         "sketch": {
-          "series": "Moon Dish",
-          "file": "disks.html"
+          "series": "Moon & Walking",
+          "file": "moon-walking/disks.html"
         }
       },
       "artifacts": {
         "repo_paths": [
-          "sketches/disks.html"
+          "sketches/moon-walking/disks.html"
         ],
         "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Moon & Walking:bvh_viewer_07_01",
+      "dublin_core": {
+        "title": "bvh viewer 07 01",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Walking Figure:bvh_viewer_07_01",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000061"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Walking Figure-bvh_viewer_07_01",
+        "type": "HumanMadeObject",
+        "_label": "bvh viewer 07 01",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Moon & Walking",
+          "file": "moon-walking/bvh_viewer_07_01.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/moon-walking/bvh_viewer_07_01.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Moon & Walking:infinite-walk",
+      "dublin_core": {
+        "title": "infinite-walk",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Walking Figure:infinite-walk",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000062"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Walking Figure-infinite-walk",
+        "type": "HumanMadeObject",
+        "_label": "infinite-walk",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Moon & Walking",
+          "file": "moon-walking/infinite-walk.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/moon-walking/infinite-walk.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Moon & Walking:figure",
+      "dublin_core": {
+        "title": "figure",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Walking Figure:figure",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000063"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Walking Figure-figure",
+        "type": "HumanMadeObject",
+        "_label": "figure",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Moon & Walking",
+          "file": "moon-walking/figure.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/moon-walking/figure.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Moon & Walking:figure_audio_mobile_simple",
+      "dublin_core": {
+        "title": "figure audio mobile simple",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Walking Figure:figure_audio_mobile_simple",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000064"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Walking Figure-figure_audio_mobile_simple",
+        "type": "HumanMadeObject",
+        "_label": "figure audio mobile simple",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Moon & Walking",
+          "file": "moon-walking/figure_audio_mobile_simple.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/moon-walking/figure_audio_mobile_simple.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Moon & Walking:funk_boy",
+      "dublin_core": {
+        "title": "funk boy",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Walking Figure:funk_boy",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000065"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Walking Figure-funk_boy",
+        "type": "HumanMadeObject",
+        "_label": "funk boy",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Moon & Walking",
+          "file": "moon-walking/funk_boy.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/moon-walking/funk_boy.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Moon & Walking:one_revolution",
+      "dublin_core": {
+        "title": "one revolution",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Walking Figure:one_revolution",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000066"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Walking Figure-one_revolution",
+        "type": "HumanMadeObject",
+        "_label": "one revolution",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Moon & Walking",
+          "file": "moon-walking/one_revolution.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/moon-walking/one_revolution.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/ccapture.js/1.1.0/CCapture.all.min.js",
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
         ]
       }
@@ -2174,275 +2494,6 @@
           "sketches/convergence-era-v3 copy 4.html"
         ],
         "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Walking Figure:bvh_viewer_07_01",
-      "dublin_core": {
-        "title": "bvh viewer 07 01",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Walking Figure:bvh_viewer_07_01",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000061"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Walking Figure-bvh_viewer_07_01",
-        "type": "HumanMadeObject",
-        "_label": "bvh viewer 07 01",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Walking Figure",
-          "file": "bvh_viewer_07_01.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/bvh_viewer_07_01.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Walking Figure:infinite-walk",
-      "dublin_core": {
-        "title": "infinite-walk",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Walking Figure:infinite-walk",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000062"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Walking Figure-infinite-walk",
-        "type": "HumanMadeObject",
-        "_label": "infinite-walk",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Walking Figure",
-          "file": "infinite-walk.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/infinite-walk.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Walking Figure:figure",
-      "dublin_core": {
-        "title": "figure",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Walking Figure:figure",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000063"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Walking Figure-figure",
-        "type": "HumanMadeObject",
-        "_label": "figure",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Walking Figure",
-          "file": "figure.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/figure.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Walking Figure:figure_audio_mobile_simple",
-      "dublin_core": {
-        "title": "figure audio mobile simple",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Walking Figure:figure_audio_mobile_simple",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000064"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Walking Figure-figure_audio_mobile_simple",
-        "type": "HumanMadeObject",
-        "_label": "figure audio mobile simple",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Walking Figure",
-          "file": "figure_audio_mobile_simple.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/figure_audio_mobile_simple.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js",
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Walking Figure:funk_boy",
-      "dublin_core": {
-        "title": "funk boy",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Walking Figure:funk_boy",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000065"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Walking Figure-funk_boy",
-        "type": "HumanMadeObject",
-        "_label": "funk boy",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Walking Figure",
-          "file": "funk_boy.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/funk_boy.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js",
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Walking Figure:one_revolution",
-      "dublin_core": {
-        "title": "one revolution",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Walking Figure:one_revolution",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000066"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Walking Figure-one_revolution",
-        "type": "HumanMadeObject",
-        "_label": "one revolution",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Walking Figure",
-          "file": "one_revolution.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/one_revolution.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/ccapture.js/1.1.0/CCapture.all.min.js",
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
       }
     },
     {

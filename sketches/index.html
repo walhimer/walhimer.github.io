@@ -210,12 +210,9 @@
     /* —— Catalog series (hub per series — add cards here as folders gain index.html) —— */
     .series-cards-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
       gap: 1px;
       background: var(--rule);
-    }
-    @media (max-width: 700px) {
-      .series-cards-grid { grid-template-columns: 1fr; }
     }
     .series-card .card-body { min-height: 148px; }
     .series-card .card-thumb { background: #0a0a0a; }
@@ -429,6 +426,20 @@
       </div>
     </a>
 
+    <a class="work-card series-card" href="moon-walking/index.html">
+      <div class="card-thumb" style="background:#050810;">
+        <span class="card-number">Series</span>
+        <iframe src="moon-walking/moon-dish.html" loading="lazy" title="Moon Dish preview"></iframe>
+        <div class="card-arrow"><svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#c8a882" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="card-category">Sketches folder &nbsp;·&nbsp; Moon &amp; Walking</div>
+        <div class="card-title">Moon <em>&amp; Walking</em></div>
+        <p class="card-desc">Moon Dish, discs, then walking figures and motion — one line of work in <code style="font-size:11px;">sketches/moon-walking/</code>.</p>
+        <div class="card-tags"><span class="tag">Series hub</span><span class="tag">Three.js / motion</span></div>
+      </div>
+    </a>
+
     </div>
   </div>
 </section>
@@ -532,10 +543,17 @@ const SERIES = [
     ]
   },
   {
-    name: 'Moon Dish',
+    name: 'Moon & Walking',
     files: [
-      {name:'moon-dish.html', title:'Moon Dish', version:false},
-      {name:'disks.html', title:'Emergent Discs', version:false},
+      {name:'moon-walking/index.html', title:'Moon & Walking — series index', version:false},
+      {name:'moon-walking/moon-dish.html', title:'Moon Dish', version:false},
+      {name:'moon-walking/disks.html', title:'Emergent Discs', version:false},
+      {name:'moon-walking/bvh_viewer_07_01.html', title:'BVH Viewer — 07_01', version:false},
+      {name:'moon-walking/infinite-walk.html', title:'Infinite Walk', version:false},
+      {name:'moon-walking/figure.html', title:'Figure', version:false},
+      {name:'moon-walking/figure_audio_mobile_simple.html', title:'Figure + Audio (mobile)', version:false},
+      {name:'moon-walking/funk_boy.html', title:'Funk Boy', version:false},
+      {name:'moon-walking/one_revolution.html', title:'One Revolution', version:false},
     ]
   },
   {
@@ -545,17 +563,6 @@ const SERIES = [
       {name:'convergence-era-v3 copy 2.html', title:'Convergence Era v3 (2)', version:true},
       {name:'convergence-era-v3 copy 3.html', title:'Convergence Era v3 (3)', version:true},
       {name:'convergence-era-v3 copy 4.html', title:'Convergence Era v3 (4)', version:true},
-    ]
-  },
-  {
-    name: 'Walking Figure',
-    files: [
-      {name:'bvh_viewer_07_01.html', title:'BVH Viewer — 07_01', version:false},
-      {name:'infinite-walk.html', title:'Infinite Walk', version:false},
-      {name:'figure.html', title:'Figure', version:false},
-      {name:'figure_audio_mobile_simple.html', title:'Figure + Audio (mobile)', version:false},
-      {name:'funk_boy.html', title:'Funk Boy', version:false},
-      {name:'one_revolution.html', title:'One Revolution', version:false},
     ]
   },
   {
