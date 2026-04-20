@@ -270,7 +270,7 @@
       position: relative;
       overflow: hidden;
     }
-    /* iOS Safari: nested flex + min-height:0 can collapse the viewport to 0px — still previews vanish */
+    /* Mobile: % heights on slides need a definite parent height — min-height alone fails on iOS WebKit */
     @media (max-width: 900px) {
       .hero {
         min-height: 100vh;
@@ -279,11 +279,47 @@
       }
       .carousel-shell {
         flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
         min-height: min(72vh, 620px);
       }
       .carousel-viewport {
+        flex: 0 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+        /* Explicit height so .carousel-slide height:100% and absolute stacks get non-zero area */
+        height: min(62vh, 540px);
+        min-height: min(62vh, 540px);
+      }
+      .carousel-track {
+        height: 100%;
+      }
+      .carousel-slide {
+        height: min(62vh, 540px) !important;
+        min-height: min(62vh, 540px) !important;
+      }
+    }
+    /* iPad landscape & large touch tablets: width > 900px so rules above did not run — same height fix */
+    @media (hover: none) and (pointer: coarse) and (min-width: 901px) {
+      .carousel-shell {
         flex: 1 1 auto;
-        min-height: min(58vh, 520px);
+        display: flex;
+        flex-direction: column;
+        min-height: min(72vh, 620px);
+      }
+      .carousel-viewport {
+        flex: 0 0 auto;
+        width: 100%;
+        box-sizing: border-box;
+        height: min(62vh, 540px);
+        min-height: min(62vh, 540px);
+      }
+      .carousel-track {
+        height: 100%;
+      }
+      .carousel-slide {
+        height: min(62vh, 540px) !important;
+        min-height: min(62vh, 540px) !important;
       }
     }
     .slide-placeholder {
@@ -873,6 +909,15 @@
           document.documentElement.classList.remove('draft-bloom-live');
           document.documentElement.classList.add('home-stills-only');
         }
+        /* Fallback: narrow touch UIs (some iPad browsers omit iPhone in UA; Android phones) */
+        if (!document.documentElement.classList.contains('home-stills-only')) {
+          try {
+            if (window.matchMedia('(max-width: 900px)').matches && window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+              document.documentElement.classList.remove('draft-bloom-live');
+              document.documentElement.classList.add('home-stills-only');
+            }
+          } catch (e) {}
+        }
       }
     } catch (e) {}
   })();
@@ -917,7 +962,7 @@
               <div class="bloom-slide-link bloom-static-fallback">
                 <img
                   class="bloom-slide-img"
-                  src="drafts/bloom-four-walls-carousel-preview.png"
+                  src="/drafts/bloom-four-walls-carousel-preview.png"
                   width="1024"
                   height="529"
                   alt="Bloom / Four Walls — still preview (use local server for live sketch in carousel)"
@@ -948,7 +993,7 @@
               <div class="la023-slide-link la023-static-fallback">
                 <img
                   class="la023-slide-img"
-                  src="sketches/light-art-023/light_art_023_technical_drawing.svg"
+                  src="/sketches/light-art-023/light_art_023_technical_drawing.svg"
                   width="800"
                   height="600"
                   alt="Light Art 023 — technical preview (use local server for live sketch)"
