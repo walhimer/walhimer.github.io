@@ -7878,6 +7878,59 @@
       }
     },
     {
+      "id": "urn:walhimer:sketch:Bloom:index",
+      "dublin_core": {
+        "title": "technical-drawing-chronicle/index",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Technical Drawing — chronicle:index",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000180"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Technical Drawing — chronicle-index",
+        "type": "HumanMadeObject",
+        "_label": "technical-drawing-chronicle/index",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Bloom",
+          "file": "bloom/bloom-release-cathedral/index.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/bloom/bloom-release-cathedral/index.html",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/A3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/A4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/C3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/C4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/D3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/D4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/E3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/E4.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/G3.ogg",
+          "sketches/bloom/bloom-release-cathedral/tedagame-pentatonic/G4.ogg"
+        ],
+        "external_urls": []
+      }
+    },
+    {
       "id": "urn:walhimer:sketch:Technical:index",
       "dublin_core": {
         "title": "technical-drawing-chronicle/index",
@@ -9684,59 +9737,6 @@
       "artifacts": {
         "repo_paths": [
           "sketches/loop-miami-2026/orchestrator.html"
-        ],
-        "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Bloom Release Cathedral:index",
-      "dublin_core": {
-        "title": "technical-drawing-chronicle/index",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Technical Drawing — chronicle:index",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000180"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Technical Drawing — chronicle-index",
-        "type": "HumanMadeObject",
-        "_label": "technical-drawing-chronicle/index",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Bloom Release Cathedral",
-          "file": "bloom-release-cathedral/index.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/bloom-release-cathedral/index.html",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/A3.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/A4.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/C3.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/C4.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/D3.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/D4.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/E3.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/E4.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/G3.ogg",
-          "sketches/bloom-release-cathedral/tedagame-pentatonic/G4.ogg"
         ],
         "external_urls": []
       }
