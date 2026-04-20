@@ -860,7 +860,6 @@
                   class="bloom-embed"
                   id="bloom-embed-frame"
                   title="Bloom / Four Walls"
-                  loading="lazy"
                   allow="fullscreen"
                 ></iframe>
               </div>
@@ -892,7 +891,6 @@
                   class="la023-embed"
                   id="la023-embed-frame"
                   title="Light Art 023"
-                  loading="lazy"
                   allow="fullscreen"
                 ></iframe>
               </div>
@@ -923,7 +921,6 @@
                   class="art03-embed"
                   id="art03-embed-frame"
                   title="Abstract technical drawing — elevation"
-                  loading="lazy"
                   allow="fullscreen"
                 ></iframe>
               </div>
@@ -950,7 +947,6 @@
                   class="art04-embed"
                   id="art04-embed-frame"
                   title="Abstract technical drawing — studio"
-                  loading="lazy"
                   allow="fullscreen"
                 ></iframe>
               </div>
@@ -977,7 +973,6 @@
                   class="art05-embed"
                   id="art05-embed-frame"
                   title="Window 93 — corner projection test"
-                  loading="lazy"
                   allow="fullscreen"
                 ></iframe>
               </div>
@@ -1005,7 +1000,6 @@
                   class="art06-embed"
                   id="art06-embed-frame"
                   title="923 centered — breathing layers"
-                  loading="lazy"
                   allow="fullscreen"
                 ></iframe>
               </div>
@@ -1033,7 +1027,6 @@
                   class="art07-embed"
                   id="art07-embed-frame"
                   title="Traveling Landscape — Emergent DNA (piano)"
-                  loading="lazy"
                   allow="fullscreen autoplay"
                 ></iframe>
               </div>
@@ -1149,10 +1142,9 @@
   var art06Url = new URL('drafts/artwork-06-923-centered/index.html', window.location.href).href;
   var art07Url = new URL('drafts/traveling-landscape-emergent-dna/flying_boxes_emergent_dna_w_piano.html', window.location.href).href;
 
-  var bloomFrame = document.getElementById('bloom-embed-frame');
-  if (live && bloomFrame) {
-    bloomFrame.setAttribute('src', bloomUrl);
-  }
+  var urls = [bloomUrl, la023Url, art03Url, art04Url, art05Url, art06Url, art07Url];
+  var frameIds = ['bloom-embed-frame', 'la023-embed-frame', 'art03-embed-frame', 'art04-embed-frame', 'art05-embed-frame', 'art06-embed-frame', 'art07-embed-frame'];
+
   var capBloom = document.getElementById('bloom-caption-detail');
   if (capBloom) {
     capBloom.textContent = live
@@ -1160,10 +1152,6 @@
       : 'Bloom / Four Walls — still preview only · open over HTTPS on the live site for full embeds';
   }
 
-  var la023Frame = document.getElementById('la023-embed-frame');
-  if (live && la023Frame) {
-    la023Frame.setAttribute('src', la023Url);
-  }
   var capLa = document.getElementById('la023-caption-detail');
   if (capLa) {
     capLa.textContent = live
@@ -1171,10 +1159,6 @@
       : 'Light Art 023 — still preview only · open over HTTPS on the live site for full embeds';
   }
 
-  var art03Frame = document.getElementById('art03-embed-frame');
-  if (live && art03Frame) {
-    art03Frame.setAttribute('src', art03Url);
-  }
   var capArt03 = document.getElementById('art03-caption-detail');
   if (capArt03) {
     capArt03.textContent = live
@@ -1182,10 +1166,6 @@
       : 'Abstract technical drawing — still preview only · open over HTTPS on the live site for full embeds';
   }
 
-  var art04Frame = document.getElementById('art04-embed-frame');
-  if (live && art04Frame) {
-    art04Frame.setAttribute('src', art04Url);
-  }
   var capArt04 = document.getElementById('art04-caption-detail');
   if (capArt04) {
     capArt04.textContent = live
@@ -1193,10 +1173,6 @@
       : 'Abstract technical drawing (studio) — still preview only · open over HTTPS on the live site for full embeds';
   }
 
-  var art05Frame = document.getElementById('art05-embed-frame');
-  if (live && art05Frame) {
-    art05Frame.setAttribute('src', art05Url);
-  }
   var capArt05 = document.getElementById('art05-caption-detail');
   if (capArt05) {
     capArt05.textContent = live
@@ -1204,10 +1180,6 @@
       : 'Window 93 — still preview only · open over HTTPS on the live site for full embeds';
   }
 
-  var art06Frame = document.getElementById('art06-embed-frame');
-  if (live && art06Frame) {
-    art06Frame.setAttribute('src', art06Url);
-  }
   var capArt06 = document.getElementById('art06-caption-detail');
   if (capArt06) {
     capArt06.textContent = live
@@ -1215,16 +1187,33 @@
       : '923 centered — still preview only · open over HTTPS on the live site for full embeds';
   }
 
-  var art07Frame = document.getElementById('art07-embed-frame');
-  if (live && art07Frame) {
-    art07Frame.setAttribute('src', art07Url);
-  }
   var capArt07 = document.getElementById('art07-caption-detail');
   if (capArt07) {
     capArt07.textContent = live
       ? 'Traveling Landscape — Emergent DNA (piano) — live in carousel'
       : 'Traveling Landscape — Emergent DNA (piano) — still preview only · open over HTTPS on the live site for full embeds';
   }
+
+  /* One live WebGL/embed at a time — loading all seven iframes at once crashes mobile Safari ("A problem repeatedly occurred"). */
+  var embedActiveIndex = -1;
+  window.__mwCarouselActivateEmbeds = function (slideIndex) {
+    if (!live) return;
+    var i = slideIndex | 0;
+    i = ((i % 7) + 7) % 7;
+    if (i === embedActiveIndex) return;
+    embedActiveIndex = i;
+    for (var j = 0; j < 7; j++) {
+      var el = document.getElementById(frameIds[j]);
+      if (!el) continue;
+      if (j === i) {
+        el.setAttribute('src', urls[j]);
+      } else {
+        try {
+          el.src = 'about:blank';
+        } catch (e) {}
+      }
+    }
+  };
 })();
 </script>
 <script>
@@ -1270,6 +1259,9 @@
     const w = viewport.offsetWidth;
     track.style.transform = 'translateX(' + -index * w + 'px)';
     syncDots();
+    if (typeof window.__mwCarouselActivateEmbeds === 'function') {
+      window.__mwCarouselActivateEmbeds(index);
+    }
   }
 
   prevBtn.addEventListener('click', function () { goTo(index - 1); });
