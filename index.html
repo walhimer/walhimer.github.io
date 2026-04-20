@@ -827,6 +827,28 @@
       display: none !important;
     }
 
+    /* iOS / touch stills: force previews visible even if draft-bloom-live state is wrong */
+    html.home-stills-only .bloom-embed-wrap,
+    html.home-stills-only .la023-embed-wrap,
+    html.home-stills-only .art03-embed-wrap,
+    html.home-stills-only .art04-embed-wrap,
+    html.home-stills-only .art05-embed-wrap,
+    html.home-stills-only .art06-embed-wrap,
+    html.home-stills-only .art07-embed-wrap {
+      display: none !important;
+    }
+    html.home-stills-only .bloom-static-fallback,
+    html.home-stills-only .la023-static-fallback {
+      display: block !important;
+    }
+    html.home-stills-only .art03-static-fallback,
+    html.home-stills-only .art04-static-fallback,
+    html.home-stills-only .art05-static-fallback,
+    html.home-stills-only .art06-static-fallback,
+    html.home-stills-only .art07-static-fallback {
+      display: flex !important;
+    }
+
   </style>
   <script>
   (function () {
@@ -843,9 +865,13 @@
          Use still previews; add ?live=1 to force embeds (may still crash). */
       if (!forceLive) {
         var ua = navigator.userAgent || '';
-        var iOS = /iP(ad|hone|od)/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        var platform = typeof navigator.platform === 'string' ? navigator.platform : '';
+        var iOS = /iP(ad|hone|od)/.test(ua)
+          || platform === 'iPhone' || platform === 'iPad' || platform === 'iPod'
+          || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         if (iOS) {
           document.documentElement.classList.remove('draft-bloom-live');
+          document.documentElement.classList.add('home-stills-only');
         }
       }
     } catch (e) {}
@@ -926,7 +952,7 @@
                   width="800"
                   height="600"
                   alt="Light Art 023 — technical preview (use local server for live sketch)"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                 />
               </div>
@@ -1222,7 +1248,7 @@
   /* One live WebGL/embed at a time — loading all seven iframes at once crashes mobile Safari ("A problem repeatedly occurred"). */
   var embedActiveIndex = -1;
   window.__mwCarouselActivateEmbeds = function (slideIndex) {
-    if (!live) return;
+    if (!live || document.documentElement.classList.contains('home-stills-only')) return;
     var i = slideIndex | 0;
     i = ((i % 7) + 7) % 7;
     if (i === embedActiveIndex) return;
@@ -1264,8 +1290,17 @@
   }
   const dotButtons = dotsRoot.querySelectorAll('button');
 
+  function readViewportWidth() {
+    const rect = viewport.getBoundingClientRect();
+    let w = rect.width || viewport.offsetWidth || viewport.clientWidth;
+    if (!w || w < 2) {
+      w = window.innerWidth || document.documentElement.clientWidth || 0;
+    }
+    return Math.max(1, w);
+  }
+
   function measure() {
-    const w = viewport.offsetWidth;
+    const w = readViewportWidth();
     slides.forEach(function (el) {
       el.style.width = w + 'px';
       el.style.flexBasis = w + 'px';
@@ -1281,7 +1316,7 @@
 
   function goTo(i) {
     index = ((i % total) + total) % total;
-    const w = viewport.offsetWidth;
+    const w = readViewportWidth();
     track.style.transform = 'translateX(' + -index * w + 'px)';
     syncDots();
     if (typeof window.__mwCarouselActivateEmbeds === 'function') {
@@ -1299,12 +1334,24 @@
   }
 
   layoutCarousel();
+  requestAnimationFrame(function () {
+    layoutCarousel();
+    requestAnimationFrame(layoutCarousel);
+  });
+  setTimeout(layoutCarousel, 50);
+  setTimeout(layoutCarousel, 250);
 
   window.addEventListener('load', layoutCarousel);
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(layoutCarousel, 80);
   });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(layoutCarousel, 50);
+    });
+  }
 
   window.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowLeft') goTo(index - 1);
