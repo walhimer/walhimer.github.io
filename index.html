@@ -823,6 +823,15 @@
       if (http || forceLive) {
         document.documentElement.classList.add('draft-bloom-live');
       }
+      /* iOS Safari: even one WebGL/heavy iframe often kills the tab ("A problem repeatedly occurred").
+         Use still previews; add ?live=1 to force embeds (may still crash). */
+      if (!forceLive) {
+        var ua = navigator.userAgent || '';
+        var iOS = /iP(ad|hone|od)/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        if (iOS) {
+          document.documentElement.classList.remove('draft-bloom-live');
+        }
+      }
     } catch (e) {}
   })();
   </script>
