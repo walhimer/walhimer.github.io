@@ -2316,8 +2316,14 @@
       },
       "artifacts": {
         "repo_paths": [
+          "sketches/emergent-discs/cells.html",
+          "sketches/emergent-discs/disc-string (1).html",
           "sketches/emergent-discs/disks.html",
-          "sketches/emergent-discs/index.html"
+          "sketches/emergent-discs/index.html",
+          "sketches/emergent-discs/string-art-1.html",
+          "sketches/emergent-discs/string-art-animated.html",
+          "sketches/emergent-discs/string-art-circle.html",
+          "sketches/emergent-discs/string-art.html"
         ],
         "external_urls": []
       }
@@ -2361,6 +2367,276 @@
       "artifacts": {
         "repo_paths": [
           "sketches/emergent-discs/disks.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:cells",
+      "dublin_core": {
+        "title": "cells",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Gradients & Color:cells",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000131"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Gradients & Color-cells",
+        "type": "HumanMadeObject",
+        "_label": "cells",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/cells.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/cells.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:disc-string-1",
+      "dublin_core": {
+        "title": "disc-string (1)",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Disc / String:disc-string-1",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000067"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Disc / String-disc-string-1",
+        "type": "HumanMadeObject",
+        "_label": "disc-string (1)",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/disc-string (1).html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/disc-string (1).html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:string-art",
+      "dublin_core": {
+        "title": "string-art",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Disc / String:string-art",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000068"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Disc / String-string-art",
+        "type": "HumanMadeObject",
+        "_label": "string-art",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/string-art.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/string-art.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:string-art-1",
+      "dublin_core": {
+        "title": "string-art-1",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Disc / String:string-art-1",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000069"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Disc / String-string-art-1",
+        "type": "HumanMadeObject",
+        "_label": "string-art-1",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/string-art-1.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/string-art-1.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:string-art-animated",
+      "dublin_core": {
+        "title": "string-art-animated",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Disc / String:string-art-animated",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000070"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Disc / String-string-art-animated",
+        "type": "HumanMadeObject",
+        "_label": "string-art-animated",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/string-art-animated.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/string-art-animated.html"
+        ],
+        "external_urls": [
+          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:Emergent Discs:string-art-circle",
+      "dublin_core": {
+        "title": "string-art-circle",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:Disc / String:string-art-circle",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000071"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/Disc / String-string-art-circle",
+        "type": "HumanMadeObject",
+        "_label": "string-art-circle",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "Emergent Discs",
+          "file": "emergent-discs/string-art-circle.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/emergent-discs/string-art-circle.html"
         ],
         "external_urls": [
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
@@ -2537,231 +2813,6 @@
           "sketches/convergence-era-v3 copy 4.html"
         ],
         "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Disc / String:disc-string-1",
-      "dublin_core": {
-        "title": "disc-string (1)",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Disc / String:disc-string-1",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000067"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Disc / String-disc-string-1",
-        "type": "HumanMadeObject",
-        "_label": "disc-string (1)",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Disc / String",
-          "file": "disc-string (1).html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/disc-string (1).html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Disc / String:string-art",
-      "dublin_core": {
-        "title": "string-art",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Disc / String:string-art",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000068"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Disc / String-string-art",
-        "type": "HumanMadeObject",
-        "_label": "string-art",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Disc / String",
-          "file": "string-art.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/string-art.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Disc / String:string-art-1",
-      "dublin_core": {
-        "title": "string-art-1",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Disc / String:string-art-1",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000069"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Disc / String-string-art-1",
-        "type": "HumanMadeObject",
-        "_label": "string-art-1",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Disc / String",
-          "file": "string-art-1.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/string-art-1.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Disc / String:string-art-animated",
-      "dublin_core": {
-        "title": "string-art-animated",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Disc / String:string-art-animated",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000070"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Disc / String-string-art-animated",
-        "type": "HumanMadeObject",
-        "_label": "string-art-animated",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Disc / String",
-          "file": "string-art-animated.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/string-art-animated.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Disc / String:string-art-circle",
-      "dublin_core": {
-        "title": "string-art-circle",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Disc / String:string-art-circle",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000071"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Disc / String-string-art-circle",
-        "type": "HumanMadeObject",
-        "_label": "string-art-circle",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Disc / String",
-          "file": "string-art-circle.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/string-art-circle.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
       }
     },
     {
@@ -5391,51 +5442,6 @@
           "sketches/smear.html"
         ],
         "external_urls": []
-      }
-    },
-    {
-      "id": "urn:walhimer:sketch:Gradients & Color:cells",
-      "dublin_core": {
-        "title": "cells",
-        "creator": "Mark Walhimer",
-        "date": "",
-        "description": "",
-        "identifier": "urn:walhimer:sketch:Gradients & Color:cells",
-        "type": "InteractiveResource",
-        "format": "text/html",
-        "language": "en",
-        "relation": "",
-        "catalog_number": "WS-000131"
-      },
-      "linked_art": {
-        "@context": "https://linked.art/ns/v1/linked-art.json",
-        "id": "https://mark-walhimer.com/#work/Gradients & Color-cells",
-        "type": "HumanMadeObject",
-        "_label": "cells",
-        "classified_as": [
-          {
-            "id": "http://vocab.getty.edu/aat/300375748",
-            "type": "Type",
-            "_label": "digital art"
-          }
-        ]
-      },
-      "site": {
-        "surfaces": [
-          "sketch"
-        ],
-        "sketch": {
-          "series": "Gradients & Color",
-          "file": "cells.html"
-        }
-      },
-      "artifacts": {
-        "repo_paths": [
-          "sketches/cells.html"
-        ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
       }
     },
     {
