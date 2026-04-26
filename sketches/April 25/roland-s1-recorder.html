@@ -85,6 +85,15 @@
     <button id="stopBtn" disabled>Stop</button>
     <a id="downloadLink" href="#" download="roland-s1-recording.webm" style="display:none;">Download Recording</a>
   </div>
+  
+  <div class="row">
+    <label for="stereoMode">Stereo routing:</label>
+    <select id="stereoMode">
+      <option value="native">Native device channels</option>
+      <option value="split">True stereo (L=ch1, R=ch2)</option>
+      <option value="dualmono">Dual mono (L=R=ch1)</option>
+    </select>
+  </div>
 
   <div class="row">
     <strong>Input level:</strong>
@@ -107,6 +116,7 @@
     const recordBtn = document.getElementById("recordBtn");
     const stopBtn = document.getElementById("stopBtn");
     const deviceSelect = document.getElementById("deviceSelect");
+    const stereoMode = document.getElementById("stereoMode");
     const statusEl = document.getElementById("status");
     const playbackEl = document.getElementById("playback");
     const downloadLink = document.getElementById("downloadLink");
@@ -120,6 +130,9 @@
     let meterTimer = null;
     let audioContext = null;
     let sourceNode = null;
+    let recorderDestination = null;
+    let splitterNode = null;
+    let mergerNode = null;
     let mediaRecorder = null;
     let recordedChunks = [];
 
@@ -228,6 +241,15 @@
         sourceNode.disconnect();
         sourceNode = null;
       }
+      if (splitterNode) {
+        splitterNode.disconnect();
+        splitterNode = null;
+      }
+      if (mergerNode) {
+        mergerNode.disconnect();
+        mergerNode = null;
+      }
+      recorderDestination = null;
       if (analyserNode) {
         analyserNode.disconnect();
         analyserNode = null;
@@ -265,6 +287,7 @@
       levelData = new Float32Array(analyserNode.fftSize);
 
       sourceNode.connect(analyserNode);
+      buildRecorderGraph();
 
       setStatus("Connected input: " + deviceSelect.selectedOptions[0].textContent, true);
       recordBtn.disabled = false;
@@ -294,6 +317,7 @@
       levelData = new Float32Array(analyserNode.fftSize);
 
       sourceNode.connect(analyserNode);
+      buildRecorderGraph();
 
       setStatus("Connected default OS input. If macOS input is S-1, recording uses S-1.", true);
       recordBtn.disabled = false;
@@ -343,9 +367,10 @@
       }
 
       recordedChunks = [];
+      const captureStream = (recorderDestination && recorderDestination.stream) || mediaStream;
       mediaRecorder = selectedMime
-        ? new MediaRecorder(mediaStream, { mimeType: selectedMime })
-        : new MediaRecorder(mediaStream);
+        ? new MediaRecorder(captureStream, { mimeType: selectedMime })
+        : new MediaRecorder(captureStream);
 
       mediaRecorder.ondataavailable = (evt) => {
         if (evt.data && evt.data.size > 0) {
@@ -386,6 +411,41 @@
       return "webm";
     }
 
+    function buildRecorderGraph() {
+      if (!audioContext || !sourceNode) return;
+
+      if (splitterNode) {
+        splitterNode.disconnect();
+        splitterNode = null;
+      }
+      if (mergerNode) {
+        mergerNode.disconnect();
+        mergerNode = null;
+      }
+
+      recorderDestination = audioContext.createMediaStreamDestination();
+      const mode = stereoMode.value;
+
+      if (mode === "native") {
+        sourceNode.connect(recorderDestination);
+        return;
+      }
+
+      splitterNode = audioContext.createChannelSplitter(2);
+      mergerNode = audioContext.createChannelMerger(2);
+      sourceNode.connect(splitterNode);
+
+      if (mode === "split") {
+        splitterNode.connect(mergerNode, 0, 0);
+        splitterNode.connect(mergerNode, 1, 1);
+      } else {
+        splitterNode.connect(mergerNode, 0, 0);
+        splitterNode.connect(mergerNode, 0, 1);
+      }
+
+      mergerNode.connect(recorderDestination);
+    }
+
     initBtn.addEventListener("click", async () => {
       try {
         await Tone.start();
@@ -424,6 +484,12 @@
         await connectDefaultInput();
       } catch (err) {
         setStatus("Failed to connect default input: " + err.message);
+      }
+    });
+    stereoMode.addEventListener("change", () => {
+      if (sourceNode && audioContext) {
+        buildRecorderGraph();
+        setStatus("Stereo routing updated. Record a new take to hear it.", true);
       }
     });
     recordBtn.addEventListener("click", startRecording);
