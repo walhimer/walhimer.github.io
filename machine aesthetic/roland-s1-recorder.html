@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roland S-1 USB Recorder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 760px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.5;
+    }
+    h1 {
+      margin-bottom: 0.25rem;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+      align-items: center;
+    }
+    button, select {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.95rem;
+    }
+    #status {
+      margin: 0.75rem 0;
+      padding: 0.6rem;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 0.4rem;
+    }
+    #meterWrap {
+      height: 12px;
+      background: #ddd;
+      border-radius: 6px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 480px;
+    }
+    #meterBar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #43a047, #fdd835, #e53935);
+      transition: width 0.05s linear;
+    }
+    audio {
+      width: 100%;
+      margin-top: 0.75rem;
+    }
+    .hint {
+      font-size: 0.9rem;
+      color: #444;
+    }
+    .ok {
+      color: #0f6d2a;
+    }
+  </style>
+</head>
+<body>
+  <h1>Roland S-1 USB Recorder</h1>
+  <p class="hint">
+    Connect Roland S-1 via USB and set it as an audio interface on your computer.
+  </p>
+
+  <div class="row">
+    <button id="initBtn">1) Enable Audio + Scan Inputs</button>
+    <button id="forcePermissionBtn">Force Permission Prompt</button>
+    <button id="pickRolandBtn">Auto-select Roland S-1</button>
+  </div>
+
+  <div class="row">
+    <label for="deviceSelect">Input Device:</label>
+    <select id="deviceSelect"></select>
+    <button id="connectBtn">2) Connect Input</button>
+    <button id="connectDefaultBtn">Connect Default Input (OS)</button>
+    <button id="rescanBtn">Rescan Devices</button>
+  </div>
+
+  <div class="row">
+    <button id="recordBtn" disabled>3) Start Recording</button>
+    <button id="stopBtn" disabled>Stop</button>
+    <a id="downloadLink" href="#" download="roland-s1-recording.webm" style="display:none;">Download Recording</a>
+  </div>
+
+  <div class="row">
+    <strong>Input level:</strong>
+    <div id="meterWrap"><div id="meterBar"></div></div>
+  </div>
+
+  <div id="status">Status: idle</div>
+  <div id="permissionStatus" class="hint">Mic permission: unknown</div>
+  <pre id="deviceDebug" class="hint"></pre>
+  <audio id="playback" controls></audio>
+
+  <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
+  <script>
+    const initBtn = document.getElementById("initBtn");
+    const forcePermissionBtn = document.getElementById("forcePermissionBtn");
+    const pickRolandBtn = document.getElementById("pickRolandBtn");
+    const connectBtn = document.getElementById("connectBtn");
+    const connectDefaultBtn = document.getElementById("connectDefaultBtn");
+    const rescanBtn = document.getElementById("rescanBtn");
+    const recordBtn = document.getElementById("recordBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const deviceSelect = document.getElementById("deviceSelect");
+    const statusEl = document.getElementById("status");
+    const playbackEl = document.getElementById("playback");
+    const downloadLink = document.getElementById("downloadLink");
+    const meterBar = document.getElementById("meterBar");
+    const permissionStatusEl = document.getElementById("permissionStatus");
+    const deviceDebug = document.getElementById("deviceDebug");
+
+    let analyserNode = null;
+    let levelData = null;
+    let mediaStream = null;
+    let meterTimer = null;
+    let audioContext = null;
+    let sourceNode = null;
+    let processorNode = null;
+    let muteNode = null;
+    let isRecordingPcm = false;
+    let recordedBuffers = [];
+    let recordedLength = 0;
+    let channelCount = 1;
+
+    function setStatus(message, isGood = false) {
+      statusEl.textContent = "Status: " + message;
+      statusEl.className = isGood ? "ok" : "";
+    }
+
+    async function updatePermissionStatus() {
+      if (!navigator.permissions || !navigator.permissions.query) {
+        permissionStatusEl.textContent = "Mic permission: browser does not expose permission state";
+        return;
+      }
+      try {
+        const micPerm = await navigator.permissions.query({ name: "microphone" });
+        permissionStatusEl.textContent = "Mic permission: " + micPerm.state;
+      } catch (_err) {
+        permissionStatusEl.textContent = "Mic permission: unavailable";
+      }
+    }
+
+    async function forcePermissionPrompt() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+        });
+        stream.getTracks().forEach((t) => t.stop());
+        await updatePermissionStatus();
+        await scanInputDevices();
+        setStatus("Microphone access granted. Device labels should now appear.", true);
+      } catch (err) {
+        await updatePermissionStatus();
+        setStatus("Microphone access denied/blocked: " + err.message);
+      }
+    }
+
+    async function scanInputDevices() {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const inputs = devices.filter((d) => d.kind === "audioinput");
+
+      deviceSelect.innerHTML = "";
+      if (!inputs.length) {
+        const opt = document.createElement("option");
+        opt.textContent = "No audio input devices found";
+        opt.value = "";
+        deviceSelect.appendChild(opt);
+        return inputs;
+      }
+
+      inputs.forEach((d, index) => {
+        const opt = document.createElement("option");
+        const label = d.label || "Input " + (index + 1);
+        opt.textContent = label;
+        opt.value = d.deviceId;
+        deviceSelect.appendChild(opt);
+      });
+      renderDeviceDebug(inputs);
+      return inputs;
+    }
+
+    function renderDeviceDebug(inputs) {
+      if (!inputs.length) {
+        deviceDebug.textContent = "Detected inputs: none";
+        return;
+      }
+      const lines = inputs.map((d, i) => {
+        const label = d.label || "(no label yet - allow microphone permission)";
+        const rolandFlag = /roland|s-1|s1/i.test(label) ? " [ROLAND MATCH]" : "";
+        return (
+          (i + 1) +
+          ". " +
+          label +
+          rolandFlag +
+          "\n   id: " +
+          d.deviceId +
+          "\n   group: " +
+          (d.groupId || "(none)")
+        );
+      });
+      deviceDebug.textContent = "Detected inputs:\n" + lines.join("\n");
+    }
+
+    function autoPickRoland() {
+      const options = [...deviceSelect.options];
+      const rolandOpt = options.find((opt) =>
+        /roland|s-1|s1/i.test(opt.textContent)
+      );
+      if (rolandOpt) {
+        deviceSelect.value = rolandOpt.value;
+        setStatus("Roland device selected: " + rolandOpt.textContent, true);
+      } else {
+        setStatus("Roland device not found. Select manually.");
+      }
+    }
+
+    async function stopExistingInput() {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach((t) => t.stop());
+        mediaStream = null;
+      }
+      if (meterTimer) {
+        clearInterval(meterTimer);
+        meterTimer = null;
+      }
+      if (processorNode) {
+        processorNode.disconnect();
+        processorNode.onaudioprocess = null;
+        processorNode = null;
+      }
+      if (sourceNode) {
+        sourceNode.disconnect();
+        sourceNode = null;
+      }
+      if (analyserNode) {
+        analyserNode.disconnect();
+        analyserNode = null;
+      }
+      if (muteNode) {
+        muteNode.disconnect();
+        muteNode = null;
+      }
+      levelData = null;
+    }
+
+    async function connectSelectedInput() {
+      const deviceId = deviceSelect.value;
+      if (!deviceId) {
+        setStatus("No input device selected.");
+        return;
+      }
+
+      await stopExistingInput();
+
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          deviceId: { exact: deviceId },
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      });
+
+      audioContext = Tone.getContext().rawContext;
+      if (audioContext.state !== "running") {
+        await audioContext.resume();
+      }
+      sourceNode = audioContext.createMediaStreamSource(mediaStream);
+      channelCount = Math.min(2, sourceNode.channelCount || 1);
+      analyserNode = audioContext.createAnalyser();
+      analyserNode.fftSize = 1024;
+      levelData = new Float32Array(analyserNode.fftSize);
+      processorNode = audioContext.createScriptProcessor(4096, channelCount, channelCount);
+      muteNode = audioContext.createGain();
+      muteNode.gain.value = 0;
+
+      sourceNode.connect(analyserNode);
+      sourceNode.connect(processorNode);
+      processorNode.connect(muteNode);
+      muteNode.connect(audioContext.destination);
+
+      processorNode.onaudioprocess = (event) => {
+        if (!isRecordingPcm) return;
+        const channels = [];
+        for (let ch = 0; ch < channelCount; ch++) {
+          channels.push(new Float32Array(event.inputBuffer.getChannelData(ch)));
+        }
+        recordedBuffers.push(channels);
+        recordedLength += event.inputBuffer.length;
+      };
+
+      setStatus("Connected input: " + deviceSelect.selectedOptions[0].textContent, true);
+      recordBtn.disabled = false;
+      stopBtn.disabled = true;
+      startMeterUpdates();
+    }
+
+    async function connectDefaultInput() {
+      await stopExistingInput();
+
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      });
+
+      audioContext = Tone.getContext().rawContext;
+      if (audioContext.state !== "running") {
+        await audioContext.resume();
+      }
+
+      sourceNode = audioContext.createMediaStreamSource(mediaStream);
+      channelCount = Math.min(2, sourceNode.channelCount || 1);
+      analyserNode = audioContext.createAnalyser();
+      analyserNode.fftSize = 1024;
+      levelData = new Float32Array(analyserNode.fftSize);
+      processorNode = audioContext.createScriptProcessor(4096, channelCount, channelCount);
+      muteNode = audioContext.createGain();
+      muteNode.gain.value = 0;
+
+      sourceNode.connect(analyserNode);
+      sourceNode.connect(processorNode);
+      processorNode.connect(muteNode);
+      muteNode.connect(audioContext.destination);
+
+      processorNode.onaudioprocess = (event) => {
+        if (!isRecordingPcm) return;
+        const channels = [];
+        for (let ch = 0; ch < channelCount; ch++) {
+          channels.push(new Float32Array(event.inputBuffer.getChannelData(ch)));
+        }
+        recordedBuffers.push(channels);
+        recordedLength += event.inputBuffer.length;
+      };
+
+      setStatus("Connected default OS input. If macOS input is S-1, recording uses S-1.", true);
+      recordBtn.disabled = false;
+      stopBtn.disabled = true;
+      startMeterUpdates();
+    }
+
+    function startMeterUpdates() {
+      if (meterTimer) clearInterval(meterTimer);
+      meterTimer = setInterval(() => {
+        if (!analyserNode || !levelData) return;
+        analyserNode.getFloatTimeDomainData(levelData);
+        let sum = 0;
+        for (let i = 0; i < levelData.length; i++) {
+          const x = levelData[i];
+          sum += x * x;
+        }
+        const rms = Math.sqrt(sum / levelData.length);
+        const normalized = Math.min(1, rms * 8);
+        meterBar.style.width = Math.round(normalized * 100) + "%";
+      }, 50);
+    }
+
+    function startRecording() {
+      if (!mediaStream) {
+        setStatus("No input stream connected.");
+        return;
+      }
+      if (!processorNode) {
+        setStatus("Audio processor is not ready. Reconnect input.");
+        return;
+      }
+      recordedBuffers = [];
+      recordedLength = 0;
+      isRecordingPcm = true;
+      setStatus("Recording...");
+      recordBtn.disabled = true;
+      stopBtn.disabled = false;
+    }
+
+    function stopRecording() {
+      if (!isRecordingPcm) return;
+      isRecordingPcm = false;
+
+      const merged = mergeBuffers(recordedBuffers, recordedLength, channelCount);
+      const wavBlob = encodeWav(merged, channelCount, audioContext ? audioContext.sampleRate : 44100);
+      const url = URL.createObjectURL(wavBlob);
+      playbackEl.src = url;
+      downloadLink.download = "roland-s1-recording.wav";
+      downloadLink.href = url;
+      downloadLink.style.display = "inline-block";
+      setStatus("Recording complete. Ready to play/download.", true);
+
+      recordBtn.disabled = false;
+      stopBtn.disabled = true;
+    }
+
+    function mergeBuffers(chunksByFrame, totalLength, channels) {
+      const result = [];
+      for (let ch = 0; ch < channels; ch++) {
+        result[ch] = new Float32Array(totalLength);
+      }
+      let offset = 0;
+      for (const frame of chunksByFrame) {
+        const frameLength = frame[0].length;
+        for (let ch = 0; ch < channels; ch++) {
+          result[ch].set(frame[ch], offset);
+        }
+        offset += frameLength;
+      }
+      return result;
+    }
+
+    function encodeWav(channelData, channels, sampleRate) {
+      const bytesPerSample = 2;
+      const blockAlign = channels * bytesPerSample;
+      const dataLength = channelData[0].length * blockAlign;
+      const buffer = new ArrayBuffer(44 + dataLength);
+      const view = new DataView(buffer);
+
+      writeString(view, 0, "RIFF");
+      view.setUint32(4, 36 + dataLength, true);
+      writeString(view, 8, "WAVE");
+      writeString(view, 12, "fmt ");
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true);
+      view.setUint16(22, channels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * blockAlign, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, 16, true);
+      writeString(view, 36, "data");
+      view.setUint32(40, dataLength, true);
+
+      let offset = 44;
+      const samples = channelData[0].length;
+      for (let i = 0; i < samples; i++) {
+        for (let ch = 0; ch < channels; ch++) {
+          const s = Math.max(-1, Math.min(1, channelData[ch][i]));
+          view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+          offset += 2;
+        }
+      }
+
+      return new Blob([buffer], { type: "audio/wav" });
+    }
+
+    function writeString(view, offset, text) {
+      for (let i = 0; i < text.length; i++) {
+        view.setUint8(offset + i, text.charCodeAt(i));
+      }
+    }
+
+    initBtn.addEventListener("click", async () => {
+      try {
+        await Tone.start();
+        // First getUserMedia call unlocks device labels in many browsers.
+        const warmup = await navigator.mediaDevices.getUserMedia({ audio: true });
+        warmup.getTracks().forEach((t) => t.stop());
+        await updatePermissionStatus();
+        await scanInputDevices();
+        setStatus("Audio enabled. Select Roland and connect input.", true);
+      } catch (err) {
+        await updatePermissionStatus();
+        setStatus("Audio init failed: " + err.message);
+      }
+    });
+
+    forcePermissionBtn.addEventListener("click", forcePermissionPrompt);
+    pickRolandBtn.addEventListener("click", autoPickRoland);
+    rescanBtn.addEventListener("click", async () => {
+      try {
+        await scanInputDevices();
+        await updatePermissionStatus();
+        setStatus("Device list refreshed.");
+      } catch (err) {
+        setStatus("Rescan failed: " + err.message);
+      }
+    });
+    connectBtn.addEventListener("click", async () => {
+      try {
+        await connectSelectedInput();
+      } catch (err) {
+        setStatus("Failed to connect input: " + err.message);
+      }
+    });
+    connectDefaultBtn.addEventListener("click", async () => {
+      try {
+        await connectDefaultInput();
+      } catch (err) {
+        setStatus("Failed to connect default input: " + err.message);
+      }
+    });
+    recordBtn.addEventListener("click", startRecording);
+    stopBtn.addEventListener("click", stopRecording);
+
+    window.addEventListener("beforeunload", () => {
+      stopExistingInput();
+    });
+
+    updatePermissionStatus();
+  </script>
+</body>
+</html>
