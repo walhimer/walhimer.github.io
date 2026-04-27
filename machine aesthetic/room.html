@@ -119,30 +119,34 @@
     const roofHalfD = roomHalfD + 0.12;
     const roofEaveY = roomHalfH + 0.02;
     const roofPeakY = roomHalfH + 1.56;
-    const roofShape = new THREE.Shape();
-    roofShape.moveTo(-roofHalfW, roofEaveY);
-    roofShape.lineTo(0, roofPeakY);
-    roofShape.lineTo(roofHalfW, roofEaveY);
-    roofShape.lineTo(-roofHalfW, roofEaveY);
-    const roofGeo = new THREE.ExtrudeGeometry(roofShape, {
-      depth: roofHalfD * 2,
-      steps: 1,
-      bevelEnabled: false,
-      curveSegments: 1
+    const roofMat = new THREE.MeshStandardMaterial({
+      color: 0x787884,
+      metalness: 0.06,
+      roughness: 0.75,
+      side: THREE.DoubleSide,
+      emissive: 0x151520,
+      emissiveIntensity: 0.1
     });
-    roofGeo.translate(0, 0, -roofHalfD);
-    const roof = new THREE.Mesh(
-      roofGeo,
-      new THREE.MeshStandardMaterial({
-        color: 0x787884,
-        metalness: 0.06,
-        roughness: 0.75,
-        side: THREE.DoubleSide,
-        emissive: 0x151520,
-        emissiveIntensity: 0.1
-      })
-    );
-    scene.add(roof);
+
+    function makeRoofPanel(xEave, xPeak) {
+      const positions = new Float32Array([
+        xEave, roofEaveY, -roofHalfD,
+        xPeak, roofPeakY, -roofHalfD,
+        xPeak, roofPeakY,  roofHalfD,
+        xEave, roofEaveY,  roofHalfD
+      ]);
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      geo.setIndex([0, 1, 2, 0, 2, 3]);
+      geo.computeVertexNormals();
+      return new THREE.Mesh(geo, roofMat);
+    }
+
+    // Two sloped roof planes only (no underside/ceiling cap).
+    const roofLeft = makeRoofPanel(-roofHalfW, 0);
+    const roofRight = makeRoofPanel(roofHalfW, 0);
+    scene.add(roofLeft);
+    scene.add(roofRight);
 
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.72));
