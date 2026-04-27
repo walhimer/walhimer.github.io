@@ -66,12 +66,11 @@
         indices.push(b0, b0 + 1, b0 + 2, b0, b0 + 2, b0 + 3);
       };
 
-      // Back (full), sides (full), top/bottom (full) — faces not touched by doorway.
+      // Back (full), sides (full), bottom (full) — no ceiling so roof is visible from inside.
       Q([-hx, -hy, -hz], [hx, -hy, -hz], [hx, hy, -hz], [-hx, hy, -hz]);
       Q([-hx, -hy, -hz], [-hx, hy, -hz], [-hx, hy, hz], [-hx, -hy, hz]);
       Q([hx, -hy, -hz], [hx, -hy, hz], [hx, hy, hz], [hx, hy, -hz]);
       Q([-hx, -hy, -hz], [hx, -hy, -hz], [hx, -hy, hz], [-hx, -hy, hz]);
-      Q([-hx, hy, -hz], [hx, hy, -hz], [hx, hy, hz], [-hx, hy, hz]);
 
       // +Z front: frame (top strip + left + right). No bottom strip: door meets floor.
       Q([-hx, yTop, hz], [hx, yTop, hz], [hx, hy, hz], [-hx, hy, hz]);
