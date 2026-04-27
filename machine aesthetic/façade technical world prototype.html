@@ -251,6 +251,11 @@ function shufflePool() {
   document.addEventListener("pointerdown", go, { once: true, capture: true });
   document.addEventListener("touchstart", go, { once: true, capture: true, passive: true });
   document.addEventListener("keydown", go, { once: true, capture: true });
+  // Allow parent wrappers (combined flow) to request immediate audio loading on stage entry.
+  window.addEventListener("message", function (ev) {
+    if (!ev || !ev.data || ev.data.type !== "autostart-audio") return;
+    go();
+  });
 })();
 </script>
 
