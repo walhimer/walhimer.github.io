@@ -96,7 +96,7 @@
 
       function docWithSeed(html, seed) {
         if (!seed) return html;
-        var injection = '<script>(function(){try{history.replaceState(null,'',location.pathname+'?seed=' + seed + '');}catch(e){window.__SEED__='' + seed + '';}})();<' + '/script>';
+        var injection = '<script>(function(){try{history.replaceState(null,"",location.pathname+"?seed=' + seed + '");}catch(e){window.__SEED__="' + seed + '";}})();<' + '/script>';
         if (html.indexOf("<head>") !== -1) return html.replace("<head>", "<head>" + injection);
         return injection + html;
       }
