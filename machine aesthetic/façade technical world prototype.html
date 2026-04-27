@@ -12,7 +12,7 @@
   </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abstract Technical Drawing — Loop Art Critique · ICA Miami · Cohort #21 · Mark Walhimer</title>
+<title>Abstract Technical Drawing Generator</title>
 <!-- Salamander Grand Piano samples (CC BY 3.0, Alexander Holm / FreePats) — same as Bloom -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
 <style>
@@ -41,38 +41,19 @@
     vertical-align: top;
   }
 
-  #shared-entry {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 30;
-    font-size: 11px;
-    color: #aaa;
-    font-family: 'Courier Prime', monospace;
-  }
-  #shared-entry a {
-    color: #c8c8c8;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(200, 200, 200, 0.25);
-  }
-  #shared-entry a:hover {
-    color: #fff;
-    border-bottom-color: rgba(255, 255, 255, 0.4);
-  }
-
   #lifebar-wrap {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 2px;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.12);
     z-index: 10;
   }
   #lifebar {
     height: 100%;
     width: 0%;
-    background: rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.46);
     transition: width 0.08s linear;
   }
   #emergent-dna-wrap {
@@ -89,7 +70,7 @@
     font-size: 11px;
     line-height: 1.4;
     letter-spacing: 0.06em;
-    color: rgba(255,255,255,0.42);
+    color: rgba(255,255,255,0.72);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -133,7 +114,6 @@
 </head>
 <body>
 
-<div id="shared-entry" title="Shared — building outline entry"><a href="building-outline-only.html">Building outline (entry) →</a></div>
 <div id="piano-hint">Click · piano loads</div>
 <div id="piano-progress-wrap"><div id="progress-bar"></div></div>
 <div id="emergent-dna-wrap" aria-label="Note sequence">
@@ -276,6 +256,68 @@ function shufflePool() {
 
 
 <script>
+/** Canonical EmergentDNA-style PRNG (matches walhimer-studio/EmergentDNA SeedRng contract). */
+function SeedRng(seed) {
+  this.s = (seed >>> 0) || 1;
+}
+SeedRng.prototype.next = function () {
+  var x = Math.sin(this.s++) * 10000;
+  return x - Math.floor(x);
+};
+SeedRng.prototype.range = function (a, b) {
+  return a + this.next() * (b - a);
+};
+SeedRng.prototype.int = function (lo, hi) {
+  return Math.floor(this.range(lo, hi + 1));
+};
+SeedRng.prototype.pick = function (arr) {
+  return arr[Math.floor(this.next() * arr.length)];
+};
+SeedRng.prototype.shuffle = function (arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(this.next() * (i + 1));
+    var t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+  }
+  return a;
+};
+
+function parseSeedFromUrl() {
+  try {
+    var params = new URLSearchParams(window.location.search || "");
+    var raw = (params.get("seed") || "").trim();
+    if (!raw) return null;
+    if (/^0x[0-9a-fA-F]{1,8}$/.test(raw)) return parseInt(raw.slice(2), 16) >>> 0;
+    if (/^[0-9a-fA-F]{1,8}$/.test(raw)) return parseInt(raw, 16) >>> 0;
+    if (/^\d+$/.test(raw)) {
+      var n = parseInt(raw, 10);
+      if (!isFinite(n)) return null;
+      return (n >>> 0) || 1;
+    }
+    var h = 2166136261;
+    for (var i = 0; i < raw.length; i++) {
+      h ^= raw.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  } catch (e) {
+    return null;
+  }
+}
+
+function randomSixHex() {
+  var n = (Math.floor(Math.random() * 0xffffffff) >>> 0) || 1;
+  var s = (n >>> 0).toString(16).toUpperCase();
+  while (s.length < 6) s = "0" + s;
+  return s.slice(-6);
+}
+
+var sessionSeed = parseSeedFromUrl() || null;
+var masterRng = null;
+var roomEnteredAtMs = 0;
+
 const CONFIG = {
   complexity: 12,
   lineWeight: 1.5,
@@ -283,20 +325,20 @@ const CONFIG = {
   showCubes: true,
   showArrows: true,
   showZigzags: true,
-  showDots: true,
+  showDots: false,
   showText: true,
   showGrid: true,
   showElevation: true
 };
 
 /** Delay between draw bursts (ms); each burst runs BURST_DRAW_STEPS queue items. */
-const STEP_MS = 9;
+const STEP_MS = 16;
 
 /** Scroll distance (in px) added once per completed draw step — ties canvas motion to drawing pace. */
-const SCROLL_PER_DRAW_STEP_FRAC = 1 / 1200;
+const SCROLL_PER_DRAW_STEP_FRAC = 1 / 3200;
 
 /** Queue steps executed per burst (after STEP_MS elapses) so the pen keeps up with the camera. */
-const BURST_DRAW_STEPS = 5;
+const BURST_DRAW_STEPS = 2;
 /** Append a new terrain chunk when fewer than this many steps remain ahead. */
 const CHUNK_BUFFER_STEPS = 220;
 
@@ -309,9 +351,249 @@ let worldChunkIndex = 0;
 let drawQueue = [];
 /** Parallel to drawQueue: world-space X extent for visibility + audio (min/max). */
 let drawQueueBounds = [];
+/** Per-step depth 0..1 where 0=farthest and 1=closest to camera. */
+let drawQueueDepth = [];
 let currentStep = 0;
 let lastStepMs = 0;
 var noteAssignments = [];
+let lastDnaFallbackStep = -999;
+let worldStartMs = 0;
+let isInside = false;
+let isFlying = false;
+let flightStartMs = 0;
+const FLIGHT_MS = 2200;
+let buildingLineProgress = 0;
+
+function bootstrapMasterSeed() {
+  if (sessionSeed == null) {
+    sessionSeed = parseInt(randomSixHex(), 16) >>> 0;
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.set("seed", ("0000000" + (sessionSeed >>> 0).toString(16)).slice(-6).toUpperCase());
+      window.history.replaceState({}, "", url.toString());
+    } catch (e) {}
+  }
+  sessionSeed = (sessionSeed >>> 0) || 1;
+  masterRng = new SeedRng(sessionSeed);
+  randomSeed(sessionSeed);
+  noiseSeed(sessionSeed);
+
+  // Exterior “family” controls (seeded).
+  CONFIG.complexity = Math.round(masterRng.range(9, 16));
+  CONFIG.lineWeight = masterRng.range(1.1, 2.1);
+  CONFIG.showCircles = masterRng.next() < 0.85;
+  CONFIG.showCubes = masterRng.next() < 0.75;
+  CONFIG.showArrows = masterRng.next() < 0.8;
+  CONFIG.showZigzags = masterRng.next() < 0.75;
+  CONFIG.showDots = false;
+  CONFIG.showText = masterRng.next() < 0.85;
+  CONFIG.showGrid = masterRng.next() < 0.9;
+  CONFIG.showElevation = true;
+}
+
+function drawDarkRoom() {
+  push();
+  noStroke();
+  fill(6);
+  rect(0, 0, width, height);
+  // Barely visible vignette, still “no technical drawing”
+  var g = drawingContext.createRadialGradient(
+    width * 0.5,
+    height * 0.45,
+    min(width, height) * 0.05,
+    width * 0.5,
+    height * 0.5,
+    max(width, height) * 0.75
+  );
+  g.addColorStop(0, "rgba(18,18,20,0.10)");
+  g.addColorStop(1, "rgba(0,0,0,0.80)");
+  drawingContext.fillStyle = g;
+  rect(0, 0, width, height);
+  drawingContext.fillStyle = "#000000";
+
+  noStroke();
+  fill(200, 34);
+  textSize(11);
+  textAlign(LEFT, TOP);
+  var seedHex = ("0000000" + (sessionSeed >>> 0).toString(16)).slice(-6).toUpperCase();
+  text("SEED " + seedHex, 14, 14);
+  fill(200, 22);
+  textAlign(RIGHT, BOTTOM);
+  text("ESC  ·  EXIT", width - 14, height - 14);
+  pop();
+}
+
+function drawSeedHud() {
+  if (isInside && !isFlying) return;
+  push();
+  noStroke();
+  fill(255, 55);
+  textSize(11);
+  textAlign(RIGHT, TOP);
+  var seedHex = ("0000000" + ((sessionSeed || 0) >>> 0).toString(16)).slice(-6).toUpperCase();
+  text("SEED " + seedHex, width - 12, 12);
+  pop();
+}
+
+// Hand-drawn building overlay lines in normalized local coordinates.
+const BUILDING_LINES = [
+  // framing rectangle
+  [0.05, 0.10, 0.95, 0.10], [0.95, 0.10, 0.95, 0.90], [0.95, 0.90, 0.05, 0.90], [0.05, 0.90, 0.05, 0.10],
+  // horizon sweep / gesture lines
+  [0.08, 0.63, 0.92, 0.64], [0.12, 0.64, 0.22, 0.63], [0.80, 0.33, 0.90, 0.30],
+  // roof and top planes
+  [0.39, 0.22, 0.55, 0.17], [0.39, 0.22, 0.47, 0.45], [0.47, 0.45, 0.79, 0.27],
+  [0.55, 0.17, 0.76, 0.18], [0.76, 0.18, 0.79, 0.27], [0.47, 0.45, 0.55, 0.17],
+  // front/side wall mass
+  [0.31, 0.44, 0.39, 0.22], [0.31, 0.44, 0.31, 0.72], [0.31, 0.72, 0.46, 0.80],
+  [0.46, 0.80, 0.47, 0.45], [0.79, 0.27, 0.79, 0.57], [0.47, 0.45, 0.79, 0.57],
+  [0.62, 0.67, 0.79, 0.57], [0.62, 0.67, 0.63, 0.47],
+  // doorway
+  [0.55, 0.66, 0.55, 0.52], [0.55, 0.52, 0.63, 0.50], [0.63, 0.50, 0.63, 0.67], [0.55, 0.67, 0.63, 0.67],
+  // side gesture arcs
+  [0.16, 0.55, 0.32, 0.26], [0.84, 0.46, 0.86, 0.72],
+  // small marker
+  [0.18, 0.75, 0.17, 0.77], [0.17, 0.77, 0.19, 0.79], [0.19, 0.79, 0.21, 0.77], [0.21, 0.77, 0.20, 0.75], [0.20, 0.75, 0.18, 0.75]
+];
+
+function getBuildingFrame() {
+  const w = width * 0.84;
+  const h = height * 0.82;
+  const ox = (width - w) * 0.5;
+  const oy = (height - h) * 0.5;
+  return { w, h, ox, oy };
+}
+
+/** Doorway bounds in the same normalized space as BUILDING_LINES (roughly the door rectangle). */
+function getDoorNBounds() {
+  return { l: 0.55, r: 0.63, t: 0.50, b: 0.67 };
+}
+
+function doorScreenRect() {
+  const f = getBuildingFrame();
+  const d = getDoorNBounds();
+  return {
+    x1: f.ox + d.l * f.w,
+    y1: f.oy + d.t * f.h,
+    x2: f.ox + d.r * f.w,
+    y2: f.oy + d.b * f.h
+  };
+}
+
+function pointInDoorScreen(px, py) {
+  if (millis() - worldStartMs < 2000) return false;
+  if (buildingLineProgress < 20) return false;
+  const d = doorScreenRect();
+  return px >= d.x1 && px <= d.x2 && py >= d.y1 && py <= d.y2;
+}
+
+function flightProgress01() {
+  if (!isFlying) return 0;
+  return constrain((millis() - flightStartMs) / FLIGHT_MS, 0, 1);
+}
+
+function applyFlightTransform() {
+  if (!isFlying) return;
+  const u = flightProgress01();
+  const eased = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+  const d = doorScreenRect();
+  const cx = (d.x1 + d.x2) * 0.5;
+  const cy = (d.y1 + d.y2) * 0.5;
+  const z = lerp(1, 14, eased);
+  translate(width * 0.5, height * 0.5);
+  scale(z);
+  translate(-cx, -cy);
+}
+
+function drawEnterHint() {
+  if (isInside || isFlying) return;
+  const elapsed = millis() - worldStartMs;
+  if (elapsed < 2000) return;
+  if (buildingLineProgress < 22) return;
+  push();
+  noStroke();
+  fill(255, 70);
+  textSize(11);
+  textAlign(CENTER, BOTTOM);
+  text("CLICK DOORWAY TO ENTER  ·  OR PRESS ENTER", width * 0.5, height - 18);
+  pop();
+}
+
+function startEnterFlight() {
+  if (isFlying || isInside) return;
+  if (millis() - worldStartMs < 2000) return;
+  if (buildingLineProgress < 20) return;
+  isFlying = true;
+  flightStartMs = millis();
+}
+
+function tryEnterBuilding() {
+  if (!pointInDoorScreen(mouseX, mouseY)) return;
+  startEnterFlight();
+}
+
+function goToRoomGallery() {
+  var hex = ("0000000" + (sessionSeed >>> 0).toString(16)).slice(-6).toUpperCase();
+  try {
+    var u = new URL("room.html", window.location.href);
+    u.searchParams.set("seed", hex);
+    window.location.assign(u.toString());
+  } catch (e) {
+    window.location.assign("room.html?seed=" + hex);
+  }
+}
+
+function updateFlightState() {
+  if (!isFlying) return;
+  if (millis() - flightStartMs < FLIGHT_MS) return;
+  isFlying = false;
+  goToRoomGallery();
+}
+
+function drawBuildingOverlay() {
+  if (isInside && !isFlying) return;
+  const elapsed = millis() - worldStartMs;
+  const startDelay = 2000;
+  if (elapsed < startDelay) {
+    buildingLineProgress = 0;
+    return;
+  }
+
+  const drawElapsed = elapsed - startDelay;
+  const totalDrawMs = 4600;
+  const lineProgress = constrain((drawElapsed / totalDrawMs) * BUILDING_LINES.length, 0, BUILDING_LINES.length);
+  buildingLineProgress = lineProgress;
+
+  const f = getBuildingFrame();
+  const w = f.w;
+  const h = f.h;
+  const ox = f.ox;
+  const oy = f.oy;
+
+  push();
+  stroke(255, 245);
+  strokeWeight(1.8);
+  noFill();
+  strokeCap(ROUND);
+  strokeJoin(ROUND);
+
+  const fullLines = Math.floor(lineProgress);
+  for (let i = 0; i < fullLines; i++) {
+    const ln = BUILDING_LINES[i];
+    line(ox + ln[0] * w, oy + ln[1] * h, ox + ln[2] * w, oy + ln[3] * h);
+  }
+
+  const partial = lineProgress - fullLines;
+  if (fullLines < BUILDING_LINES.length && partial > 0) {
+    const ln = BUILDING_LINES[fullLines];
+    const x1 = ox + ln[0] * w;
+    const y1 = oy + ln[1] * h;
+    const x2 = ox + ln[2] * w;
+    const y2 = oy + ln[3] * h;
+    line(x1, y1, lerp(x1, x2, partial), lerp(y1, y2, partial));
+  }
+  pop();
+}
 
 function rngX(a, b) {
   return random(chunkWorldLeft + width * a, chunkWorldLeft + width * b);
@@ -360,11 +642,11 @@ function setup() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  generateNew();
 }
 
 function enqueue(fn, xMin, xMax) {
   drawQueue.push(fn);
+  drawQueueDepth.push(Math.pow(random(), 1.45));
   if (arguments.length >= 3) {
     drawQueueBounds.push({ minX: min(xMin, xMax), maxX: max(xMin, xMax) });
   } else {
@@ -737,6 +1019,7 @@ function appendEmergentDna(noteName) {
 
 /** One viewport-wide slice of the endless landscape (world X advances to the right). */
 function buildChunk() {
+  if (isInside || isFlying) return;
   chunkWorldLeft = worldChunkIndex * width;
   chunkWorldRight = chunkWorldLeft + width;
   worldChunkIndex++;
@@ -852,13 +1135,20 @@ function checkEmergentEndOfLife() {
 function generateNew() {
   drawQueue = [];
   drawQueueBounds = [];
+  drawQueueDepth = [];
   scrollX = 0;
   worldChunkIndex = 0;
   lifeEnded = false;
+  bootstrapMasterSeed();
   buildChunk();
   currentStep = 0;
   lastStepMs = millis();
   noteAssignments = shufflePool();
+  worldStartMs = millis();
+  isInside = false;
+  isFlying = false;
+  flightStartMs = 0;
+  buildingLineProgress = 0;
   var dna = document.getElementById('emergent-dna');
   if (dna) dna.textContent = '—';
   var wrap = document.getElementById('emergent-dna-wrap');
@@ -874,12 +1164,70 @@ function draw() {
   }
 
   background(0);
+  updateFlightState();
+
+  if (isInside && !isFlying) {
+    drawDarkRoom();
+    return;
+  }
+
   push();
-  translate(-scrollX, 0);
+  applyFlightTransform();
   for (let i = 0; i < currentStep; i++) {
+    let depth = drawQueueDepth[i];
+    if (depth == null) depth = 0.5;
+    // Pseudo-3D depth transform: farther lines move slower and sit higher;
+    // nearer lines move faster and sit lower/larger.
+    let parallax = lerp(0.42, 1.35, depth);
+    let scaleAmt = lerp(0.76, 1.16, depth);
+    let yLift = lerp(-130, 90, depth);
+    push();
+    translate(
+      -scrollX * parallax + (1 - scaleAmt) * width * 0.5,
+      yLift + (1 - scaleAmt) * height * 0.5
+    );
+    scale(scaleAmt, scaleAmt);
     drawQueue[i]();
+    pop();
   }
   pop();
+
+  // Fixed orientation horizon (screen-space, not depth-parallaxed).
+  if (CONFIG.showElevation) {
+    push();
+    stroke(255, 235);
+    strokeWeight(CONFIG.lineWeight * 1.6);
+    line(0, elevationY, width, elevationY);
+    stroke(255, 210);
+    strokeWeight(1);
+    let tickSpacing = width / 8;
+    for (let tx = tickSpacing; tx < width; tx += tickSpacing) {
+      line(tx, elevationY - 5, tx, elevationY + 5);
+    }
+    stroke(255, 115);
+    strokeWeight(0.6);
+    for (let hx = 0; hx < width; hx += 15) {
+      line(hx, elevationY + 2, hx - 8, elevationY + 12);
+    }
+    pop();
+  }
+
+  // Building appears after 2 seconds and draws line-by-line.
+  push();
+  applyFlightTransform();
+  drawBuildingOverlay();
+  pop();
+  if (isFlying) {
+    const u = flightProgress01();
+    const eased = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+    push();
+    noStroke();
+    fill(0, 255 * eased);
+    rect(0, 0, width, height);
+    pop();
+  }
+  drawEnterHint();
+  drawSeedHud();
 
   if (lifeEnded && currentStep >= drawQueue.length) {
     var lb = document.getElementById('lifebar');
@@ -889,7 +1237,7 @@ function draw() {
     return;
   }
 
-  if (!lifeEnded && drawQueue.length - currentStep < CHUNK_BUFFER_STEPS) {
+  if (!isInside && !isFlying && !lifeEnded && drawQueue.length - currentStep < CHUNK_BUFFER_STEPS) {
     buildChunk();
   }
 
@@ -907,7 +1255,9 @@ function draw() {
     var idx = currentStep;
     var b = drawQueueBounds[idx];
 
-    scrollX += width * SCROLL_PER_DRAW_STEP_FRAC;
+    if (!isInside && !isFlying) {
+      scrollX += width * SCROLL_PER_DRAW_STEP_FRAC;
+    }
 
     /** No bounds → play (fills etc.); else only when this segment intersects the visible world slice after this scroll tick. */
     var audible = (b == null) || worldRangeIntersectsViewport(b.minX, b.maxX);
@@ -924,10 +1274,29 @@ function draw() {
         }
       }
     }
+    // Keep DNA visibly alive even before/without audio load.
+    if (idx - lastDnaFallbackStep >= 48) {
+      appendEmergentDna("··");
+      lastDnaFallbackStep = idx;
+    }
     currentStep++;
     updateLifeBar();
 
     if (lifeEnded) break;
+  }
+}
+
+function mousePressed() {
+  tryEnterBuilding();
+}
+
+function keyPressed() {
+  if (keyCode === ESCAPE) {
+    isInside = false;
+    isFlying = false;
+  }
+  if (keyCode === ENTER) {
+    startEnterFlight();
   }
 }
 </script>

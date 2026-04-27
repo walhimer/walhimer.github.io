@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loop Art Critique — Combined Flow</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f0f12;
+      color: #d8d8df;
+      font: 12px/1.4 "Courier Prime", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    #stage {
+      position: fixed;
+      inset: 0;
+      border: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+    }
+    #hud {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 20;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(2px);
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      user-select: none;
+    }
+    #controls {
+      position: fixed;
+      right: 10px;
+      top: 10px;
+      z-index: 21;
+      display: flex;
+      gap: 8px;
+    }
+    button {
+      font: inherit;
+      letter-spacing: 0.03em;
+      color: #e3e3e8;
+      background: rgba(0, 0, 0, 0.52);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+    button:hover { background: rgba(0, 0, 0, 0.68); }
+  </style>
+</head>
+<body>
+  <iframe id="stage" title="Loop Art Critique Combined"></iframe>
+  <div id="hud">ENTRY · BUILDING OUTLINE</div>
+  <div id="controls">
+    <button id="restart-outline" type="button">Restart Entry</button>
+    <button id="restart-seeded" type="button">Restart Facade (same seed)</button>
+  </div>
+
+  <script>
+    (function () {
+      var OUTLINE = "building-outline-only.html";
+      var FACADE = "fa%C3%A7ade%20technical%20world%20prototype.html";
+      var ROOM = "room.html";
+
+      var frame = document.getElementById("stage");
+      var hud = document.getElementById("hud");
+      var btnOutline = document.getElementById("restart-outline");
+      var btnSeeded = document.getElementById("restart-seeded");
+
+      var sessionSeed = null;
+
+      function parseSeed(urlObj) {
+        var raw = (urlObj.searchParams.get("seed") || "").trim();
+        if (!raw) return null;
+        if (!/^[0-9a-fA-F]{1,8}$/.test(raw)) return null;
+        return ("000000" + raw.toUpperCase()).slice(-6);
+      }
+
+      function setHudLabel(stageLabel) {
+        hud.textContent = sessionSeed ? (stageLabel + " · SEED " + sessionSeed) : stageLabel;
+      }
+
+      function goTo(url) {
+        frame.src = url;
+      }
+
+      function updateStateFromFrame() {
+        var loc;
+        try {
+          loc = frame.contentWindow.location;
+        } catch (e) {
+          setHudLabel("CROSS-ORIGIN VIEW");
+          return;
+        }
+
+        var page = (loc.pathname || "").toLowerCase();
+        var seed = parseSeed(new URL(loc.href));
+        if (seed) sessionSeed = seed;
+
+        if (page.indexOf("building-outline-only.html") !== -1) {
+          setHudLabel("ENTRY · BUILDING OUTLINE");
+          return;
+        }
+        if (page.indexOf("fa") !== -1 && page.indexOf("technical") !== -1 && page.indexOf("prototype.html") !== -1) {
+          setHudLabel("FACADE · TECHNICAL PROTOTYPE");
+          return;
+        }
+        if (page.indexOf("room.html") !== -1) {
+          setHudLabel("GALLERY ROOM");
+          return;
+        }
+        setHudLabel("LOOP ART CRITIQUE FLOW");
+      }
+
+      btnOutline.addEventListener("click", function () {
+        sessionSeed = null;
+        goTo(OUTLINE);
+        setHudLabel("ENTRY · BUILDING OUTLINE");
+      });
+
+      btnSeeded.addEventListener("click", function () {
+        if (!sessionSeed) {
+          goTo(OUTLINE);
+          return;
+        }
+        goTo(FACADE + "?seed=" + encodeURIComponent(sessionSeed));
+      });
+
+      frame.addEventListener("load", updateStateFromFrame);
+
+      goTo(OUTLINE);
+      setHudLabel("ENTRY · BUILDING OUTLINE");
+    })();
+  </script>
+</body>
+</html>
