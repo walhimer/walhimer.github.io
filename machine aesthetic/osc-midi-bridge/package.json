@@ -1,0 +1,16 @@
+{
+  "name": "osc-midi-seed-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Seed-based OSC to Roland S-1 MIDI bridge with web control and visuals sync.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "easymidi": "^3.1.0",
+    "express": "^4.21.2",
+    "osc": "^2.4.5",
+    "ws": "^8.18.0"
+  }
+}

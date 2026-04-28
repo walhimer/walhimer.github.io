@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seedscape Controller</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; margin: 0; background: #111; color: #eee; }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 20px; }
+    h1 { font-size: 20px; margin: 0 0 10px; }
+    .card { background: #1d1d1d; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
+    label { display: block; font-size: 13px; margin-bottom: 6px; opacity: 0.9; }
+    input[type="range"], input[type="number"] { width: 100%; }
+    .row { display: grid; grid-template-columns: 1fr 80px; gap: 10px; align-items: center; }
+    .pill { display:inline-block; padding: 4px 8px; border-radius: 999px; background:#2b2b2b; font-size:12px; }
+    .channel-live {
+      margin-top: 10px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: #7be7b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Seedscape Controller</h1>
+    <div class="pill" id="status">connecting...</div>
+    <div class="channel-live" id="channelLive">Test channel: -</div>
+
+    <div class="card">
+      <label for="seed">Seed</label>
+      <div class="row">
+        <input id="seed" type="number" min="1" step="1" value="123456" />
+        <button id="randomSeed">Random</button>
+      </div>
+      <div style="margin-top:10px;">
+        <button id="testNote">Test Note</button>
+        <button id="testAllChannels">All Channels Test</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <label for="tempo">Tempo</label>
+      <input id="tempo" type="range" min="40" max="180" step="1" value="96" />
+    </div>
+    <div class="card">
+      <label for="density">Density</label>
+      <input id="density" type="range" min="0" max="1" step="0.01" value="0.45" />
+    </div>
+    <div class="card">
+      <label for="brightness">Brightness</label>
+      <input id="brightness" type="range" min="0" max="1" step="0.01" value="0.6" />
+    </div>
+    <div class="card">
+      <label for="mood">Mood</label>
+      <input id="mood" type="range" min="0" max="1" step="0.01" value="0.5" />
+    </div>
+  </div>
+
+  <script>
+    const ws = new WebSocket(`ws://${location.host}`);
+    const statusEl = document.getElementById("status");
+    const channelLiveEl = document.getElementById("channelLive");
+    const controls = ["seed", "tempo", "density", "brightness", "mood"];
+
+    ws.onopen = () => statusEl.textContent = "connected";
+    ws.onclose = () => statusEl.textContent = "disconnected";
+
+    ws.onmessage = (ev) => {
+      const msg = JSON.parse(ev.data);
+      if (msg.type === "testChannel") {
+        channelLiveEl.textContent = `Test channel: ${msg.payload.channel}`;
+        return;
+      }
+      if (msg.type !== "state") return;
+      const s = msg.payload;
+      for (const key of controls) {
+        const el = document.getElementById(key);
+        if (el) el.value = s[key];
+      }
+    };
+
+    function send(key, value) {
+      if (ws.readyState !== WebSocket.OPEN) return;
+      ws.send(JSON.stringify({ type: "control", payload: { key, value: Number(value) } }));
+    }
+
+    for (const key of controls) {
+      const el = document.getElementById(key);
+      el.addEventListener("input", () => send(key, el.value));
+      el.addEventListener("change", () => send(key, el.value));
+    }
+
+    document.getElementById("randomSeed").addEventListener("click", () => {
+      const seed = Math.floor(Math.random() * 0xffffffff) >>> 0;
+      document.getElementById("seed").value = seed;
+      send("seed", seed);
+    });
+
+    document.getElementById("testNote").addEventListener("click", () => {
+      send("test", 60);
+    });
+    document.getElementById("testAllChannels").addEventListener("click", () => {
+      send("testAllChannels", 60);
+    });
+  </script>
+</body>
+</html>

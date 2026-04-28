@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seedscape Visual</title>
+  <style>
+    html, body, canvas { margin: 0; width: 100%; height: 100%; background: #050505; display: block; }
+    #hud { position: fixed; top: 10px; left: 10px; color: #d8d8d8; font: 12px/1.4 monospace; opacity: 0.9; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">seed: -</div>
+<script>
+  function SeedRng(seed) {
+    this.s = (seed >>> 0) || 1;
+  }
+  SeedRng.prototype.next = function next() {
+    const x = Math.sin(this.s++) * 10000;
+    return x - Math.floor(x);
+  };
+
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  const hud = document.getElementById("hud");
+  const ws = new WebSocket(`ws://${location.host}`);
+
+  let state = { seed: 123456, brightness: 0.6, mood: 0.5 };
+  let rng = new SeedRng(state.seed);
+  const particles = [];
+
+  function resize() {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+  }
+  addEventListener("resize", resize);
+  resize();
+
+  ws.onmessage = (ev) => {
+    const msg = JSON.parse(ev.data);
+    if (msg.type === "state") {
+      state = { ...state, ...msg.payload };
+      rng = new SeedRng(state.seed);
+      particles.length = 0;
+      hud.textContent = `seed: ${state.seed} tempo:${state.tempo} density:${state.density.toFixed(2)}`;
+    }
+    if (msg.type === "event") {
+      const e = msg.payload;
+      const a = rng.next() * Math.PI * 2;
+      const r = 60 + rng.next() * Math.min(canvas.width, canvas.height) * 0.4;
+      particles.push({
+        x: canvas.width * 0.5 + Math.cos(a) * r,
+        y: canvas.height * 0.5 + Math.sin(a) * r,
+        size: 2 + (e.velocity / 127) * 26,
+        hue: (e.pitch * 3 + state.seed % 360) % 360,
+        life: 1
+      });
+    }
+  };
+
+  function frame() {
+    ctx.fillStyle = "rgba(0,0,0,0.08)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.life -= 0.012;
+      p.size *= 0.994;
+      if (p.life <= 0.01) { particles.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.fillStyle = `hsla(${p.hue},85%,${35 + state.brightness * 40}%,${p.life})`;
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+</script>
+</body>
+</html>
