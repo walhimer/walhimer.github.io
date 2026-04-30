@@ -12,7 +12,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
   <title>Practice — Mark Walhimer</title>
-  <meta name="description" content="Machine aesthetics used to think about acceptance, control, and human agency." />
+  <meta name="description" content="Machine aesthetics as a way to think about acceptance, control, and agency — practice statement and critique frame." />
   <link rel="canonical" href="https://mark-walhimer.com/practice/index.html" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/css/cathedral-shell.css" />
@@ -55,6 +55,74 @@
     }
     .body strong { color: var(--ink); font-weight: 500; }
     .rule { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+    .intent-note {
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--ink-soft);
+      padding: 16px 0 0;
+      border-left: 2px solid var(--accent);
+      padding-left: 18px;
+      margin-bottom: 8px;
+      max-width: 44rem;
+    }
+    .intent-note a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(184, 151, 106, 0.45); }
+    .intent-note a:hover { color: var(--ink); }
+    .critique-section {
+      margin-top: 40px;
+      padding-top: 36px;
+      border-top: 1px solid var(--line);
+    }
+    .critique-section h2 {
+      font-family: 'IBM Plex Mono', ui-monospace, monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 16px;
+    }
+    .critique-section h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--ink);
+      margin: 24px 0 10px;
+    }
+    .critique-q {
+      font-size: clamp(17px, 2.1vw, 20px);
+      line-height: 1.65;
+      color: var(--ink);
+      max-width: 44rem;
+      padding: 18px 20px;
+      background: #faf9f7;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+    }
+    .work-to-discuss {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-width: 44rem;
+    }
+    .work-to-discuss li {
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .work-to-discuss a {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      padding: 12px 0;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .work-to-discuss a:hover { color: var(--accent); }
+    .work-to-discuss .path {
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--dim);
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body class="shell-page">
@@ -74,9 +142,12 @@
 
 <main class="page">
   <p class="kicker">Practice</p>
-  <h1>Machine aesthetics for <em>acceptance, control, and human agency</em></h1>
+  <h1>Machine aesthetics as a way to think about <em>acceptance, control, and agency</em></h1>
   <p class="lede">
-    I began blockchain-based digital artwork in 2022. At first I worked with AI-heavy image experiments, then moved toward systems I could build, inspect, and alter directly.
+    I use code and real-time systems as a lens for acceptance, control, and agency—not decoration. I began blockchain-adjacent digital work in 2022, moved through AI experiments into buildable systems, and now host site-native pieces I control end to end.
+  </p>
+  <p class="intent-note">
+    <strong>Concrete split:</strong> this page is the argument. <a href="/bio/index.html">Bio / CV</a> is résumé. <a href="/sketches/index.html">Catalog</a> is the build archive.
   </p>
   <hr class="rule" />
   <div class="body">
@@ -93,6 +164,21 @@
       The goal now is not "pretty pictures." The goal is to build perceptual situations where viewers can feel the tension between control and release, and decide how they want to participate.
     </p>
   </div>
+
+  <section class="critique-section" id="loop-critique" aria-labelledby="critique-heading">
+    <h2 id="critique-heading">Loop art critique — frame</h2>
+    <p class="critique-q">
+      I am working from this thesis: <strong>machine aesthetics as a way to think about acceptance, control, and agency</strong>.
+      Does the <strong>most recent work on this site</strong> read as an expression of that thesis—where does it land, and where does it drift toward “pretty picture” or platform spectacle instead?
+    </p>
+    <h3>Recent work to test (open in meeting)</h3>
+    <ul class="work-to-discuss">
+      <li><a href="/installations/bloom-four-walls-sketch.html"><span>Bloom / Four Walls</span><span class="path">installations/bloom-four-walls-sketch.html</span></a></li>
+      <li><a href="/sketches/moon-walking/index.html"><span>Moon &amp; Walking (series index)</span><span class="path">sketches/moon-walking/</span></a></li>
+      <li><a href="/installations/surrender-machines.html"><span>Surrender Machines (installation)</span><span class="path">installations/surrender-machines.html</span></a></li>
+      <li><a href="/sketches/light-art-023/index.html"><span>Light Art 023</span><span class="path">sketches/light-art-023/</span></a></li>
+    </ul>
+  </section>
 </main>
 
 <footer class="shell-footer">Mark Walhimer — Practice</footer>
