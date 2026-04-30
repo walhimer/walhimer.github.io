@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TVXX0YPGCN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TVXX0YPGCN');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Practice — Mark Walhimer</title>
+  <meta name="description" content="Machine aesthetics used to think about acceptance, control, and human agency." />
+  <link rel="canonical" href="https://mark-walhimer.com/practice/index.html" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/cathedral-shell.css" />
+  <style>
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 64px 40px 100px;
+    }
+    .kicker {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 6vw, 64px);
+      font-weight: 300;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    .lede {
+      font-size: clamp(17px, 2.2vw, 21px);
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 28px;
+      max-width: 44rem;
+    }
+    .body p {
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+      max-width: 44rem;
+    }
+    .body strong { color: var(--ink); font-weight: 500; }
+    .rule { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+  </style>
+</head>
+<body class="shell-page">
+<nav>
+  <a class="nav-logo" href="/" title="Home">Mark Walhimer</a>
+  <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav-links">
+    <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path class="line" d="M1 1h18M1 7h18M1 13h18"/></svg>
+  </button>
+  <div class="nav-links" id="site-nav-links">
+    <a href="/">Selected Works</a>
+    <a href="/sketches/index.html">Catalog</a>
+    <a class="active" href="/practice/index.html">Practice</a>
+    <a href="/bio/index.html">Bio / CV</a>
+    <a href="/contact/index.html">Contact</a>
+  </div>
+</nav>
+
+<main class="page">
+  <p class="kicker">Practice</p>
+  <h1>Machine aesthetics for <em>acceptance, control, and human agency</em></h1>
+  <p class="lede">
+    I began blockchain-based digital artwork in 2022. At first I worked with AI-heavy image experiments, then moved toward systems I could build, inspect, and alter directly.
+  </p>
+  <hr class="rule" />
+  <div class="body">
+    <p>
+      The early anchor was <strong>Surrender Machines</strong>: the question of whether a machine could "surrender" for us. It started as a pun, but became a serious structure for thinking about acceptance. What part of life can be controlled, and what has to be accepted?
+    </p>
+    <p>
+      From there, abstract painting systems and geometric studies evolved into light-sculptural environments: cubes, rotating fields, and color architecture. The work shifted from producing static pictures to staging live behavior.
+    </p>
+    <p>
+      As NFT platforms consolidated or disappeared, I realized I was trying to circulate work through systems I did not control. Newer projects like <strong>Moon Walking</strong> and <strong>Bloom / Four Walls</strong> continue the same inquiry with site-native, browser-native pieces that I can host and develop directly.
+    </p>
+    <p>
+      The goal now is not "pretty pictures." The goal is to build perceptual situations where viewers can feel the tension between control and release, and decide how they want to participate.
+    </p>
+  </div>
+</main>
+
+<footer class="shell-footer">Mark Walhimer — Practice</footer>
+<script>
+(function () {
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var btn = nav.querySelector('.nav-toggle');
+  var panel = document.getElementById('site-nav-links');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', function () {
+    var open = nav.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  panel.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      nav.classList.remove('nav-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open menu');
+    });
+  });
+})();
+</script>
+</body>
+</html>

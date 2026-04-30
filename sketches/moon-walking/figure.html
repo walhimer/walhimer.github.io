@@ -1,31 +1,33 @@
-<figure{{ if or (.Get "class") (eq (.Get "align") "center") }} class="
-           {{- if eq (.Get "align") "center" }}align-center {{ end }}
-           {{- with .Get "class" }}{{ . }}{{- end }}"
-{{- end -}}>
-    {{- if .Get "link" -}}
-        <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
-    {{- end }}
-    <img loading="lazy" src="{{ .Get "src" }}{{- if eq (.Get "align") "center" }}#center{{- end }}"
-         {{- if or (.Get "alt") (.Get "caption") }}
-         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
-         {{- end -}}
-         {{- with .Get "width" }} width="{{ . }}"{{ end -}}
-         {{- with .Get "height" }} height="{{ . }}"{{ end -}}
-    /> <!-- Closing img tag -->
-    {{- if .Get "link" }}</a>{{ end -}}
-    {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr") -}}
-        <figcaption>
-            {{ with (.Get "title") -}}
-                {{ . }}
-            {{- end -}}
-            {{- if or (.Get "caption") (.Get "attr") -}}<p>
-                {{- .Get "caption" | markdownify -}}
-                {{- with .Get "attrlink" }}
-                    <a href="{{ . }}">
-                {{- end -}}
-                {{- .Get "attr" | markdownify -}}
-                {{- if .Get "attrlink" }}</a>{{ end }}</p>
-            {{- end }}
-        </figcaption>
-    {{- end }}
-</figure>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Figure — Mark Walhimer</title>
+  <meta name="description" content="Figure study in the Moon & Walking series." />
+  <meta http-equiv="refresh" content="0;url=figure_audio_mobile_simple%202.html" />
+  <link rel="canonical" href="https://mark-walhimer.com/sketches/moon-walking/figure_audio_mobile_simple%202.html" />
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 24px;
+      font-family: Georgia, "Times New Roman", serif;
+      background: #111;
+      color: #e9e5de;
+      line-height: 1.6;
+      text-align: center;
+    }
+    a {
+      color: #c8a882;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(200, 168, 130, 0.45);
+    }
+    a:hover {
+      border-bottom-color: #c8a882;
+    }
+  </style>
+</head>
+<body>
+  <p>Moving to <a href="figure_audio_mobile_simple%202.html">Figure + Audio (mobile)</a>…</p>
+</body>
+</html>
