@@ -349,7 +349,7 @@
             "sketches/surrender/surrender-machines.html"
           ],
           "external_urls": [
-            "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js",
+            "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js",
             "https://fonts.googleapis.com",
             "https://fonts.gstatic.com",
             "https://medium.com/@markwalhimer",
@@ -558,7 +558,7 @@
             "sketches/traveling-landscape.html"
           ],
           "external_urls": [
-            "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js",
+            "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js",
             "https://fonts.googleapis.com",
             "https://fonts.gstatic.com"
           ]
@@ -1498,7 +1498,7 @@
           "sketches/living-commons-artwork.html"
         ],
         "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js",
+          "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js",
           "https://fonts.googleapis.com",
           "https://fonts.gstatic.com",
           "https://foundation.app/@markwalhimer",
@@ -1865,7 +1865,7 @@
           "sketches/01-traveling-landscape-working.html"
         ],
         "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js"
+          "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"
         ]
       }
     },
@@ -1910,7 +1910,7 @@
           "sketches/02-traveling-landscape-live.html"
         ],
         "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js"
+          "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"
         ]
       }
     },
@@ -2321,7 +2321,7 @@
           "sketches/moon-walking/one_revolution.html"
         ],
         "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/ccapture.js/1.1.0/CCapture.all.min.js",
+          "https://cdn.jsdelivr.net/npm/ccapture.js@1.1.0/build/CCapture.all.min.js",
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
         ]
       }
@@ -5890,7 +5890,7 @@
           "sketches/snowfall.html"
         ],
         "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/ccapture.js/1.0.0/CCapture.all.min.js",
+          "https://cdn.jsdelivr.net/npm/ccapture.js@1.1.0/build/CCapture.all.min.js",
           "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"
         ]
       }
@@ -9950,7 +9950,7 @@
           "sketches/loop-miami-2026/traveling-landscape.html"
         ],
         "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.11/p5.min.js",
+          "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js",
           "https://fonts.googleapis.com",
           "https://fonts.gstatic.com"
         ]
