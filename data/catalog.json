@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated": "2026-04-20",
+  "updated": "2026-05-04",
   "profile": "Walhimer Studio unified catalog. Canonical rows are works[]. Sketch series order comes from sketches/index.html (fallback; catalog-work SERIES empty) on refresh; installation HTML is merged from works[] and installations/*.html. Soundscape list is derived from works, not stored separately.",
   "canonical_base": "https://mark-walhimer.com",
   "works": [
@@ -131,14 +131,13 @@
             "https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js",
             "https://fonts.googleapis.com",
             "https://fonts.gstatic.com",
-            "https://foundation.app/@markwalhimer",
+            "https://mark-walhimer.com/sketches/bloom/bloom-release.html",
             "https://medium.com/@markwalhimer",
             "https://objkt.com/@markwalhimer",
             "https://www.fxhash.xyz/u/MarkWalhimer",
             "https://www.instagram.com/markwalhimer",
             "https://www.linkedin.com/company/mark-walhimer-artist/",
             "https://www.mark-walhimer.com",
-            "https://www.mark-walhimer.com/bloom-release/",
             "https://www.youtube.com/@Mark-Walhimer",
             "https://x.com/WalhimerArt"
           ]
@@ -348,18 +347,7 @@
           "repo_paths": [
             "sketches/surrender/surrender-machines.html"
           ],
-          "external_urls": [
-            "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js",
-            "https://fonts.googleapis.com",
-            "https://fonts.gstatic.com",
-            "https://medium.com/@markwalhimer",
-            "https://museumplanning.com",
-            "https://objkt.com/@markwalhimer",
-            "https://www.fxhash.xyz/u/MarkWalhimer",
-            "https://www.instagram.com/markwalhimer",
-            "https://www.mark-walhimer.com",
-            "https://x.com/WalhimerArt"
-          ]
+          "external_urls": []
         },
         "installation_entry": {
           "repo_paths": [
@@ -626,6 +614,7 @@
           "sketches/tezos-early-works/assets/artifact-18.png",
           "sketches/tezos-early-works/assets/artifact-19.png",
           "sketches/tezos-early-works/assets/artifact-2.png",
+          "sketches/tezos-early-works/assets/artifact-20.png",
           "sketches/tezos-early-works/assets/artifact-3.png",
           "sketches/tezos-early-works/assets/artifact-4.png",
           "sketches/tezos-early-works/assets/artifact-5.png",
@@ -681,10 +670,10 @@
         "repo_paths": [
           "sketches/surrender/index.html",
           "sketches/surrender/surrender 7.html",
-          "sketches/surrender/surrender-machine-madrid-v2.html",
+          "sketches/surrender/surrender-machine 2.html",
+          "sketches/surrender/surrender-machine-madrid-v2 2.html",
           "sketches/surrender/surrender-machine-madrid.html",
-          "sketches/surrender/surrender-machine.html",
-          "sketches/surrender/surrender-machines.html"
+          "sketches/surrender/surrender-machines 2.html"
         ],
         "external_urls": []
       }
@@ -729,9 +718,7 @@
         "repo_paths": [
           "sketches/surrender/surrender-machine.html"
         ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
+        "external_urls": []
       }
     },
     {
@@ -819,9 +806,7 @@
         "repo_paths": [
           "sketches/surrender/surrender-machine-madrid-v2.html"
         ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
+        "external_urls": []
       }
     },
     {
@@ -1501,7 +1486,6 @@
           "https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js",
           "https://fonts.googleapis.com",
           "https://fonts.gstatic.com",
-          "https://foundation.app/@markwalhimer",
           "https://museumplanning.com",
           "https://objkt.com/@markwalhimer",
           "https://www.fxhash.xyz/u/MarkWalhimer",
@@ -2004,11 +1988,11 @@
         "repo_paths": [
           "sketches/moon-walking/bvh_viewer_07_01.html",
           "sketches/moon-walking/figure.html",
-          "sketches/moon-walking/figure_audio_mobile_simple.html",
+          "sketches/moon-walking/figure_audio_mobile_simple 2.html",
           "sketches/moon-walking/funk_boy.html",
           "sketches/moon-walking/index.html",
-          "sketches/moon-walking/infinite-walk.html",
-          "sketches/moon-walking/moon-dish.html",
+          "sketches/moon-walking/infinite-walk 2.html",
+          "sketches/moon-walking/moon-dish 2.html",
           "sketches/moon-walking/one_revolution.html"
         ],
         "external_urls": []
@@ -2140,9 +2124,7 @@
         "repo_paths": [
           "sketches/moon-walking/infinite-walk.html"
         ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-        ]
+        "external_urls": []
       }
     },
     {
@@ -2185,7 +2167,9 @@
         "repo_paths": [
           "sketches/moon-walking/figure.html"
         ],
-        "external_urls": []
+        "external_urls": [
+          "https://mark-walhimer.com/sketches/moon-walking/figure_audio_mobile_simple%202.html"
+        ]
       }
     },
     {
@@ -2228,10 +2212,7 @@
         "repo_paths": [
           "sketches/moon-walking/figure_audio_mobile_simple.html"
         ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js",
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
+        "external_urls": []
       }
     },
     {
@@ -2368,8 +2349,8 @@
           "sketches/emergent-discs/disc-string (1).html",
           "sketches/emergent-discs/disks.html",
           "sketches/emergent-discs/index.html",
-          "sketches/emergent-discs/string-art-1.html",
-          "sketches/emergent-discs/string-art-animated.html",
+          "sketches/emergent-discs/string-art-1 2.html",
+          "sketches/emergent-discs/string-art-animated 2.html",
           "sketches/emergent-discs/string-art-circle.html",
           "sketches/emergent-discs/string-art.html"
         ],
@@ -2596,9 +2577,7 @@
         "repo_paths": [
           "sketches/emergent-discs/string-art-1.html"
         ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
+        "external_urls": []
       }
     },
     {
@@ -2641,9 +2620,7 @@
         "repo_paths": [
           "sketches/emergent-discs/string-art-animated.html"
         ],
-        "external_urls": [
-          "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"
-        ]
+        "external_urls": []
       }
     },
     {
@@ -9995,6 +9972,339 @@
       "artifacts": {
         "repo_paths": [
           "sketches/loop-miami-2026/orchestrator.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:April 25:loop-art-critique-combined",
+      "dublin_core": {
+        "title": "April 25/loop-art-critique-combined",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:loop-art-critique-combined",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000193"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-loop-art-critique-combined",
+        "type": "HumanMadeObject",
+        "_label": "April 25/loop-art-critique-combined",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/loop-art-critique-combined.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/loop-art-critique-combined.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:April 25:machine-aesthetic-full",
+      "dublin_core": {
+        "title": "April 25/machine-aesthetic-full",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:machine-aesthetic-full",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000194"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-machine-aesthetic-full",
+        "type": "HumanMadeObject",
+        "_label": "April 25/machine-aesthetic-full",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/machine-aesthetic-full.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/machine-aesthetic-full.html"
+        ],
+        "external_urls": [
+          "https://cwandt.com",
+          "https://entangled.tools",
+          "https://ertdfgcvb.xyz",
+          "https://fictiv.com",
+          "https://fonts.googleapis.com",
+          "https://kimasendorf.com",
+          "https://mark-walhimer.com",
+          "https://mark-walhimer.com/sketches/April%2025/loop-art-critique-combined.html",
+          "https://patricktresset.com",
+          "https://sendcutsend.com",
+          "https://sougwen.com",
+          "https://spogel.xyz",
+          "https://wennew-atelier.xyz",
+          "https://zimoun.net"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:April 25:machine-aesthetic-no-lineage",
+      "dublin_core": {
+        "title": "April 25/machine-aesthetic-no-lineage",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:machine-aesthetic-no-lineage",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000195"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-machine-aesthetic-no-lineage",
+        "type": "HumanMadeObject",
+        "_label": "April 25/machine-aesthetic-no-lineage",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/machine-aesthetic-no-lineage.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/machine-aesthetic-no-lineage.html"
+        ],
+        "external_urls": [
+          "https://fonts.googleapis.com",
+          "https://mark-walhimer.com",
+          "https://mark-walhimer.com/sketches/April%2025/loop-art-critique-combined.html"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:April 25:machine-aesthetic",
+      "dublin_core": {
+        "title": "April 25/machine-aesthetic",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:machine-aesthetic",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000196"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-machine-aesthetic",
+        "type": "HumanMadeObject",
+        "_label": "April 25/machine-aesthetic",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/machine-aesthetic.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/machine-aesthetic.html"
+        ],
+        "external_urls": [
+          "https://cwandt.com",
+          "https://entangled.tools",
+          "https://ertdfgcvb.xyz",
+          "https://fictiv.com",
+          "https://fonts.googleapis.com",
+          "https://kimasendorf.com",
+          "https://mark-walhimer.com",
+          "https://sendcutsend.com",
+          "https://spogel.xyz",
+          "https://wennew-atelier.xyz"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:April 25:roland-s1-recorder",
+      "dublin_core": {
+        "title": "April 25/roland-s1-recorder",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:roland-s1-recorder",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000197"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-roland-s1-recorder",
+        "type": "HumanMadeObject",
+        "_label": "April 25/roland-s1-recorder",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/roland-s1-recorder.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/roland-s1-recorder.html"
+        ],
+        "external_urls": [
+          "https://unpkg.com/tone@14.8.49/build/Tone.js"
+        ]
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:April 25:roland-s1-recording-2",
+      "dublin_core": {
+        "title": "April 25/roland-s1-recording-2.wav",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:roland-s1-recording-2",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000198"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-roland-s1-recording-2",
+        "type": "HumanMadeObject",
+        "_label": "April 25/roland-s1-recording-2.wav",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/roland-s1-recording-2.wav"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/roland-s1-recording-2.wav"
+        ],
+        "external_urls": []
+      }
+    },
+    {
+      "id": "urn:walhimer:sketch:April 25:loop-5-1-2026-v2",
+      "dublin_core": {
+        "title": "April 25/loop-5-1-2026-v2.mp4",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:loop-5-1-2026-v2",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000199"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-loop-5-1-2026-v2",
+        "type": "HumanMadeObject",
+        "_label": "April 25/loop-5-1-2026-v2.mp4",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/loop-5-1-2026-v2.mp4"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/loop-5-1-2026-v2.mp4"
         ],
         "external_urls": []
       }
