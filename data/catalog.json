@@ -10020,6 +10020,49 @@
       }
     },
     {
+      "id": "urn:walhimer:sketch:April 25:loop-art-critique-technical-surrender",
+      "dublin_core": {
+        "title": "April 25/loop-art-critique-technical-surrender",
+        "creator": "Mark Walhimer",
+        "date": "",
+        "description": "",
+        "identifier": "urn:walhimer:sketch:April 25:loop-art-critique-technical-surrender",
+        "type": "InteractiveResource",
+        "format": "text/html",
+        "language": "en",
+        "relation": "",
+        "catalog_number": "WS-000200"
+      },
+      "linked_art": {
+        "@context": "https://linked.art/ns/v1/linked-art.json",
+        "id": "https://mark-walhimer.com/#work/April 25-loop-art-critique-technical-surrender",
+        "type": "HumanMadeObject",
+        "_label": "April 25/loop-art-critique-technical-surrender",
+        "classified_as": [
+          {
+            "id": "http://vocab.getty.edu/aat/300375748",
+            "type": "Type",
+            "_label": "digital art"
+          }
+        ]
+      },
+      "site": {
+        "surfaces": [
+          "sketch"
+        ],
+        "sketch": {
+          "series": "April 25",
+          "file": "April 25/loop-art-critique-technical-surrender.html"
+        }
+      },
+      "artifacts": {
+        "repo_paths": [
+          "sketches/April 25/loop-art-critique-technical-surrender.html"
+        ],
+        "external_urls": []
+      }
+    },
+    {
       "id": "urn:walhimer:sketch:April 25:machine-aesthetic-full",
       "dublin_core": {
         "title": "April 25/machine-aesthetic-full",
