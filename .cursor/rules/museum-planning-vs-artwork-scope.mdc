@@ -1,0 +1,25 @@
+---
+description: Route Museum Planning LLC site work vs artwork (this repo)
+alwaysApply: true
+---
+
+# Museum Planning Site vs Artwork Repo Scope
+
+## Defaults for this workspace
+
+This repo (**walhimer.github.io**) is for **artwork**, sketches, experimental pages, and personal creative tooling paths such as `sketches/`, `machine aesthetic/`, `practice/`, etc.
+
+Do **not** assume commits here ship **Museum Planning LLC’s production marketing site**.
+
+## Where museum-planning website work belongs
+
+**Museum Planning LLC** web presence (`museumplanning.com`) lives in the **`website-2.0`** repo (**GitHub:** `Museum-Planning-LLC/website-2.0`).
+
+When the user asks about museum-planning **SEO**, **site hierarchy**, **metadata/canonicals**, **commercial pages**, **Museum School**, **capabilities**, **business contact**, or **deploy/push for museumplanning.com**:
+
+1. Edit files under that repo’s checkout — locally commonly **`/Users/markwalhimer/Documents/GitHub/museum-planning-llc-website-2.0`** (or whatever clone path they use), **unless they explicitly point at another path**.
+2. Run **`git status`** / **`git push`** in **that** repo — **not** in walhimer.github.io — unless they explicitly ask to touch artwork too.
+
+## When overlap is intentional
+
+Only blend repos when the user **explicitly** asks (for example cross-links from artwork to museumplanning.com or mirrored experiments).

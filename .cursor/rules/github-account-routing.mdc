@@ -1,0 +1,23 @@
+---
+description: Route git remotes to the correct GitHub account aliases
+alwaysApply: true
+---
+# GitHub Account Routing
+
+Before any git commit/push/remote changes, always verify account routing first.
+
+## Required checks
+
+- Run `git remote -v` in the target repo before push operations.
+- For repos owned by `walhimer` or `walhimer-studio`, `origin` should use `git@github-walhimer:<owner>/<repo>.git`.
+- For repos owned by `museumplanning`, `origin` should use `git@github-museumplanning:<owner>/<repo>.git`.
+- If remote uses plain `github.com` HTTPS/SSH, flag it and suggest converting to the correct alias.
+
+## Identity checks when auth fails
+
+- Verify identity with `ssh -T git@github-walhimer` or `ssh -T git@github-museumplanning`.
+- If identity mismatch appears, stop and fix routing before any push attempt.
+
+## Useful local audit
+
+- Run `/Users/markwalhimer/Documents/dev/git-remote-account-audit.sh /Users/markwalhimer/Documents/GitHub` to scan common repos.

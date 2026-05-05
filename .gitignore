@@ -1,6 +1,9 @@
 .DS_Store
 __pycache__/
-.cursor/
+# Cursor: ignore IDE churn under .cursor except versioned agent rules
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
 node_modules/
 .venv/
 
